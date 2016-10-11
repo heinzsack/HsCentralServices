@@ -50,14 +50,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </ApplicationDefinition>
-    <Compile Include="App.xaml.cs">
-      <DependentUpon>App.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="App.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DbAccounts.gitignore.cs" />
@@ -88,7 +81,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\DEV_CS\CsGlobals\_CsWpfBase\_CsWpfBase.csproj">
+    <ProjectReference Include="..\..\..\..\CsGlobals\_CsWpfBase\_CsWpfBase.csproj">
       <Project>{63CB4E91-9D9C-4C97-8097-FC3964593796}</Project>
       <Name>_CsWpfBase</Name>
     </ProjectReference>

@@ -1,13 +1,26 @@
-﻿using CsWpfBase.Ev.Public.Extensions;
+﻿// Copyright (c) 2016 All rights reserved Christian Sack
+// <author>Christian Sack</author>
+// <email>christian@sack.at</email>
+// <website>christian.sack.at</website>
+// <date>2016-10-11</date>
+
 using System;
 using System.Windows;
 using System.Windows.Markup;
 using System.Windows.Media;
+using CsWpfBase.Ev.Public.Extensions;
+using PlayerControls.Interfaces;
+
+
+
+
+
 
 namespace HsCentralServiceWebInterfacesServer._dbs.hsserver.ringplayerdb.rows
-	{
+{
 	partial class Text : ITextVisual
-		{
+	{
+		#region Overrides/Interfaces
 		[DependsOn(nameof(MarginThickness))]
 		public Thickness IRelativePositioning => Convert.Thickness.Getter(MarginThickness);
 
@@ -40,11 +53,6 @@ namespace HsCentralServiceWebInterfacesServer._dbs.hsserver.ringplayerdb.rows
 
 		[DependsOn(nameof(Rotation))]
 		public double IRotation => Rotation;
-
-
-
-
-
-		
-		}
+		#endregion
 	}
+}

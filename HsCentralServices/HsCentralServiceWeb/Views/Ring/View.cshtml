@@ -1,0 +1,46 @@
+﻿@using HsCentralServiceWebInterfacesServer._dbs.hsserver.ringplayerdb.rows
+@model HsCentralServiceWeb.Models.RingController.ViewModel
+	
+<h1>
+	@Model.RemoteInstance.RemoteUser.RemoteComputer.Name > @Model.RemoteInstance.RemoteUser.Name > Ring [@Model.Ring.Id]
+</h1>
+
+<button onclick="$('#active').prev().prev().prev().prev().prev()[0].scrollIntoView();" class="btn btn-primary">Aktuell</button><br /><br />
+<table class="table table-striped table-bordered table-sm">
+	<thead class="thead-default">
+		<tr>
+			<th>#</th>
+			<th>Startzeit</th>
+			<th>Dauer</th>
+			<th>Slot</th>
+			<th>Bezeichnung</th>
+			<th>Seiten</th>
+		</tr>
+	</thead>
+	<tbody>
+		@for (int i = 0; i < Model.Ring.ScheduledPageGroups.Length; i++)
+			{
+			ScheduledPageGroup scheduledPageGroup = Model.Ring.ScheduledPageGroups[i]; string cla = "";
+			TimeSpan startTime = scheduledPageGroup.StartTime.TimeOfDay;
+			TimeSpan endTime = startTime.Add(scheduledPageGroup.Duration);
+			bool isActive = startTime < DateTime.Now.TimeOfDay && endTime > DateTime.Now.TimeOfDay;
+			if (endTime < DateTime.Now.TimeOfDay)
+				{
+				cla = "table-active";
+				}
+			else if (isActive)
+				{
+				cla = "bg-primary";
+				}
+
+			<tr class="@cla" id="@(isActive ? "active" : "")">
+				<th style="text-align: right">@(i + 1)</th>
+				<td>@scheduledPageGroup.StartTime.ToString("HH\\:mm\\:ss")</td>
+				<td>@scheduledPageGroup.Duration.ToString("hh\\:mm\\:ss")</td>
+				<td>[NOT IMPLEMENTED]</td>
+				<td style="width: 100%">@scheduledPageGroup.PageGroup.Name</td>
+				<td><a href="@Url.Action("ViewMmUnit", "Ring", new {remoteInstanceId = Model.RemoteInstance.Id, ringId = Model.Ring.Id, pageGroupId = scheduledPageGroup.PageGroup.Id })" class="btn btn-sm btn-outline-danger">@scheduledPageGroup.PageSchedules.Length</a></td>
+			</tr>
+			}
+	</tbody>
+</table>

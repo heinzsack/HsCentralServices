@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows.Markup;
-using IPage = RingPlayerControls.Interfaces.IPage;
+using PlayerControls.Interfaces;
 
 namespace HsCentralServiceWebInterfacesServer._dbs.hsserver.ringplayerdb.rows
 	{

@@ -1,0 +1,76 @@
+﻿@using System
+@using HsCentralServiceWeb._sys
+@using HsCentralServiceWeb._sys.hubs.webManagement
+@using HsCentralServiceWeb._sys._extensions._razorExtensions
+@{
+	CsAjaxForm csAjaxForm;
+}
+@using (csAjaxForm = Ajax.Cs().Form("Partial_ConnectedClients", "Ring", null))
+{
+	<h1>Aktuell verbunden</h1>
+	<div class="simpleBox" style="border: 0px">
+		@foreach (var client in Sys.Hubs.RingDistribution.ConnectedClients)
+		{
+			<div class="card" style="float: left; margin-right: 0.75rem">
+				<h4 class="card-header">@client.RemoteUser.RemoteComputer.Name</h4>
+				<div class="card-block">
+					<p class="card-text text-muted">
+						@client.RemoteUser.RemoteComputer.Name > @client.RemoteUser.Name > @client.RemoteApplication.Name<br/>
+						Gesehen: @client.LastSeen
+					</p>
+					@if (client.RingPlayerManagement.PlayerData != null)
+					{
+						<p class="card-text">
+							@if (client.RingPlayerManagement.PlayerData.IsPlaying)
+							{
+								<span class="green"><span class="glyphicon glyphicon-play"></span> Ring @client.RingPlayerManagement.PlayerData.PlayingRingId wird gespielt</span>
+							}
+							else
+							{
+								<span class="red"><span class="glyphicon glyphicon-stop"></span> kein Ring wird gespielt</span>
+							}
+							@if (client.RingPlayerManagement.PlayerData.IsDownloading)
+							{
+								<br/>
+								<span class="orange"><span class="glyphicon glyphicon-download"></span> Ring @client.RingPlayerManagement.PlayerData.DownloadingRingId wird verarbeitet <br />(@client.RingPlayerManagement.PlayerData.DownloadPhase.ToString())</span>
+							}
+						</p>
+					}
+					else
+					{
+						<p class="card-text">
+						</p>
+					}
+
+				</div>
+				<div class="card-block" style="border-top: 1px solid rgba(0, 0, 0, 0.125)">
+					<a href="#" onclick="ExecuteUrl.call(this, event, '@Url.Action("LoadInstanceArgs", "RingDistribution", new {id = client.Id})')" class="card-link">
+						Daten laden
+					</a>
+				</div>
+				<div class="card-block" style="border-top: 1px solid rgba(0, 0, 0, 0.125)">
+					<a href="#" onclick="ExecuteUrl.call(this, event, '@Url.Action("GenerateRing", "RingDistribution", new {id = client.Id})')" class="card-link alert-link">
+						Generieren
+					</a>
+					<a href="#" onclick="ExecuteUrl.call(this, event, '@Url.Action("GenerateRing", "RingDistribution", new {id = client.Id})')" class="card-link">
+						Updaten
+					</a>
+				</div>
+				@if (client.RingPlayerManagement.PlayerData?.PlayingRingId != null)
+				{
+					<div class="card-block" style="border-top: 1px solid rgba(0, 0, 0, 0.125)">
+						<a href="@Url.Action("View", "Ring", new {remoteInstanceId = client.Id, ringId = client.RingPlayerManagement.PlayerData?.PlayingRingId})" class="card-link">
+							Anzeigen
+						</a>
+						<a href="@Url.Action("Download", "Ring", new {remoteInstanceId = client.Id, ringId = client.RingPlayerManagement.PlayerData?.PlayingRingId})" class="card-link">
+							Herunterladen
+						</a>
+					</div>
+				}
+			</div>
+		}
+		<div class="clearfix"></div>
+	</div>
+}
+
+@WwwSurferNotificationHub.Attach_RingDistributionClientsChanged(csAjaxForm.Id)

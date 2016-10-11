@@ -1,17 +1,33 @@
-﻿using System;
+﻿// Copyright (c) 2016 All rights reserved Christian Sack
+// <author>Christian Sack</author>
+// <email>christian@sack.at</email>
+// <website>christian.sack.at</website>
+// <date>2016-10-11</date>
+
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-//using DbEntitiesPlayer.dbserver3.CustomClasses;
+using CsWpfBase.Ev.Public.Extensions;
+using PlayerControls.Controls;
+using PlayerControls.Interfaces;
+using PlayerControls.Interfaces.Transistions;
+
+
+
+
+
 
 namespace HsCentralServiceWebInterfacesServer._dbs.hsserver.ringplayerdb.rows
-	{
+{
 	partial class Page : IPage
-		{
+	{
+		#region Overrides/Interfaces
 		[DependsOn(nameof(MarginThickness))]
 		public Thickness IRelativePositioning => Convert.Thickness.Getter(MarginThickness);
 
@@ -44,14 +60,16 @@ namespace HsCentralServiceWebInterfacesServer._dbs.hsserver.ringplayerdb.rows
 				.Concat(Videos)
 				.Concat(Texts)
 				.Concat(ChildPages);
+		#endregion
+
 
 		public IEnumerable<ITransition> ITransitions => DoubleTransitions.OfType<IDoubleTransition>();
 
 		public Task<BitmapSource> GetRenderedImage(double width = 1920D, double height = 1080D)
+		{
+			var t = new Task<BitmapSource>(() =>
 			{
-			Task<BitmapSource> t = new Task<BitmapSource>(() =>
-			{
-				var pageViewer = new PageViewer() { Page = this, Width = width, Height = height };
+				var pageViewer = new PageViewer() {Page = this, Width = width, Height = height};
 				pageViewer.Measure(pageViewer.DesiredSize);
 				pageViewer.Arrange(new Rect(pageViewer.DesiredSize));
 				pageViewer.UpdateLayout();
@@ -59,10 +77,10 @@ namespace HsCentralServiceWebInterfacesServer._dbs.hsserver.ringplayerdb.rows
 				List<System.Windows.Controls.Image> img = pageViewer.GetVisualChildsByCondition<System.Windows.Controls.Image>(i => true);
 				pageViewer.MakeVideoVisiblie(TimeSpan.FromSeconds(5));
 				foreach (var image in img)
-					{
+				{
 					BindingOperations.ClearBinding(image, System.Windows.Controls.Image.SourceProperty);
 					image.Source = (image.DataContext as IImageVisual).IBitmapSource;
-					}
+				}
 
 				var bitmapSource = pageViewer.ConvertTo_Image();
 				bitmapSource.Freeze();
@@ -70,17 +88,16 @@ namespace HsCentralServiceWebInterfacesServer._dbs.hsserver.ringplayerdb.rows
 			}, TaskCreationOptions.LongRunning);
 			t.Start(Table.StaTaskScheduler);
 			return t;
-			}
+		}
 
 		public new void Delete()
-			{
+		{
 			foreach (var childVisual in ChildPages.ToArray())
-				{
+			{
 				childVisual.Delete();
-				}
+			}
 			DataSet.AcceptChanges();
 			base.Delete();
-			}
-		
 		}
 	}
+}

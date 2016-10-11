@@ -1,0 +1,48 @@
+﻿@using System
+@using HsCentralServiceWeb._sys
+@using HsCentralServiceWeb._sys.hubs.webManagement
+@using HsCentralServiceWeb._sys._extensions._razorExtensions
+@{
+	lock (Sys.Data)
+	{
+		if (!Sys.Data.CentralService.RemoteLogs.HasBeenLoaded)
+		{
+			Sys.Data.CentralService.RemoteLogs.DownloadRows();
+		}
+	}
+}
+
+
+@{
+	CsAjaxForm csAjaxForm;
+}
+@using (csAjaxForm = Ajax.Cs().Form("Partial_LogsList", "RemoteManagement", null))
+{
+	<h1>Remote Logs <small>die letzten 15</small></h1>
+	<div class="simpleBox">
+		@foreach (var log in Sys.Data.CentralService.RemoteLogs.OrderByDescending(x => x.Created).Take(15))
+		{
+
+			<div class="card">
+				@if (DateTime.Now - log.Created < TimeSpan.FromMinutes(5))
+				{
+					<span class="tag tag-primary pull-xs-right" style="margin: 5px">aktuell</span>
+				}
+				<h5 class="card-header">
+					@log.Title <small>@log.RemoteInstance.RemoteUser.RemoteComputer.Name > @log.RemoteInstance.RemoteUser.Name > @log.RemoteInstance.RemoteApplication.Name</small>
+				</h5>
+				<div class="card-block">
+					<p class="card-text">
+						@log.Message
+					</p>
+					<p class="card-text text-muted small">
+						@log.Created.ToString("dd.MM.yyyy HH:mm:ss.fff") @@@@@@ @(new FileInfo(log.CodeFile).Name) > @log.CodeMethod > @log.CodeLine
+					</p>
+				</div>
+			</div>
+		}
+		<div class="clearfix"></div>
+	</div>
+}
+
+@WwwSurferNotificationHub.Attach_RemoteLogsChanged(csAjaxForm.Id)

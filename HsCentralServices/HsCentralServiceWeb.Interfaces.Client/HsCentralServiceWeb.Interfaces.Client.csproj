@@ -32,6 +32,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.AspNet.SignalR.Client, Version=2.2.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.Client.2.2.1\lib\net45\Microsoft.AspNet.SignalR.Client.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -61,10 +69,27 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="steadyConnection\hubs\management\args\LogArgs.cs" />
+    <Compile Include="steadyConnection\hubs\management\args\LogSeverity.cs" />
+    <Compile Include="steadyConnection\hubs\management\args\RestartArgs.cs" />
+    <Compile Include="steadyConnection\hubs\management\IRemoteManagementHubProtocol.cs" />
+    <Compile Include="steadyConnection\hubs\management\ManagementClient.cs" />
+    <Compile Include="steadyConnection\hubs\ringDistribution\IRingDistributionHubProtocol.cs" />
+    <Compile Include="steadyConnection\hubs\ringDistribution\newRingAvailableArgs\NewRingAvailableArgs.cs" />
+    <Compile Include="steadyConnection\hubs\ringDistribution\playerDataArgs\PlayerDataArgs.cs" />
+    <Compile Include="steadyConnection\hubs\ringDistribution\playerDataArgs\PlayerDataRequestArgs.cs" />
+    <Compile Include="steadyConnection\hubs\ringDistribution\playerDataArgs\PlayerDataStateTypes.cs" />
+    <Compile Include="steadyConnection\hubs\ringDistribution\playerDataArgs\PlayerStates.cs" />
+    <Compile Include="steadyConnection\hubs\ringDistribution\RingDistributionHubClient.cs" />
+    <Compile Include="steadyConnection\hubs\ringDistribution\ringValidationArgs\RingValidationArgs.cs" />
+    <Compile Include="steadyConnection\hubs\ringDistribution\ringValidationArgs\RingValidationResultArgs.cs" />
+    <Compile Include="steadyConnection\SteadyConnection.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="app.config" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -72,7 +97,10 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="_sys\" />
+    <ProjectReference Include="..\..\..\..\CsGlobals\_CsWpfBase\_CsWpfBase.csproj">
+      <Project>{63CB4E91-9D9C-4C97-8097-FC3964593796}</Project>
+      <Name>_CsWpfBase</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

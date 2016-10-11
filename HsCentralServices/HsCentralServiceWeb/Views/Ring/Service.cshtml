@@ -1,0 +1,21 @@
+﻿@using HsCentralServiceWeb._sys
+@{
+	lock (Sys.Data)
+	{
+		if(!Sys.Data.CentralService.RemoteLogs.HasBeenLoaded)
+		{
+			Sys.Data.CentralService.RemoteLogs.DownloadRows();
+		}
+	}
+}
+<div class="row">
+	<div class="col-md-12">
+		@Html.Partial("controls/List_RingDistributionConnectedClients")
+	</div>
+</div>
+<hr/>
+<div class="row">
+	<div class="col-md-12">
+		@Html.Partial("controls/List_RemoteLogs")
+	</div>
+</div>

@@ -4,6 +4,13 @@
 // <website>christian.sack.at</website>
 // <date>2016-09-19</date>
 
+using HsCentralServiceWebInterfacesClient.steadyConnection.hubs.ringDistribution.playerDataArgs;
+
+
+
+
+
+
 namespace HsCentralServiceWeb._dbs.hsserver.centralservicedb.rows
 {
 	partial class RemoteRingPlayerManagement

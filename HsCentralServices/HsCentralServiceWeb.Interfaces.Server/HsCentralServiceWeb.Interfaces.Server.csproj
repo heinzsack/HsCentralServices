@@ -48,6 +48,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IServer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -84,7 +85,8 @@
     <Compile Include="_dbs\hsserver\ringplayerdb\tables\extensions\VideosTable.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="_sys\services\ringDistribution\IRingManager.cs" />
+    <Compile Include="ringDistribution\IRingManager.cs" />
+    <Compile Include="_mocks\MockRingManager.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -94,6 +96,17 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\CsGlobals\_CsWpfBase\_CsWpfBase.csproj">
+      <Project>{63cb4e91-9d9c-4c97-8097-fc3964593796}</Project>
+      <Name>_CsWpfBase</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\RingPlayerSolution\PlayerControls\PlayerControls.csproj">
+      <Project>{df0322d9-bf49-4245-9001-00060ff7a8ca}</Project>
+      <Name>PlayerControls</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="_dbs\hsserver\HsServerContext.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
@@ -160,15 +173,6 @@
     <Compile Include="_dbs\hsserver\ringplayerdb\rows\RingMetaData.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
     <Compile Include="_dbs\hsserver\ringplayerdb\rows\PageSchedule.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
     <Compile Include="_dbs\hsserver\ringplayerdb\rows\Video.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\..\DEV_CS\CsGlobals\_CsWpfBase\_CsWpfBase.csproj">
-      <Project>{63cb4e91-9d9c-4c97-8097-fc3964593796}</Project>
-      <Name>_CsWpfBase</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="mock\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

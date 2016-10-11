@@ -1,0 +1,22 @@
+﻿<Window x:Class="RingPlayer24.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:sys="clr-namespace:RingPlayer24._sys"
+		xmlns:themes="clr-namespace:PlayerControls.Themes;assembly=PlayerControls"
+		Background="Black"
+		mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="525">
+	<Window.ContextMenu>
+		<ContextMenu>
+			<MenuItem Header="Close" Click="CloseClicked"></MenuItem>
+		</ContextMenu>
+	</Window.ContextMenu>
+	<Grid>
+		<themes:RingPlayer24 x:Name="Player" Pages="{Binding Source={x:Static sys:Sys.Services}, Path=RingPlayerService.BindableSchedules}" />
+		<Button VerticalAlignment="Bottom" HorizontalAlignment="Right" 
+				Background="Transparent" Foreground="Transparent" BorderBrush="Transparent" 
+				Click="ReOpenConnection_OnClick">Show State</Button>
+    </Grid>
+</Window>
