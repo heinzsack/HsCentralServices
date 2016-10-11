@@ -66,6 +66,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -126,22 +127,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\bootstrap-theme.css" />
-    <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="favicon.ico" />
-    <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\bootstrap.min.css.map" />
     <Content Include="Content\bootstrap.css.map" />
-    <Content Include="Content\bootstrap-theme.min.css.map" />
-    <Content Include="Content\bootstrap-theme.css.map" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -154,11 +146,6 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Scripts\modernizr-2.8.3.js" />
-    <Content Include="Scripts\respond.js" />
-    <Content Include="Scripts\respond.matchmedia.addListener.js" />
-    <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
-    <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -181,9 +168,99 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
-    <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-3.1.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.1.1.min.map" />
+    <Compile Include="_dbs\hsserver\centralservicedb\rows\extensions\RemoteApplication.cs" />
+    <Compile Include="_dbs\hsserver\centralservicedb\rows\extensions\RemoteComputer.cs" />
+    <Compile Include="_dbs\hsserver\centralservicedb\rows\extensions\RemoteInstance.cs" />
+    <Compile Include="_dbs\hsserver\centralservicedb\rows\extensions\RemoteRingPlayerInstanceArg.cs" />
+    <Compile Include="_dbs\hsserver\centralservicedb\rows\extensions\RemoteUser.cs" />
+    <Compile Include="_dbs\hsserver\centralservicedb\rows\extensions\WebConfiguration.cs" />
+    <Compile Include="_dbs\hsserver\centralservicedb\tables\extensions\WebConfigurationsTable.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="_dbs\hsserver\HsServerContext.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\centralservicedb\dataset\CentralServiceDb.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="_dbs\hsserver\centralservicedb\tables\RemoteComputersTable.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="_dbs\hsserver\centralservicedb\tables\RemoteApplicationsTable.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="_dbs\hsserver\centralservicedb\tables\WebUsersTable.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="_dbs\hsserver\centralservicedb\tables\RemoteUsersTable.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="_dbs\hsserver\centralservicedb\tables\WebLogsTable.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="_dbs\hsserver\centralservicedb\tables\RemoteInstancesTable.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="_dbs\hsserver\centralservicedb\tables\RemoteLogsTable.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="_dbs\hsserver\centralservicedb\tables\WebConfigurationsTable.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="_dbs\hsserver\centralservicedb\tables\SysdiagramsTable.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="_dbs\hsserver\centralservicedb\tables\RemoteRingPlayerManagementsTable.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="_dbs\hsserver\centralservicedb\views\ShowInstancenSituationView.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="_dbs\hsserver\centralservicedb\rowinterfaces\IRemoteComputer.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\centralservicedb\rowinterfaces\IRemoteApplication.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\centralservicedb\rowinterfaces\IWebUser.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\centralservicedb\rowinterfaces\IRemoteUser.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\centralservicedb\rowinterfaces\IWebLog.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\centralservicedb\rowinterfaces\IRemoteInstance.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\centralservicedb\rowinterfaces\IRemoteLog.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\centralservicedb\rowinterfaces\IWebConfiguration.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\centralservicedb\rowinterfaces\ISysdiagram.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\centralservicedb\rowinterfaces\IRemoteRingPlayerManagement.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\centralservicedb\rowpocos\Poco_RemoteComputer.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\centralservicedb\rowpocos\Poco_RemoteApplication.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\centralservicedb\rowpocos\Poco_WebUser.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\centralservicedb\rowpocos\Poco_RemoteUser.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\centralservicedb\rowpocos\Poco_WebLog.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\centralservicedb\rowpocos\Poco_RemoteInstance.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\centralservicedb\rowpocos\Poco_RemoteLog.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\centralservicedb\rowpocos\Poco_WebConfiguration.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\centralservicedb\rowpocos\Poco_Sysdiagram.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\centralservicedb\rowpocos\Poco_RemoteRingPlayerManagement.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\centralservicedb\rows\RemoteComputer.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\centralservicedb\rows\RemoteApplication.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\centralservicedb\rows\WebUser.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\centralservicedb\rows\RemoteUser.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\centralservicedb\rows\WebLog.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\centralservicedb\rows\RemoteInstance.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\centralservicedb\rows\RemoteLog.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\centralservicedb\rows\WebConfiguration.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\centralservicedb\rows\Sysdiagram.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\centralservicedb\rows\RemoteRingPlayerManagement.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\centralservicedb\rows\ShowInstancenSituation.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\DEV_CS\CsGlobals\_CsWpfBase\_CsWpfBase.csproj">
+      <Project>{63cb4e91-9d9c-4c97-8097-fc3964593796}</Project>
+      <Name>_CsWpfBase</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HsCentralServiceWeb.Interfaces.Client\HsCentralServiceWeb.Interfaces.Client.csproj">
+      <Project>{595f881e-6f13-4248-b07b-cea9bf225d15}</Project>
+      <Name>HsCentralServiceWeb.Interfaces.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HsCentralServiceWeb.Interfaces.Server\HsCentralServiceWeb.Interfaces.Server.csproj">
+      <Project>{7f3e2872-8300-4a56-8cc1-1e87244dacee}</Project>
+      <Name>HsCentralServiceWeb.Interfaces.Server</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

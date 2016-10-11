@@ -1,0 +1,181 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7F3E2872-8300-4A56-8CC1-1E87244DACEE}</ProjectGuid>
+    <OutputType>library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>HsCentralServiceWebInterfacesServer</RootNamespace>
+    <AssemblyName>HsCentralServiceWeb.Interfaces.Server</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="_dbs\hsserver\ringplayerdb\rows\extensions\DoubleTransition.cs" />
+    <Compile Include="_dbs\hsserver\ringplayerdb\rows\extensions\Image.cs" />
+    <Compile Include="_dbs\hsserver\ringplayerdb\rows\extensions\Page.cs" />
+    <Compile Include="_dbs\hsserver\ringplayerdb\rows\extensions\PageGroup.cs" />
+    <Compile Include="_dbs\hsserver\ringplayerdb\rows\extensions\PageSchedule.cs" />
+    <Compile Include="_dbs\hsserver\ringplayerdb\rows\extensions\RingMetaData.cs" />
+    <Compile Include="_dbs\hsserver\ringplayerdb\rows\extensions\Text.cs" />
+    <Compile Include="_dbs\hsserver\ringplayerdb\rows\extensions\Video.cs" />
+    <Compile Include="_dbs\hsserver\ringplayerdb\tables\extensions\ImagesTable.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="_dbs\hsserver\ringplayerdb\tables\extensions\PageGroupsTable.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="_dbs\hsserver\ringplayerdb\tables\extensions\PageSchedulesTable.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="_dbs\hsserver\ringplayerdb\tables\extensions\PagesTable.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="_dbs\hsserver\ringplayerdb\tables\extensions\VideosTable.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="_sys\services\ringDistribution\IRingManager.cs" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="_dbs\hsserver\HsServerContext.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\ringplayerdb\dataset\RingPlayerDb.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="_dbs\hsserver\ringplayerdb\tables\ImagesTable.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="_dbs\hsserver\ringplayerdb\tables\LastGeneratedBalancerStatesTable.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="_dbs\hsserver\ringplayerdb\tables\PageGroupsTable.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="_dbs\hsserver\ringplayerdb\tables\SysdiagramsTable.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="_dbs\hsserver\ringplayerdb\tables\TextsTable.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="_dbs\hsserver\ringplayerdb\tables\DoubleTransitionsTable.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="_dbs\hsserver\ringplayerdb\tables\PagesTable.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="_dbs\hsserver\ringplayerdb\tables\RingMetaDatasTable.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="_dbs\hsserver\ringplayerdb\tables\PageSchedulesTable.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="_dbs\hsserver\ringplayerdb\tables\VideosTable.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="_dbs\hsserver\ringplayerdb\rowinterfaces\IImage.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\ringplayerdb\rowinterfaces\ILastGeneratedBalancerState.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\ringplayerdb\rowinterfaces\IPageGroup.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\ringplayerdb\rowinterfaces\ISysdiagram.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\ringplayerdb\rowinterfaces\IText.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\ringplayerdb\rowinterfaces\IDoubleTransition.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\ringplayerdb\rowinterfaces\IPage.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\ringplayerdb\rowinterfaces\IRingMetaData.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\ringplayerdb\rowinterfaces\IPageSchedule.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\ringplayerdb\rowinterfaces\IVideo.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\ringplayerdb\rowpocos\Poco_Image.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\ringplayerdb\rowpocos\Poco_LastGeneratedBalancerState.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\ringplayerdb\rowpocos\Poco_PageGroup.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\ringplayerdb\rowpocos\Poco_Sysdiagram.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\ringplayerdb\rowpocos\Poco_Text.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\ringplayerdb\rowpocos\Poco_DoubleTransition.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\ringplayerdb\rowpocos\Poco_Page.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\ringplayerdb\rowpocos\Poco_RingMetaData.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\ringplayerdb\rowpocos\Poco_PageSchedule.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\ringplayerdb\rowpocos\Poco_Video.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\ringplayerdb\rows\Image.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\ringplayerdb\rows\LastGeneratedBalancerState.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\ringplayerdb\rows\PageGroup.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\ringplayerdb\rows\Sysdiagram.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\ringplayerdb\rows\Text.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\ringplayerdb\rows\DoubleTransition.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\ringplayerdb\rows\Page.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\ringplayerdb\rows\RingMetaData.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\ringplayerdb\rows\PageSchedule.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\ringplayerdb\rows\Video.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\DEV_CS\CsGlobals\_CsWpfBase\_CsWpfBase.csproj">
+      <Project>{63cb4e91-9d9c-4c97-8097-fc3964593796}</Project>
+      <Name>_CsWpfBase</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="mock\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
