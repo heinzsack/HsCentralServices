@@ -17,8 +17,10 @@ namespace RingPlayer24
 	public partial class MainWindow : Window
 		{
 
-#if DEBUG
-		String ServerAdresse = "http://localhost:5555/";
+#if DEBUG && HS
+		String ServerAdresse = "http://localhost:16411/";
+#elif DEBUG
+		String ServerAdresse = "http://localhost:16411/";
 #else
 		String ServerAdresse = "http://www.internettv.citynews.at/TempApp";
 #endif
@@ -30,8 +32,7 @@ namespace RingPlayer24
 			//Sys.Storage.GetPlayingRingFilePath().LoadAs_Object_From_SerializedBinary<RingPlayerDb>().OpenViewer();
 			//Environment.Exit(1);
 
-	        //ServerAdresse = "http://www.internettv.citynews.at/TempApp";
-
+			//ServerAdresse = "http://www.internettv.citynews.at/TempApp";
 
 			InitializeComponent();
 
@@ -51,8 +52,6 @@ namespace RingPlayer24
 		private void ServerConnectionOnOpened()
 			{
 			Sys.Services.RingPlayerService.SendInstanceArgs();
-			//Sys.ServerConnection.Management.Log(LogSeverity.Information,
-			//	$"ServerConnectionOnOpened {Environment.MachineName} to {ServerAdresse}", "after successfull Open Connection");
 			}
 
 		private void MainWindow_Loaded(object sender, RoutedEventArgs e)
@@ -62,8 +61,6 @@ namespace RingPlayer24
 
 		private void RingDistribution_NewRingAvailable(NewRingAvailableArgs args)
 			{
-			//Sys.ServerConnection.Management.Log(LogSeverity.Information,
-			//	$"RingDistribution_NewRingAvailable {Environment.MachineName} to {ServerAdresse}", $"before {args.DownloadUrl}");
 			Sys.Services.RingPlayerService.DownloadRing(args);
 			}
 		private void RingDistributionOnPlayerDataRequested(PlayerDataRequestArgs args)
@@ -73,8 +70,6 @@ namespace RingPlayer24
 		private void RingPlayerService_RingDownloadCompleted(RingMetaData ring)
 			{
 			Sys.Services.RingPlayerService.CurrentPlayingRing = ring;
-			//Sys.ServerConnection.Management.Log(LogSeverity.Information,
-			//	$"RingPlayerService_RingDownloadCompleted {Environment.MachineName} to {ServerAdresse}", $"after {ring.Id} completed");
 			}
 		private void CloseClicked(object sender, RoutedEventArgs e)
 			{

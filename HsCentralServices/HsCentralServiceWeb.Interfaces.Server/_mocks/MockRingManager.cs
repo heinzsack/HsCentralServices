@@ -108,7 +108,6 @@ namespace HsCentralServiceWebInterfacesServer._mocks
 			public void Do()
 			{
 				GenerateGroup();
-				GeneratePage();
 				GeneratePageSchedules();
 			}
 
@@ -123,6 +122,7 @@ namespace HsCentralServiceWebInterfacesServer._mocks
 
 					var pageSchedule = Db.PageSchedules.NewRow();
 					pageSchedule.RingMetaData = Target;
+					GenerateNewPage();
 					pageSchedule.Page = Page;
 					pageSchedule.PageGroupScheduleId = pageGroupScheduleId;
 					pageSchedule.SlotId = Guid.NewGuid();
@@ -131,16 +131,12 @@ namespace HsCentralServiceWebInterfacesServer._mocks
 				}
 			}
 
-			private void GeneratePage()
+			private void GenerateNewPage()
 			{
 				Page = Db.Pages.NewRow();
 				Page.PageGroup = PageGroup;
 				Page.AddToTable();
-
-				for (var i = 0; i < 50; i++)
-				{
-					GenerateImageForPage(Page);
-				}
+				GenerateImageForPage(Page);
 			}
 
 			private void GenerateGroup()
@@ -155,7 +151,7 @@ namespace HsCentralServiceWebInterfacesServer._mocks
 				ImageId++;
 				var image = Db.Images.NewRow();
 				image.Page = p;
-				image.FileIdentifier = Guid.Parse($"D0091A44-4F83-4DCC-BC1E-{ImageId:D12}");
+				image.FileIdentifier = Guid.Parse($"D0091A44-4F83-4DCC-BC1E-{(ImageId%20):D12}");
 				image.Extension = ".jpg";
 				image.AddToTable();
 			}

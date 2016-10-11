@@ -24,7 +24,7 @@ namespace HsCentralServiceWeb
 			routes.MapRoute(
 				"Default",
 				"{controller}/{action}/{id}",
-				new {controller = "RingDistribution", action = "ServiceViewer", id = UrlParameter.Optional}
+				new {controller = "Ring", action = "Service", id = UrlParameter.Optional}
 			);
 		}
 	}

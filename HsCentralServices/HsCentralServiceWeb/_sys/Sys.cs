@@ -6,6 +6,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using CsWpfBase.Ev.Public.Extensions;
 using HsCentralServiceWeb._sys.data;
 using HsCentralServiceWeb._sys.hubs;
 using HsCentralServiceWeb._sys.services;
@@ -22,7 +24,7 @@ namespace HsCentralServiceWeb._sys
 	{
 		private static Hubs _hubs;
 		private static ServerHandler _rcData;
-		private static Data _data;
+		private static Data _data;  
 		private static Services _services;
 
 
