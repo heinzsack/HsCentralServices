@@ -9,9 +9,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Websites", "_Websites", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Interfaces", "Interfaces", "{7CE37FFF-105F-4F1B-A56E-46D09A3A3FAB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HsCentralService.Interfaces.Client", "HsCentralService.Interface.Client\HsCentralService.Interfaces.Client.csproj", "{595F881E-6F13-4248-B07B-CEA9BF225D15}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HsCentralService.Interfaces.Client", "HsCentralService.Interfaces.Client\HsCentralService.Interfaces.Client.csproj", "{595F881E-6F13-4248-B07B-CEA9BF225D15}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HsCentralService.Interfaces.Server", "HsCentralService.Interface.Server\HsCentralService.Interfaces.Server.csproj", "{7F3E2872-8300-4A56-8CC1-1E87244DACEE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HsCentralService.Interfaces.Server", "HsCentralService.Interfaces.Server\HsCentralService.Interfaces.Server.csproj", "{7F3E2872-8300-4A56-8CC1-1E87244DACEE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbsGenerator", "DbsGenerator\DbsGenerator.csproj", "{1ED7DA41-AF76-4EC5-8F5A-828341892430}"
 EndProject
