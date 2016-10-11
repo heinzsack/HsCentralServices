@@ -79,7 +79,7 @@ namespace HsCentralServiceWeb._sys.services.ringdistribution
 				if (_staticRingManager == null)
 				{
 #if HS
-					_staticRingManager = new RingManger();
+					_staticRingManager = new AddOnRingDistribution.RingManager.RingManger();
 #else
 					_staticRingManager = new MockRingManager();
 #endif

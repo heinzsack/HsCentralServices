@@ -8,6 +8,8 @@ using System;
 using System.IO;
 using System.Linq;
 using CsWpfBase.Ev.Public.Extensions;
+using CsWpfBase.Global;
+using CsWpfBase.Global.os.functions.knownfolders;
 using HsCentralServiceWebInterfacesServer.ringDistribution;
 using HsCentralServiceWebInterfacesServer._dbs.hsserver.ringplayerdb.dataset;
 using HsCentralServiceWebInterfacesServer._dbs.hsserver.ringplayerdb.rows;
@@ -69,7 +71,8 @@ namespace HsCentralServiceWebInterfacesServer._mocks
 		/// <param name="id">the unique identifier for the targeted image.</param>
 		public FileInfo GetImageFilePath(IServer serverContext, Guid id)
 		{
-			var files = new DirectoryInfo(@"C:\Data\Personal\OneDrive\Bilder\Wallpaper").GetFiles("*.jpg");
+			
+			var files = new DirectoryInfo(CsGlobal.Os.Functions.KnownFolder.GetPath(KnownFolder.Pictures)).GetFiles("*.jpg", SearchOption.AllDirectories);
 			return files[id.ToByteArray().Aggregate((b, b1) => (byte)(b + b1)) % files.Length];
 		}
 
