@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using CsWpfBase.Ev.Public.Extensions;
 using CsWpfBase.Global.transmission.clientIdentification;
@@ -188,37 +187,4 @@ namespace RingPlayer24._sys.services.ringPlayerService.ringDownloader
 			#endregion
 		}
 	}
-
-
-
-	public class HsLocalLogging
-	{
-		private StreamWriter _localLog;
-
-		private string StreamWriterFileName
-		{
-			get
-			{
-				var newLogFile = new FileInfo(@"D:\WPMediaSender\Temp\PlayerLog.log");
-				newLogFile.CreateDirectory_IfNotExists();
-				return newLogFile.FullName;
-			}
-		}
-
-		private StreamWriter LocalLog
-		{
-			get
-			{
-				if (_localLog == null)
-					_localLog = new StreamWriter(StreamWriterFileName);
-				return _localLog;
-			}
-		}
-
-		public void Log(string Message, [CallerMemberName] string method = null, [CallerFilePath] string filepath = null, [CallerLineNumber] int line = 0)
-		{
-			LocalLog.WriteLine($"{DateTime.Now.TimeOfDay} {method}, {line} - {Message}");
-			LocalLog.Flush();
-		}
 	}
-}

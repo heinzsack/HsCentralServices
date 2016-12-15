@@ -70,6 +70,7 @@ namespace HsCentralServiceWebInterfacesServer._dbs.hsserver.ringplayerdb.rows
 			var t = new Task<BitmapSource>(() =>
 			{
 				var pageViewer = new PageViewer() {Page = this, Width = width, Height = height};
+
 				pageViewer.Measure(pageViewer.DesiredSize);
 				pageViewer.Arrange(new Rect(pageViewer.DesiredSize));
 				pageViewer.UpdateLayout();

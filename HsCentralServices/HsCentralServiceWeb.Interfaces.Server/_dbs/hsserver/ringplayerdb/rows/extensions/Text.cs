@@ -36,8 +36,8 @@ namespace HsCentralServiceWebInterfacesServer._dbs.hsserver.ringplayerdb.rows
 		[DependsOn(nameof(FontWeight))]
 		public FontWeight IFontWeight => Convert.FontWeight.Getter(FontWeight);
 
-		[DependsOn(nameof(FontWeight))]
-		public FontStyle IFontStyle => Convert.FontStyle.Getter(FontWeight);
+		[DependsOn(nameof(FontStyle))]
+		public FontStyle IFontStyle => Convert.FontStyle.Getter(FontStyle);
 
 		[DependsOn(nameof(Foreground))]
 		public Color IForeground => Convert.Color.Getter(Foreground);

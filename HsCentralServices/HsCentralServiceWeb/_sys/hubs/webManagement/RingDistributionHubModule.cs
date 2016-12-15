@@ -23,5 +23,10 @@ namespace HsCentralServiceWeb._sys.hubs.webManagement
 		{
 			WwwSurferNotificationHub.SendSignal();
 		}
+
+		public void ComputerConnectionChanged()
+			{
+			WwwSurferNotificationHub.SendSignal();
+			}
+		}
 	}
-}

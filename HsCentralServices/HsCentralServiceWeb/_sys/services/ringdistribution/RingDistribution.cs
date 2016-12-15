@@ -5,15 +5,17 @@
 // <date>2016-10-11</date>
 
 using System;
+using System.IO;
 using System.Linq;
 using System.Reflection;
+using AddOnRingDistribution.RingManager;
+//using AddOnRingDistribution.RingManager;
 using CsWpfBase.Ev.Public.Extensions;
 using HsCentralServiceWeb._sys.services.ringdistribution.communication;
 using HsCentralServiceWeb._sys.services.ringdistribution.generate;
 using HsCentralServiceWeb._sys.services.ringdistribution.storage;
 using HsCentralServiceWebInterfacesServer.ringDistribution;
 using HsCentralServiceWebInterfacesServer._mocks;
-
 
 
 
@@ -35,8 +37,8 @@ namespace HsCentralServiceWeb._sys.services.ringdistribution
 		{
 			get
 			{
-				var extensionFilePath = Sys.Services.RingDistribution.Storage.Paths.GetExtensionFilePath();
-				var hash = (extensionFilePath != null) && extensionFilePath.Exists ? extensionFilePath.LoadAs_ByteArray().Sha1Hash().ConvertTo_Base64() : null;
+				FileInfo extensionFilePath = Sys.Services.RingDistribution.Storage.Paths.GetExtensionFilePath();
+				string hash = (extensionFilePath != null) && extensionFilePath.Exists ? extensionFilePath.LoadAs_ByteArray().Sha1Hash().ConvertTo_Base64() : null;
 				if ((_dynamicRingManager != null) && !hash.IsNullOrEmpty() && _ringManagerAssemblyHash.Equals(hash))
 					return _dynamicRingManager;
 
@@ -48,12 +50,12 @@ namespace HsCentralServiceWeb._sys.services.ringdistribution
 
 				try
 				{
-					var types = Assembly.LoadFrom(extensionFilePath.FullName).GetTypes();
-					var type = types.FirstOrDefault(typeof(IRingManager).IsAssignableFrom);
+					Type[] types = Assembly.LoadFrom(extensionFilePath.FullName).GetTypes();
+					Type type = types.FirstOrDefault(typeof(IRingManager).IsAssignableFrom);
 
 					if (type == null)
 						return null;
-					var ringManager = _dynamicRingManager = (IRingManager) Activator.CreateInstance(type);
+					IRingManager ringManager = _dynamicRingManager = (IRingManager) Activator.CreateInstance(type);
 					_ringManagerAssemblyHash = hash;
 					return ringManager;
 				}
@@ -79,7 +81,7 @@ namespace HsCentralServiceWeb._sys.services.ringdistribution
 				if (_staticRingManager == null)
 				{
 #if HS
-					_staticRingManager = new AddOnRingDistribution.RingManager.RingManger();
+					_staticRingManager = new RingManger();
 #else
 					_staticRingManager = new MockRingManager();
 #endif

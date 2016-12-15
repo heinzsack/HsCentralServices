@@ -24,11 +24,11 @@ namespace HsCentralServiceWeb._sys.services.ringdistribution.generate
 	{
 		public RingMetaData For(RemoteInstance centralServiceDbInstance)
 		{
-			var db = GetRingPlayerDbDataSet();
+			RingPlayerDb db = GetRingPlayerDbDataSet();
 
 			centralServiceDbInstance.RingPlayerManagement.LatestGeneratedRingId = (centralServiceDbInstance.RingPlayerManagement.LatestGeneratedRingId ?? 0) + 1;
 
-			var ringMetaData = db.RingMetaDatas.NewRow();
+			RingMetaData ringMetaData = db.RingMetaDatas.NewRow();
 			ringMetaData.Id = centralServiceDbInstance.RingPlayerManagement.LatestGeneratedRingId.Value;
 			ringMetaData.TargetDate = DateTime.Now;
 			ringMetaData.SenderId = Guid.Empty;
@@ -44,7 +44,7 @@ namespace HsCentralServiceWeb._sys.services.ringdistribution.generate
 			Sys.Services.RingDistribution.Storage.Ring.Store
 				(centralServiceDbInstance.RemoteUser.RemoteComputer, ringMetaData);
 
-			var url = new UrlHelper(HttpContext.Current.Request.RequestContext);
+			UrlHelper url = new UrlHelper(HttpContext.Current.Request.RequestContext);
 			Sys.Hubs.RingDistribution.OnNewRingAvailable(centralServiceDbInstance, new NewRingAvailableArgs
 				{
 					RingId = ringMetaData.Id,
@@ -62,9 +62,9 @@ namespace HsCentralServiceWeb._sys.services.ringdistribution.generate
 
 		public RingMetaData ForAny()
 		{
-			var db = GetRingPlayerDbDataSet();
+			RingPlayerDb db = GetRingPlayerDbDataSet();
 
-			var ring = db.RingMetaDatas.NewRow();
+			RingMetaData ring = db.RingMetaDatas.NewRow();
 			ring.Id = 0;
 			ring.TargetDate = DateTime.Now;
 			ring.SenderId = Guid.Empty;
@@ -80,7 +80,7 @@ namespace HsCentralServiceWeb._sys.services.ringdistribution.generate
 
 		private RingPlayerDb GetRingPlayerDbDataSet()
 		{
-			var ringPlayerDb = new RingPlayerDb();
+			RingPlayerDb ringPlayerDb = new RingPlayerDb();
 			ringPlayerDb.Set_DbProxy(new Data.HsServerDirectConnector {Catalog = RingPlayerDb.NativeName});
 			ringPlayerDb.LoadConstraints();
 			ringPlayerDb.Set_DbProxy(null);

@@ -40,7 +40,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;HS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -163,6 +163,9 @@
     <Compile Include="Models\RingController\PageGroupViewModel.cs" />
     <Compile Include="Models\RingController\ViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="_dbs\hsserver\centralservicedb\dataset\Extensions\CentralServiceDb.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="_sys\data\Data.cs" />
     <Compile Include="_sys\hubs\HubConnectionHandler.cs" />
     <Compile Include="_sys\hubs\hubs.cs" />
@@ -200,6 +203,7 @@
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="Content\bootstrap.min.css.map" />
     <Content Include="Content\bootstrap.css.map" />
+    <None Include="Properties\PublishProfiles\ToTempApp.pubxml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -235,6 +239,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Shared\controls\List_RemoteLogs.cshtml" />
     <Content Include="Views\Shared\controls\List_RingDistributionConnectedClients.cshtml" />
+    <Content Include="Views\Shared\controls\List_RingDistributionUnConnectedClients.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -272,6 +277,10 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\DEV\_HsComponents\AddOnRingDistribution\ErrorLogging\ErrorLogging.csproj">
+      <Project>{0daf8166-3472-4c5d-a3de-8192824ae580}</Project>
+      <Name>ErrorLogging</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\..\CsGlobals\_CsWpfBase\_CsWpfBase.csproj">
       <Project>{63cb4e91-9d9c-4c97-8097-fc3964593796}</Project>
       <Name>_CsWpfBase</Name>

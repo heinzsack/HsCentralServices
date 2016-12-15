@@ -1,9 +1,13 @@
 ﻿@using HsCentralServiceWebInterfacesServer._dbs.hsserver.ringplayerdb.rows
 @model HsCentralServiceWeb.Models.RingController.ViewModel
-	
-<h1>
-	@Model.RemoteInstance.RemoteUser.RemoteComputer.Name > @Model.RemoteInstance.RemoteUser.Name > Ring [@Model.Ring.Id]
-</h1>
+
+@if (Model.RemoteInstance == null)
+	{
+	return;
+	}
+<h3>
+	@Model.RemoteInstance.RemoteUser.RemoteComputer.Name > @Model.RemoteInstance.RemoteUser.Name > Ring [@Model.Ring.Id] > Sender [@Model.Ring.SenderName]
+</h3>
 
 <button onclick="$('#active').prev().prev().prev().prev().prev()[0].scrollIntoView();" class="btn btn-primary">Aktuell</button><br /><br />
 <table class="table table-striped table-bordered table-sm">
@@ -39,7 +43,9 @@
 				<td>@scheduledPageGroup.Duration.ToString("hh\\:mm\\:ss")</td>
 				<td>[NOT IMPLEMENTED]</td>
 				<td style="width: 100%">@scheduledPageGroup.PageGroup.Name</td>
-				<td><a href="@Url.Action("ViewMmUnit", "Ring", new {remoteInstanceId = Model.RemoteInstance.Id, ringId = Model.Ring.Id, pageGroupId = scheduledPageGroup.PageGroup.Id })" class="btn btn-sm btn-outline-danger">@scheduledPageGroup.PageSchedules.Length</a></td>
+@*				<td><a href="@Url.Action("ViewMmUnit", "Ring", new {remoteInstanceId = Model.RemoteInstance.Id, ringId = Model.Ring.Id, pageGroupId = scheduledPageGroup.PageGroup.Id })" class="btn btn-sm btn-outline-danger">@scheduledPageGroup.PageSchedules.Length</a></td>*@
+				<td><a href="@Url.Action("ViewMmUnit", "Ring", new {Id = scheduledPageGroup.PageGroup.Id })" 
+					   class="btn btn-sm btn-outline-danger">@scheduledPageGroup.NumberOfLogicalPages</a></td>
 			</tr>
 			}
 	</tbody>

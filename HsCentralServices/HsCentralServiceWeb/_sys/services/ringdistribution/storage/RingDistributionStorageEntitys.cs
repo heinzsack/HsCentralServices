@@ -38,14 +38,14 @@ namespace HsCentralServiceWeb._sys.services.ringdistribution.storage
 
 		public void Store(ICsClientInfoComputer computer, RingMetaData ring)
 		{
-			var ringFile = Paths.RingFilePath(computer, ring.Id);
+			FileInfo ringFile = Paths.RingFilePath(computer, ring.Id);
 			ring.DataSet.SaveAs_SerializedBinary(ringFile);
 			//TODO if, based on any reason, if Ring files with hiher numbers exist in LRU, the actally created Ring will be destroyed
-			var files = ringFile.Directory.GetFiles($"*{Paths.RingExtension}");
+			FileInfo[] files = ringFile.Directory.GetFiles($"*{Paths.RingExtension}");
 			if (files.Length > Sys.Data.CentralService.WebConfigurations.RingDistribution.MaxStoredRingsPerComputer)
 			{
-				var orderedFiles = files.OrderBy(x => Convert.ToInt32(ExtractRingIndexRegex.Match(x.Name).Value)).ToArray();
-				for (var i = 0; i < files.Length - Sys.Data.CentralService.WebConfigurations.RingDistribution.MaxStoredRingsPerComputer; i++)
+				FileInfo[] orderedFiles = files.OrderBy(x => Convert.ToInt32(ExtractRingIndexRegex.Match(x.Name).Value)).ToArray();
+				for (int i = 0; i < files.Length - Sys.Data.CentralService.WebConfigurations.RingDistribution.MaxStoredRingsPerComputer; i++)
 				{
 					orderedFiles[i].Delete();
 				}
@@ -54,11 +54,11 @@ namespace HsCentralServiceWeb._sys.services.ringdistribution.storage
 
 		public void Store_AsCurrentPlaying(ICsClientInfoComputer computer, RingMetaData ring)
 		{
-			var ringFile = Paths.PlayingRingFilePath(computer, ring.Id);
+			FileInfo ringFile = Paths.PlayingRingFilePath(computer, ring.Id);
 			if (ringFile.Directory.Exists)
 			{
-				var files = ringFile.Directory.GetFiles($"*{computer.Id}*{Paths.RingExtension}");
-				foreach (var fileInfo in files)
+				FileInfo[] files = ringFile.Directory.GetFiles($"*{computer.Id}*{Paths.RingExtension}");
+				foreach (FileInfo fileInfo in files)
 				{
 					fileInfo.Delete();
 				}
@@ -73,7 +73,7 @@ namespace HsCentralServiceWeb._sys.services.ringdistribution.storage
 				return null;
 			try
 			{
-				var playerDb = fi.LoadAs_Object_From_SerializedBinary<RingPlayerDb>();
+				RingPlayerDb playerDb = fi.LoadAs_Object_From_SerializedBinary<RingPlayerDb>();
 				playerDb.SetHasBeenLoaded();
 				playerDb.Images.StreamRequested += image => Sys.Services.RingDistribution.RingManager.GetImageStream(Sys.Server, image.FileIdentifier);
 				playerDb.Videos.FileRequested += video => Sys.Services.RingDistribution.RingManager.GetVideoFilePath(Sys.Server, video.FileIdentifier).FullName;

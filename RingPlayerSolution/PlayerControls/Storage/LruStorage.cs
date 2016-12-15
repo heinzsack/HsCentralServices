@@ -10,6 +10,7 @@ using System.Linq;
 using CsWpfBase.Ev.Objects;
 using CsWpfBase.Ev.Public.Extensions;
 using CsWpfBase.Global;
+using CsWpfBase.Utilitys;
 using PlayerControls.Interfaces;
 using PlayerControls.Storage.Utils;
 
@@ -101,7 +102,7 @@ namespace PlayerControls.Storage
 
 		public DependencyDownloader GetFileDownloader(IDownloadAble[] images,IDownloadAble[] videos, IContainDownloadInformations downloadInformations)
 		{
-			return new DependencyDownloader(images, videos, downloadInformations);
+			return new DependencyDownloader(images.Distinct(new AnonComparer<IDownloadAble,Guid>(able => able.IFileIdentifier)).ToArray(), videos.Distinct(new AnonComparer<IDownloadAble, Guid>(able => able.IFileIdentifier)).ToArray(), downloadInformations);
 		}
 	}
 }

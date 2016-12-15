@@ -177,16 +177,25 @@ namespace PlayerControls.Themes
 		/// <summary>
 		/// Starts a timer which starts the next screens videos one second before screen change.
 		/// </summary>
+
 		private void Start_Timers()
 			{
 			//Timer_ScreenChanger.Interval = TimeSpan.FromSeconds((double)PlayingScreen.IPlayingSeconds);
 
-
 			Timer_PageChanger.Interval = Page_Next.IDuration.TimeSpan;
-			Timer_EarlyVideoStarter.Interval = Timer_PageChanger.Interval - PreStartVideoOffset;
+//TODO existing Version 
+// original version					Timer_EarlyVideoStarter.Interval = Timer_PageChanger.Interval - PreStartVideoOffset;
+//TODO new Version
+			if (Timer_PageChanger.Interval != TimeSpan.Zero)
+				Timer_EarlyVideoStarter.Interval = Timer_PageChanger.Interval - PreStartVideoOffset;
+			else
+				Timer_EarlyVideoStarter.Interval = TimeSpan.Zero;
+// end of TODO
+
 			Timer_EarlyVideoStarter.Start();
 			Timer_PageChanger.Start();
 			}
+
 
 		private IDuratedPage GetNextElementToInsert()
 			{

@@ -14,7 +14,7 @@
 		</ContextMenu>
 	</Window.ContextMenu>
 	<Grid>
-		<themes:RingPlayer24 x:Name="Player" Pages="{Binding Source={x:Static sys:Sys.Services}, Path=RingPlayerService.BindableSchedules}" />
+		<themes:RingPlayer24 Pages="{Binding Source={x:Static sys:Sys.Services}, Path=RingPlayerService.BindableSchedules}" />
 		<Button VerticalAlignment="Bottom" HorizontalAlignment="Right" 
 				Background="Transparent" Foreground="Transparent" BorderBrush="Transparent" 
 				Click="ReOpenConnection_OnClick">Show State</Button>

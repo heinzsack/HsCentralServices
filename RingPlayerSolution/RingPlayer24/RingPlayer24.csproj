@@ -33,6 +33,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>app.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -57,6 +60,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AutomatedRingPlayer24.xaml.cs">
+      <DependentUpon>AutomatedRingPlayer24.xaml</DependentUpon>
     </Compile>
     <Compile Include="_sys\services\ringPlayerService\ringDownloader\RingDownloader.cs" />
     <Compile Include="_sys\services\ringPlayerService\RingPlayerService.cs" />
@@ -101,13 +107,23 @@
     <Resource Include="WPMedia.ico" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="AutomatedRingPlayer24.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
+    <Resource Include="app.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\DEV\_HsComponents\AddOnRingDistribution\ErrorLogging\ErrorLogging.csproj">
+      <Project>{0daf8166-3472-4c5d-a3de-8192824ae580}</Project>
+      <Name>ErrorLogging</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\..\CsGlobals\_CsWpfBase\_CsWpfBase.csproj">
       <Project>{63CB4E91-9D9C-4C97-8097-FC3964593796}</Project>
       <Name>_CsWpfBase</Name>

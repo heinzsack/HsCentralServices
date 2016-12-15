@@ -89,32 +89,39 @@ namespace HsCentralServiceWebInterfacesClient.steadyConnection
 					{
 					try
 						{
-						Connection.Stop();
+						if (Connection.State != ConnectionState.Connecting)		//TODO inserted by HS to enable automated Reconnect after Server restart
+							Connection.Stop();
 						}
 					finally
 						{
 //TODO inserted HS the if's
-						if (Connection.State != ConnectionState.Connecting)
+						if ((Connection != null)
+							&& (Connection.State != ConnectionState.Connecting))
 							{
 							if (Connection.State != ConnectionState.Disconnected)
 								{
 								RingDistribution?.SetConnection(null);
 								Management?.SetConnection(null);
 								}
-							Connection = null;
+//							Connection = null;
 							}
 						}
 					}
 
-				Connection = new HubConnection(Website);
-				Connection.StateChanged += Connection_StateChanged;
-				CsClientIdentification.Transmission.Set(Connection.Headers);
+				if (Connection == null)
+					{
+					Connection = new HubConnection(Website);
+					Connection.StateChanged += Connection_StateChanged;
+					CsClientIdentification.Transmission.Set(Connection.Headers);
 
-				RingDistribution?.SetConnection(Connection);
-				Management?.SetConnection(Connection);
+					RingDistribution?.SetConnection(Connection);
+					Management?.SetConnection(Connection);
 
-				ServicePointManager.DefaultConnectionLimit = 10;
-				Connection.Start().ContinueWith(ContinuationAction, synchronizationContext);
+					ServicePointManager.DefaultConnectionLimit = 10;
+
+					}
+				if (Connection.State != ConnectionState.Connecting)
+					Connection.Start().ContinueWith(ContinuationAction, synchronizationContext);
 				
 				}, TaskCreationOptions.LongRunning);
 			t.Start(TaskScheduler.Default);

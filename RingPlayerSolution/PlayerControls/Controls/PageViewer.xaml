@@ -123,8 +123,8 @@
 				</Border.Style>
 				<Viewbox>
 					<TextBlock Text="{Binding Path=IText}" FontFamily="{Binding Path=IFontFamily}" x:Name="TextBlock1"
-								FontWeight="{Binding Path=IFontWeight}" FontStyle="{Binding Path=IFontStyle}"
-							   >
+							FontWeight="{Binding Path=IFontWeight}" FontStyle="{Binding Path=IFontStyle}" 
+							>
 						<TextBlock.Foreground>
 							<SolidColorBrush Color="{Binding Path=IForeground}" />
 						</TextBlock.Foreground>
@@ -187,7 +187,8 @@
 			</controls:RatioBorder>
 		</DataTemplate>
 	</UserControl.Resources>
-	<ContentControl x:Name="PagePresenter" Content="{Binding ElementName=UserControlPageViewer, Path=Page}" ContentTemplateSelector="{StaticResource {x:Type controls:VisualSelector}}"></ContentControl>
+	<ContentControl x:Name="PagePresenter" Content="{Binding ElementName=UserControlPageViewer, Path=Page}" 
+					ContentTemplateSelector="{StaticResource {x:Type controls:VisualSelector}}"></ContentControl>
 </UserControl>
 
 

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Windows.Media.Animation;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
 
@@ -64,7 +66,6 @@ namespace HsCentralServiceWeb._sys.hubs
 				HubConnection connection = Connections.Values.FirstOrDefault(x => x.EstablishedConnections.Contains(hc.ConnectionId));
 				if (connection == null)
 					return;
-
 				connection.EstablishedConnections.Remove(hc.ConnectionId);
 				if (connection.EstablishedConnections.Count == 0)
 					Connections.Remove(connection.Identification);
@@ -73,15 +74,18 @@ namespace HsCentralServiceWeb._sys.hubs
 
 		private HubConnection GetOrCreate_ClientConnection(HubCallerContext context)
 		{
-			TIdentification identification = _getIdentificationFunc(context);
-			HubConnection connection;
-			if (!Connections.TryGetValue(identification, out connection))
+		lock (this)
 			{
-				connection = new HubConnection(identification);
-				Connections.Add(identification, connection);
+				TIdentification identification = _getIdentificationFunc(context);
+				HubConnection connection;
+				if (!Connections.TryGetValue(identification, out connection))
+					{
+					connection = new HubConnection(identification);
+					Connections.Add(identification, connection);
+					}
+				return connection;
+				}
 			}
-			return connection;
-		}
 
 
 

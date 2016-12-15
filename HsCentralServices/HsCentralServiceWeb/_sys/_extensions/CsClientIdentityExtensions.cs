@@ -20,8 +20,13 @@ namespace HsCentralServiceWeb._sys._extensions
 {
 	public static class CsClientIdentityExtensions
 	{
+		private static Object LockObject = new object();
+
 		public static RemoteInstance GetRemoteInstance(this CsClientIdentification id)
 		{
+		lock (LockObject)
+			{
+
 			CentralServiceDb centralServiceDb = Sys.Data.CentralService;
 			RemoteInstance appInstance = centralServiceDb.RemoteInstances.FindOrLoad(id.AppInstance.Id);
 			RemoteComputer computer = null;
@@ -33,24 +38,24 @@ namespace HsCentralServiceWeb._sys._extensions
 				computer = centralServiceDb.RemoteComputers.FindOrLoad(id.Computer.Id);
 				String commputerEntry = (computer != null) ? computer.Name : "Name fehlt";
 				if ((computer == null)
-					|| (String.Compare(computer.Name, id.Computer.Name, 
-						StringComparison.OrdinalIgnoreCase ) != 0))
+					|| (String.Compare(computer.Name, id.Computer.Name,
+							StringComparison.OrdinalIgnoreCase) != 0))
 					throw new ArgumentException($"beim zentralen Identifikationseintrag für " +
-								$"die Maschine '{id.Computer.Id}' ist \r\n" +
-								$"der zentral gespeicherte Computername " +
-								$"({commputerEntry})\r\n" +
-								$"anders als der System Name des Computers ({id.Computer?.Name})");
+												$"die Maschine '{id.Computer.Id}' ist \r\n" +
+												$"der zentral gespeicherte Computername " +
+												$"({commputerEntry})\r\n" +
+												$"anders als der System Name des Computers ({id.Computer?.Name})");
 
 				user = centralServiceDb.RemoteUsers.FindOrLoad(id.User.Id);
 				String userEntry = (user != null) ? user.Name : "Name fehlt";
 				if ((user == null)
 					|| (String.Compare(user.Name, id.User?.Name,
-						StringComparison.OrdinalIgnoreCase) != 0))
+							StringComparison.OrdinalIgnoreCase) != 0))
 					throw new ArgumentException($"beim zentralen Identifikationseintrag für " +
-								$"die Maschine '{id.Computer.Id}' ist \r\n" +
-								$"der zentral gespeicherte UserName " +
-								$"({userEntry})\r\n" +
-								$"anders als der User Name der ClientIdentification ({id.User?.Name})");
+												$"die Maschine '{id.Computer.Id}' ist \r\n" +
+												$"der zentral gespeicherte UserName " +
+												$"({userEntry})\r\n" +
+												$"anders als der User Name der ClientIdentification ({id.User?.Name})");
 				appInstance.LastSeen = DateTime.Now;
 				appInstance.DataSet.SaveAnabolic();
 				appInstance.DataSet.AcceptChanges();
@@ -63,18 +68,18 @@ namespace HsCentralServiceWeb._sys._extensions
 
 
 			if (computer == null)
-			{
+				{
 				computer = centralServiceDb.RemoteComputers.NewRow();
-			}
+				}
 			if (user == null)
 				user = centralServiceDb.RemoteUsers.NewRow();
 			if (application == null)
 				application = centralServiceDb.RemoteApplications.NewRow();
 			if (appInstance == null)
-			{
+				{
 				appInstance = centralServiceDb.RemoteInstances.NewRow();
 				appInstance.Created = DateTime.Now;
-			}
+				}
 
 
 			id.Computer.CopyTo<ICsClientInfoComputer>(computer);
@@ -96,6 +101,7 @@ namespace HsCentralServiceWeb._sys._extensions
 			appInstance.DataSet.SaveAnabolic();
 			appInstance.DataSet.AcceptChanges();
 			return appInstance;
+			}
 		}
 	}
 }

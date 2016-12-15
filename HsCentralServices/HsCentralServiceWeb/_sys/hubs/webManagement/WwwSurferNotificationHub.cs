@@ -35,7 +35,11 @@ namespace HsCentralServiceWeb._sys.hubs.webManagement
 			return EnterNotificationsScript(formId, nameof(WwwSurferNotificationHubModule.RingDistributionClientsChanged));
 		}
 
-
+		public static MvcHtmlString Attach_ComputerConnectionChanged(string formId)
+			{
+			return EnterNotificationsScript(formId, nameof(WwwSurferNotificationHubModule.ComputerConnectionChanged));
+			}
+		
 
 
 		private static string GetIdentification(HubCallerContext hubCallerContext)

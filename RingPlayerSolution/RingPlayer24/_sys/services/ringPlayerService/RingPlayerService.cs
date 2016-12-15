@@ -98,9 +98,9 @@ namespace RingPlayer24._sys.services.ringPlayerService
 				var dataSet = playingRingFile.LoadAs_Object_From_SerializedBinary<RingPlayerDb>();
 				CurrentPlayingRing = dataSet.RingMetaDatas[0];
 			}
-			catch (Exception)
+			catch (Exception Excp)
 			{
-
+			throw new Exception($"Fehler bei LoadCurrentPlayingDataSetFromFile:\r\n{Excp}");
 			}
 		}
 

@@ -20,3 +20,9 @@
 		</ItemsControl.ItemTemplate>
 	</ItemsControl>
 </UserControl>
+
+									<!--IsContainerBoundaryVisible="True"
+									 IsImageBoundaryVisible="True"
+									 IsVideoBoundaryVisible="True"
+									 IsTextBoundaryVisible="True"/>-->
+
