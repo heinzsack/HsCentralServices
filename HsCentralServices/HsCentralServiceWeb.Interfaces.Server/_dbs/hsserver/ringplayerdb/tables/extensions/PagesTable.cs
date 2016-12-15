@@ -7,18 +7,6 @@ namespace HsCentralServiceWebInterfacesServer._dbs.hsserver.ringplayerdb.tables
 	{
 	partial class PagesTable
 		{
-		private StaTaskScheduler _staTaskScheduler;
-
-		internal StaTaskScheduler StaTaskScheduler
-			{
-			get
-				{
-				if (_staTaskScheduler != null)
-					return _staTaskScheduler;
-				_staTaskScheduler = new StaTaskScheduler(1);
-				return _staTaskScheduler;
-				}
-			}
 
 		public Page[] LoadAndFind_via_Ids(List<Guid> visualGuids)
 			{

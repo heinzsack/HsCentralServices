@@ -65,31 +65,6 @@ namespace HsCentralServiceWebInterfacesServer._dbs.hsserver.ringplayerdb.rows
 
 		public IEnumerable<ITransition> ITransitions => DoubleTransitions.OfType<IDoubleTransition>();
 
-		public Task<BitmapSource> GetRenderedImage(double width = 1920D, double height = 1080D)
-		{
-			var t = new Task<BitmapSource>(() =>
-			{
-				var pageViewer = new PageViewer() {Page = this, Width = width, Height = height};
-
-				pageViewer.Measure(pageViewer.DesiredSize);
-				pageViewer.Arrange(new Rect(pageViewer.DesiredSize));
-				pageViewer.UpdateLayout();
-
-				List<System.Windows.Controls.Image> img = pageViewer.GetVisualChildsByCondition<System.Windows.Controls.Image>(i => true);
-				pageViewer.MakeVideoVisiblie(TimeSpan.FromSeconds(5));
-				foreach (var image in img)
-				{
-					BindingOperations.ClearBinding(image, System.Windows.Controls.Image.SourceProperty);
-					image.Source = (image.DataContext as IImageVisual).IBitmapSource;
-				}
-
-				var bitmapSource = pageViewer.ConvertTo_Image();
-				bitmapSource.Freeze();
-				return bitmapSource;
-			}, TaskCreationOptions.LongRunning);
-			t.Start(Table.StaTaskScheduler);
-			return t;
-		}
 
 		public new void Delete()
 		{
