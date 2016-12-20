@@ -57,6 +57,7 @@
     </Compile>
     <Compile Include="Controls\RatioBorder.cs" />
     <Compile Include="Controls\VisualSelector.cs" />
+    <Compile Include="Extensions\PageExtensions.cs" />
     <Compile Include="Interfaces\IBaseVisual.cs" />
     <Compile Include="Interfaces\IDownloadAble.cs" />
     <Compile Include="Interfaces\IDuratedPage.cs" />
