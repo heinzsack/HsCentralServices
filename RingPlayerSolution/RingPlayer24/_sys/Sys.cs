@@ -1,13 +1,23 @@
-﻿using System;
-using ErrorLogging;
+﻿// Copyright (c) 2016 All rights reserved Christian Sack
+// <author>Christian Sack</author>
+// <email>christian@sack.at</email>
+// <website>christian.sack.at</website>
+// <date>2016-12-20</date>
+
+using System;
 using HsCentralServiceWebInterfacesClient.steadyConnection;
 using RingPlayer24._sys.services;
 using RingPlayer24._sys.storage;
 
+
+
+
+
+
 namespace RingPlayer24._sys
-	{
+{
 	public static class Sys
-		{
+	{
 		private static Storage _storage;
 		private static SteadyConnection _serverConnection;
 		private static Services _services;
@@ -16,13 +26,9 @@ namespace RingPlayer24._sys
 		public static Storage Storage => _storage ?? (_storage = new Storage());
 		public static Services Services => _services ?? (_services = new Services());
 
-//TODO local FileLog to find transmission Errors, which could not be reported to Server (Wendeltreppen Problem)
-		private static HsLocalLogging _hsLog;
-		public static HsLocalLogging HsLog => _hsLog ?? (_hsLog = new HsLocalLogging());
-
-		public static String ConnectionStateDescription
-			{
+		public static string ConnectionStateDescription
+		{
 			get { return ServerConnection.ConnectionStateDescription; }
-			}
 		}
 	}
+}

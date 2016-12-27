@@ -2,7 +2,7 @@
 // <author>Christian Sack</author>
 // <email>christian@sack.at</email>
 // <website>christian.sack.at</website>
-// <date>2016-10-11</date>
+// <date>2016-12-20</date>
 
 using System;
 using System.IO;
@@ -35,7 +35,7 @@ namespace PlayerControls.Storage
 				if (Instance != null)
 					return;
 				Instance = CsGlobal.Storage.Private.Handle($"{nameof(LruStorage)}",
-										() => new LruStorage(capacity));
+					() => new LruStorage(capacity));
 			}
 		}
 
@@ -77,7 +77,7 @@ namespace PlayerControls.Storage
 					$"genug freien Speicher. Schaffen Sie auf\r\n" +
 					$"einer Ihrer Festplatten zumindest {capacity.ToByteSizeString()}.");
 			}
-			ImageCapacity = (ulong) (capacity*0.1);
+			ImageCapacity = (ulong) (capacity * 0.1);
 			VideoCapacity = capacity - ImageCapacity;
 			LruDirectory = new DirectoryInfo(Path.Combine(logicalDiskWithMaximumFreeSpace.DeviceId +
 														"\\", "WpMedia", "LruStorage", "RingPlayer"));
@@ -97,12 +97,12 @@ namespace PlayerControls.Storage
 					(LruDirectory.FullName, "Z - Downloads")));
 
 
-		public StoreForDownloadables Image => _imageStore ?? (_imageStore= new StoreForDownloadables(ImagesFolder, ImageCapacity));
-		public StoreForDownloadables Video => _videoStore ?? (_videoStore= new StoreForDownloadables(VideosFolder, VideoCapacity));
+		public StoreForDownloadables Image => _imageStore ?? (_imageStore = new StoreForDownloadables(ImagesFolder, ImageCapacity));
+		public StoreForDownloadables Video => _videoStore ?? (_videoStore = new StoreForDownloadables(VideosFolder, VideoCapacity));
 
-		public DependencyDownloader GetFileDownloader(IDownloadAble[] images,IDownloadAble[] videos, IContainDownloadInformations downloadInformations)
+		public DependencyDownloader GetFileDownloader(IDownloadAble[] images, IDownloadAble[] videos, IContainDownloadInformations downloadInformations)
 		{
-			return new DependencyDownloader(images.Distinct(new AnonComparer<IDownloadAble,Guid>(able => able.IFileIdentifier)).ToArray(), videos.Distinct(new AnonComparer<IDownloadAble, Guid>(able => able.IFileIdentifier)).ToArray(), downloadInformations);
+			return new DependencyDownloader(images.Distinct(new AnonComparer<IDownloadAble, Guid>(able => able.IFileIdentifier)).ToArray(), videos.Distinct(new AnonComparer<IDownloadAble, Guid>(able => able.IFileIdentifier)).ToArray(), downloadInformations);
 		}
 	}
 }

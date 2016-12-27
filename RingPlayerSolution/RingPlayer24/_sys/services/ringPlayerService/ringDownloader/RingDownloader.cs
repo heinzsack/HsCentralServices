@@ -2,7 +2,7 @@
 // <author>Christian Sack</author>
 // <email>christian@sack.at</email>
 // <website>christian.sack.at</website>
-// <date>2016-10-11</date>
+// <date>2016-12-20</date>
 
 using System;
 using System.Collections.Generic;
@@ -89,7 +89,7 @@ namespace RingPlayer24._sys.services.ringPlayerService.ringDownloader
 				Sys.Services.RingPlayerService.SendInstanceArgs();
 				var tempFilePath = new FileInfo(Path.Combine(Sys.Storage.Lru.DownloadsFolder.FullName, Arguments.RingId + ".dataset"));
 				var task = DownloadFile(Arguments.DownloadUrl, tempFilePath);
-				if ((task != null) && (task.Status == TaskStatus.RanToCompletion))
+				if (task != null && task.Status == TaskStatus.RanToCompletion)
 					Sys.Storage.Ring.Add(Arguments.RingId, tempFilePath);
 
 				tempFilePath.Delete();
@@ -107,7 +107,7 @@ namespace RingPlayer24._sys.services.ringPlayerService.ringDownloader
 
 		private void FindMissingFiles()
 		{
-			MissingImages = CurrentRing.DataSet.Images.Where(i => Sys.Storage.Lru.Image.GetFile_And_SetUsed(i) == null).OfType<IDownloadAble>().Distinct(new AnonComparer<IDownloadAble,Guid>(x=>x.IFileIdentifier)).ToArray();
+			MissingImages = CurrentRing.DataSet.Images.Where(i => Sys.Storage.Lru.Image.GetFile_And_SetUsed(i) == null).OfType<IDownloadAble>().Distinct(new AnonComparer<IDownloadAble, Guid>(x => x.IFileIdentifier)).ToArray();
 			MissingVideos = CurrentRing.DataSet.Videos.Where(i => Sys.Storage.Lru.Video.GetFile_And_SetUsed(i) == null).OfType<IDownloadAble>().Distinct(new AnonComparer<IDownloadAble, Guid>(x => x.IFileIdentifier)).ToArray();
 		}
 
@@ -132,7 +132,7 @@ namespace RingPlayer24._sys.services.ringPlayerService.ringDownloader
 				Sys.Services.RingPlayerService.SendInstanceArgs();
 				var resultArgs =
 					Sys.ServerConnection.RingDistribution.RingValidation(new RingValidationArgs {RingId = Arguments.RingId})?.Result;
-				if ((resultArgs == null) || !resultArgs.Valid)
+				if (resultArgs == null || !resultArgs.Valid)
 					throw new InvalidOperationException("the ring is invalid and should not be played");
 			}
 		}
@@ -179,12 +179,9 @@ namespace RingPlayer24._sys.services.ringPlayerService.ringDownloader
 				ReplacementString = replacementString;
 			}
 
-
-			#region Overrides/Interfaces
 			public string ImageDownloadUrl { get; }
 			public string VideoDownloadUrl { get; }
 			public string ReplacementString { get; }
-			#endregion
 		}
 	}
-	}
+}

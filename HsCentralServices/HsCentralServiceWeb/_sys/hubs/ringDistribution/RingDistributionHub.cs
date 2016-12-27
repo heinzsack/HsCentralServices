@@ -2,13 +2,12 @@
 // <author>Christian Sack</author>
 // <email>christian@sack.at</email>
 // <website>christian.sack.at</website>
-// <date>2016-09-19</date>
+// <date>2016-12-20</date>
 
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 using CsWpfBase.Global.transmission.clientIdentification;
-using CsWpfBase.Global.transmission.clientIdentification.interfaces;
 using HsCentralServiceWeb._dbs.hsserver.centralservicedb.rows;
 using HsCentralServiceWeb._sys._extensions;
 using HsCentralServiceWebInterfacesClient.steadyConnection.hubs.ringDistribution;
@@ -27,15 +26,14 @@ namespace HsCentralServiceWeb._sys.hubs.ringDistribution
 	[HubName(nameof(IRingDistributionHubProtocol))]
 	public class RingDistributionHub : Hub
 	{
-		public static HubConnectionHandler<RemoteInstance> ConnectionHandler
-			{ get; } = new HubConnectionHandler<RemoteInstance>(GlobalHost.ConnectionManager
-				.GetHubContext<RingDistributionHub>(), GetIdentification);
+		public static HubConnectionHandler<RemoteInstance> ConnectionHandler { get; } = new HubConnectionHandler<RemoteInstance>(GlobalHost.ConnectionManager
+																																			.GetHubContext<RingDistributionHub>(), GetIdentification);
 
 		public static RemoteInstance GetIdentification(HubCallerContext hubCallerContext)
 		{
 			lock (Sys.Data)
 			{
-				CsClientIdentification id = CsClientIdentification.Transmission.Get
+				var id = CsClientIdentification.Transmission.Get
 					(hubCallerContext.Headers.ToDictionary(x => x.Key, x => x.Value));
 				return id.GetRemoteInstance();
 			}
@@ -44,68 +42,47 @@ namespace HsCentralServiceWeb._sys.hubs.ringDistribution
 
 		#region Overrides/Interfaces
 		public override Task OnConnected()
-			{
+		{
 			lock (Sys.Data)
-				{
+			{
 				ConnectionHandler.Connected(Context);
-#if DEBUG
-				lock (Sys.Data)
-					{
-					RemoteInstance remoteInstance = GetIdentification(Context);
-					Sys.HsLog.Log($"{remoteInstance.DataContext.CentralServiceDb.RemoteInstanceDescription(remoteInstance.Id)}");
-					}
-#endif
 				Sys.Hubs.WwwSurferNotification.RingDistributionClientsChanged();
 				Sys.Hubs.WwwSurferNotification.ComputerConnectionChanged();
 				return base.OnConnected();
-				}
-
 			}
 
-	public override Task OnReconnected()
+		}
+
+		public override Task OnReconnected()
 		{
-		lock (Sys.Data)
+			lock (Sys.Data)
 			{
-			ConnectionHandler.Reconnected(Context);
-#if DEBUG
-				lock (Sys.Data)
-					{
-					RemoteInstance remoteInstance = GetIdentification(Context);
-					Sys.HsLog.Log($"{remoteInstance.DataContext.CentralServiceDb.RemoteInstanceDescription(remoteInstance.Id)}");
-					}
-#endif
+				ConnectionHandler.Reconnected(Context);
 				Sys.Hubs.WwwSurferNotification.RingDistributionClientsChanged();
 				Sys.Hubs.WwwSurferNotification.ComputerConnectionChanged();
 				return base.OnReconnected();
 			}
 		}
 
-	public override Task OnDisconnected(bool stopCalled)
+		public override Task OnDisconnected(bool stopCalled)
 		{
-		lock (Sys.Data)
+			lock (Sys.Data)
 			{
-			ConnectionHandler.Disconnected(Context);
-#if DEBUG
-				lock (Sys.Data)
-					{
-					RemoteInstance remoteInstance = GetIdentification(Context);
-					Sys.HsLog.Log($"{remoteInstance.DataContext.CentralServiceDb.RemoteInstanceDescription(remoteInstance.Id)}");
-					}
-#endif
+				ConnectionHandler.Disconnected(Context);
 				Sys.Hubs.WwwSurferNotification.RingDistributionClientsChanged();
 				Sys.Hubs.WwwSurferNotification.ComputerConnectionChanged();
 				return base.OnDisconnected(stopCalled);
 			}
 		}
-#endregion
+		#endregion
 
 
 		[HubMethodName(nameof(IRingDistributionHubProtocol.UpdatePlayerData))]
 		public void UpdatePlayerData(PlayerDataArgs args)
-			{
-			RemoteInstance instance = GetIdentification(Context);
+		{
+			var instance = GetIdentification(Context);
 			Sys.Services.RingDistribution.Communication.UpdatePlayerData(instance, args);
-			}
+		}
 
 		[HubMethodName(nameof(IRingDistributionHubProtocol.RingValidation))]
 		public RingValidationResultArgs RingValidation(RingValidationArgs args)

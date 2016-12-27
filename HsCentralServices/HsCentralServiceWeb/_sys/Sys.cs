@@ -8,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using CsWpfBase.Ev.Public.Extensions;
-using ErrorLogging;
 using HsCentralServiceWeb._sys.data;
 using HsCentralServiceWeb._sys.hubs;
 using HsCentralServiceWeb._sys.services;
@@ -33,10 +32,7 @@ namespace HsCentralServiceWeb._sys
 		public static IServer Server => _rcData ?? (_rcData = new ServerHandler());
 		public static Data Data => _data ?? (_data = new Data());
 		public static Services Services => _services ?? (_services = new Services());
-
-		//TODO local FileLog to find transmission Errors, which could not be reported to Server (Wendeltreppen Problem)
-		private static HsLocalLogging _hsLog;
-		public static HsLocalLogging HsLog => _hsLog ?? (_hsLog = new HsLocalLogging());
+		
 
 		private class ServerHandler : IServer
 		{

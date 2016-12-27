@@ -121,10 +121,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\DEV\_HsComponents\AddOnRingDistribution\ErrorLogging\ErrorLogging.csproj">
-      <Project>{0daf8166-3472-4c5d-a3de-8192824ae580}</Project>
-      <Name>ErrorLogging</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\..\CsGlobals\_CsWpfBase\_CsWpfBase.csproj">
       <Project>{63CB4E91-9D9C-4C97-8097-FC3964593796}</Project>
       <Name>_CsWpfBase</Name>

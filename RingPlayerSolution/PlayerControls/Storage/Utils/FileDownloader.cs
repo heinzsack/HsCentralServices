@@ -173,7 +173,6 @@ namespace PlayerControls.Storage.Utils
 				ActiveDownloads.Remove(wc);
 			}
 			return task;
-
 		}
 	}
 }

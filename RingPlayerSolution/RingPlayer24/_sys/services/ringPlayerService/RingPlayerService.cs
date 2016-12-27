@@ -2,7 +2,7 @@
 // <author>Christian Sack</author>
 // <email>christian@sack.at</email>
 // <website>christian.sack.at</website>
-// <date>2016-10-11</date>
+// <date>2016-12-20</date>
 
 using System;
 using System.Linq;
@@ -90,7 +90,7 @@ namespace RingPlayer24._sys.services.ringPlayerService
 		public void LoadCurrentPlayingDataSetFromFile()
 		{
 			var playingRingFile = Sys.Storage.GetPlayingRingFilePath();
-			if ((playingRingFile == null) || !playingRingFile.Exists)
+			if (playingRingFile == null || !playingRingFile.Exists)
 				return;
 
 			try
@@ -100,7 +100,7 @@ namespace RingPlayer24._sys.services.ringPlayerService
 			}
 			catch (Exception Excp)
 			{
-			throw new Exception($"Fehler bei LoadCurrentPlayingDataSetFromFile:\r\n{Excp}");
+				throw new Exception($"Fehler bei LoadCurrentPlayingDataSetFromFile:\r\n{Excp}");
 			}
 		}
 
@@ -121,11 +121,11 @@ namespace RingPlayer24._sys.services.ringPlayerService
 			}
 
 			Sys.ServerConnection.RingDistribution.UpdatePlayerData(new PlayerDataArgs()
-				{
-					PlayingRingId = CurrentPlayingRing?.Id,
-					DownloadingRingId = ActiveRingDownloader?.Arguments.RingId ?? 0,
-					State = state,
-				});
+			{
+				PlayingRingId = CurrentPlayingRing?.Id,
+				DownloadingRingId = ActiveRingDownloader?.Arguments.RingId ?? 0,
+				State = state,
+			});
 		}
 
 		public void DownloadRing(NewRingAvailableArgs args)
@@ -145,10 +145,10 @@ namespace RingPlayer24._sys.services.ringPlayerService
 					var errorMsg = "";
 					try
 					{
-						if(t.Exception?.MostInner() is WebException)
+						if (t.Exception?.MostInner() is WebException)
 						{
-							var exception = (WebException)t.Exception?.MostInner();
-							errorMsg = exception.Response.GetResponseStream().ToByteArray(exception.Response.ContentLength).ConvertTo_Utf8String();
+							var exception = (WebException) t.Exception?.MostInner();
+							errorMsg = exception.Response.GetResponseStream().SafeRead(exception.Response.ContentLength).ConvertTo_Utf8String();
 						}
 					}
 					catch (Exception)
@@ -158,10 +158,10 @@ namespace RingPlayer24._sys.services.ringPlayerService
 
 
 					Sys.ServerConnection.Management.Log(LogSeverity.FatalError, "Ringdownload FEHLGESCHLAGEN", $"Fehler beim herunterladen des Rings {args} :: " +
-						$"\r\n\r\n" +
-						$"FEHLER:" +
-						$"\r\n" +
-						$"{errorMsg}");
+																												$"\r\n\r\n" +
+																												$"FEHLER:" +
+																												$"\r\n" +
+																												$"{errorMsg}");
 
 					if (t.Exception?.MostInner() is OperationCanceledException)
 						return; //canceled

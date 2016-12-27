@@ -8,8 +8,11 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+#if HS
 using AddOnRingDistribution.RingManager;
+#else
 //using AddOnRingDistribution.RingManager;
+#endif
 using CsWpfBase.Ev.Public.Extensions;
 using HsCentralServiceWeb._sys.services.ringdistribution.communication;
 using HsCentralServiceWeb._sys.services.ringdistribution.generate;
