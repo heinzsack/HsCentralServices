@@ -5,10 +5,12 @@
 // <date>2016-12-20</date>
 
 using System;
+using System.IO;
 using System.Text;
 using System.Threading;
 using System.Web.Mvc;
 using CsWpfBase.Global.transmission.remoteFileRepository.client;
+using CsWpfBase.Global.transmission.remoteFileRepository.server;
 using HsCentralServiceWeb._sys;
 
 
@@ -20,6 +22,9 @@ namespace HsCentralServiceWeb.Controllers.services
 {
 	public class FileRepoController : Controller
 	{
+		private static readonly RemoteFileRepositoryServer Repo = new RemoteFileRepositoryServer(new DirectoryInfo(Sys.Data.CentralService.WebConfigurations.FileManagementService.StorageDirectory));
+
+
 		[HttpGet]
 		[ActionName(nameof(RemoteFileRepository.RelativeRoutes.Get))]
 		public ActionResult Get(Guid id)
@@ -27,8 +32,8 @@ namespace HsCentralServiceWeb.Controllers.services
 			lock (Sys.Data.CentralService)
 			{
 				Thread.Sleep(5000);
-				Sys.Services.FileRepo.AddFileInfoToResponseHeader(id);
-				return new FileStreamResult(Sys.Services.FileRepo.Open(id), "file");
+				Repo.AddFileInfoToResponseHeader(id, Sys.Data.CentralService.WebServiceFiles);
+				return new FileStreamResult(Repo.Open(id, Sys.Data.CentralService.WebServiceFiles), "file");
 			}
 		}
 
@@ -38,8 +43,8 @@ namespace HsCentralServiceWeb.Controllers.services
 		{
 			lock (Sys.Data.CentralService)
 			{
-				var savedGuid = Sys.Services.FileRepo.Save(Request.InputStream, Request.Headers[RemoteFileRepository.Headers.FileName], Request.Headers[RemoteFileRepository.Headers.FileExtension], Request.Headers[RemoteFileRepository.Headers.FileDescription]);
-				Sys.Services.FileRepo.AddFileInfoToResponseHeader(savedGuid);
+				var savedGuid = Repo.Save(Sys.Data.CentralService.WebServiceFiles);
+				Repo.AddFileInfoToResponseHeader(savedGuid, Sys.Data.CentralService.WebServiceFiles);
 				return new ContentResult { Content = savedGuid.ToString(), ContentEncoding = Encoding.UTF8, ContentType = "Guid" };
 			}
 		}
@@ -47,8 +52,11 @@ namespace HsCentralServiceWeb.Controllers.services
 		[HttpPost]
 		public ActionResult Delete(Guid id)
 		{
-			Sys.Services.FileRepo.Delete(id);
-			return new ContentResult() {Content = "Succeeded"};
+			lock (Sys.Data.CentralService)
+			{
+				Repo.Delete(id, Sys.Data.CentralService.WebServiceFiles);
+				return new ContentResult() {Content = "Succeeded"};
+			}
 		}
 	}
 }

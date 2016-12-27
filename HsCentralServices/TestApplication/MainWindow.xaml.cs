@@ -6,6 +6,7 @@
 
 using System;
 using System.IO;
+using System.Net;
 using System.Windows;
 using CsWpfBase.Ev.Public.Extensions;
 using CsWpfBase.Global;
@@ -23,7 +24,7 @@ namespace TestApplication
 	public partial class MainWindow : Window
 	{
 		private RemoteFileRepository Rfr { get; }
-		private Guid latestFile = Guid.Parse("fa2097e8-0626-48c5-aa31-b8b2722cd211");
+		private Guid _latestFile = Guid.Parse("fa2097e8-0626-48c5-aa31-b8b2722cd211");
 		public MainWindow()
 		{
 			CsGlobal.Install(GlobalFunctions.Storage);
@@ -35,15 +36,27 @@ namespace TestApplication
 
 		private void DownloadClick(object sender, RoutedEventArgs e)
 		{
-			var downloadTask = Rfr.Get(new GetCommand(latestFile));
+			var downloadTask = Rfr.Get(new GetCommand(_latestFile));
 			downloadTask.ShowDialog();
 		}
 
 		private void UploadClick(object sender, RoutedEventArgs e)
 		{
-			var saveCommand = new SaveCommand(new FileInfo("test.txt").In_Desktop_Directory());
+			var saveCommand = new SaveCommand(new FileInfo(@"\\sack\_Videos\Serien\Better call Soul\BCS S01 E04.mp4"));
 			var upload = Rfr.Save(saveCommand);
-			latestFile = upload.Result[0].Result.Id;
+			upload.ContinueWith(t =>
+			{
+				if (t.Exception != null && t.Exception.MostInner() is WebException)
+				{
+					var webResponse = ((WebException)t.Exception.MostInner()).Response;
+					var convertToUtf8String = webResponse.GetResponseStream().SafeRead(webResponse.ContentLength).ConvertTo_Utf8String();
+					Console.WriteLine(convertToUtf8String);
+				}
+				else
+				{
+					_latestFile = saveCommand.Result.Id;
+				}
+			});
 		}
 	}
 }
