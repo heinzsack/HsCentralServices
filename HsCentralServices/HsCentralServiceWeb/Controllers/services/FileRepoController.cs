@@ -22,7 +22,12 @@ namespace HsCentralServiceWeb.Controllers.services
 {
 	public class FileRepoController : Controller
 	{
+#if DEBUG
+		private static readonly RemoteFileRepositoryServer Repo = new RemoteFileRepositoryServer(new DirectoryInfo(@"\\speicher\AData2"));
+#else
 		private static readonly RemoteFileRepositoryServer Repo = new RemoteFileRepositoryServer(new DirectoryInfo(Sys.Data.CentralService.WebConfigurations.FileManagementService.StorageDirectory));
+#endif
+
 
 
 		[HttpGet]
@@ -31,9 +36,7 @@ namespace HsCentralServiceWeb.Controllers.services
 		{
 			lock (Sys.Data.CentralService)
 			{
-				Thread.Sleep(5000);
-				Repo.AddFileInfoToResponseHeader(id, Sys.Data.CentralService.WebServiceFiles);
-				return new FileStreamResult(Repo.Open(id, Sys.Data.CentralService.WebServiceFiles), "file");
+				return new FileStreamResult(Repo.Open(id, Sys.Data.CentralService.RepositoryFiles), "file");
 			}
 		}
 
@@ -43,9 +46,12 @@ namespace HsCentralServiceWeb.Controllers.services
 		{
 			lock (Sys.Data.CentralService)
 			{
-				var savedGuid = Repo.Save(Sys.Data.CentralService.WebServiceFiles);
-				Repo.AddFileInfoToResponseHeader(savedGuid, Sys.Data.CentralService.WebServiceFiles);
-				return new ContentResult { Content = savedGuid.ToString(), ContentEncoding = Encoding.UTF8, ContentType = "Guid" };
+				return new ContentResult
+				{
+					Content = Repo.Save(Sys.Data.CentralService.RepositoryFiles).ToString(),
+					ContentEncoding = Encoding.UTF8,
+					ContentType = "Guid"
+				};
 			}
 		}
 
@@ -54,7 +60,7 @@ namespace HsCentralServiceWeb.Controllers.services
 		{
 			lock (Sys.Data.CentralService)
 			{
-				Repo.Delete(id, Sys.Data.CentralService.WebServiceFiles);
+				Repo.Delete(id, Sys.Data.CentralService.RepositoryFiles);
 				return new ContentResult() {Content = "Succeeded"};
 			}
 		}
