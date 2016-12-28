@@ -29,7 +29,7 @@ namespace TestApplication
 		public MainWindow()
 		{
 			CsGlobal.Install(GlobalFunctions.Storage);
-			Rfr = new RemoteFileRepository("http://localhost:16411/FileRepo/");
+			Rfr = new RemoteFileRepository("http://www.internettv.citynews.at/TempApp/FileRepo");
 
 			InitializeComponent();
 			FileSelector.ValuePath = new FileInfo(@"\\sack\_Videos\Filme\8.Mile.2002.German.DL.1080p.BluRay.x264-DEFUSED\dfd-8mile-1080p.mkv");

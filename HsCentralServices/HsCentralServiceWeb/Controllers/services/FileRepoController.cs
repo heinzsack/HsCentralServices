@@ -23,7 +23,7 @@ namespace HsCentralServiceWeb.Controllers.services
 	public class FileRepoController : Controller
 	{
 #if DEBUG
-		private static readonly RemoteFileRepositoryServer Repo = new RemoteFileRepositoryServer(new DirectoryInfo(@"\\speicher\AData2"));
+		private static readonly RemoteFileRepositoryServer Repo = new RemoteFileRepositoryServer(new DirectoryInfo(@"\\speicher\AData2\HsCentralServiceWeb"));
 #else
 		private static readonly RemoteFileRepositoryServer Repo = new RemoteFileRepositoryServer(new DirectoryInfo(Sys.Data.CentralService.WebConfigurations.FileManagementService.StorageDirectory));
 #endif
