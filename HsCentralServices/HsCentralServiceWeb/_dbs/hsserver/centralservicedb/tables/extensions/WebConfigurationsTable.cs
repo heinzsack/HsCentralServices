@@ -101,7 +101,7 @@ namespace HsCentralServiceWeb._dbs.hsserver.centralservicedb.tables
 
 			public string StorageDirectory
 			{
-				get { return Parent.GetConfigurationValue(@"Z:\HsCentralServiceWeb", Context); }
+				get { return Parent.GetConfigurationValue(@"\\speicher\AData2\HsCentralServiceWeb", Context); }
 				set { Parent.SetConfigurationValue(value, Context); }
 			}
 		}
