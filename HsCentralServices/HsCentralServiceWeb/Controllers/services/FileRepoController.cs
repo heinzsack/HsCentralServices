@@ -29,6 +29,27 @@ namespace HsCentralServiceWeb.Controllers.services
 #endif
 
 
+		[HttpGet]
+		[ActionName(nameof(RemoteFileRepository.RelativeRoutes.InfoById))]
+		public ActionResult InfoById(Guid id)
+		{
+			lock(Sys.Data.CentralService)
+			{
+				Repo.InfoById(id, Sys.Data.CentralService.RepositoryFiles);
+				return new ContentResult { Content = "found", ContentEncoding = Encoding.UTF8, ContentType = "string" };
+			}
+		}
+
+		[HttpGet]
+		[ActionName(nameof(RemoteFileRepository.RelativeRoutes.InfoByHash))]
+		public ActionResult InfoByHash(string hash)
+		{
+			lock(Sys.Data.CentralService)
+			{
+				Repo.InfoByHash(hash, Sys.Data.CentralService.RepositoryFiles);
+				return new ContentResult {Content = "found", ContentEncoding = Encoding.UTF8, ContentType = "string"};
+			}
+		}
 
 		[HttpGet]
 		[ActionName(nameof(RemoteFileRepository.RelativeRoutes.Get))]
@@ -56,6 +77,7 @@ namespace HsCentralServiceWeb.Controllers.services
 		}
 
 		[HttpPost]
+		[ActionName(nameof(RemoteFileRepository.RelativeRoutes.Delete))]
 		public ActionResult Delete(Guid id)
 		{
 			lock (Sys.Data.CentralService)

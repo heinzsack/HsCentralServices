@@ -2,11 +2,11 @@
 // <author>Christian Sack</author>
 // <email>christian@sack.at</email>
 // <website>christian.sack.at</website>
-// <date>2016-12-22</date>
+// <date>2016-12-29</date>
 
 using System;
 using System.IO;
-using System.Net;
+using System.Threading.Tasks;
 using System.Windows;
 using CsWpfBase.Ev.Public.Extensions;
 using CsWpfBase.Global;
@@ -26,10 +26,11 @@ namespace TestApplication
 	public partial class MainWindow : CsWindow
 	{
 		private RemoteFileRepository Rfr { get; }
+
 		public MainWindow()
 		{
 			CsGlobal.Install(GlobalFunctions.Storage);
-			Rfr = new RemoteFileRepository("http://www.internettv.citynews.at/TempApp/FileRepo");
+			Rfr = new RemoteFileRepository("http://localhost:16411/FileRepo");
 
 			InitializeComponent();
 			FileSelector.ValuePath = new FileInfo(@"\\sack\_Videos\Filme\8.Mile.2002.German.DL.1080p.BluRay.x264-DEFUSED\dfd-8mile-1080p.mkv");
@@ -44,7 +45,7 @@ namespace TestApplication
 
 		private void UploadClick(object sender, RoutedEventArgs e)
 		{
-			
+
 			var saveCommand = new SaveCommand(FileSelector.ValuePath);
 			var uploadTask = Rfr.Save(saveCommand);
 			uploadTask.ShowDialog();
@@ -55,9 +56,44 @@ namespace TestApplication
 		private ValidationResult IdSelector_OnValidation(object value)
 		{
 			Guid id;
-			if (Guid.TryParse(value?.ToString()??"", out id))
+			if (Guid.TryParse(value?.ToString() ?? "", out id))
 				return ValidationResult.Ok;
 			return ValidationResult.Error("not an id");
+		}
+
+		private void InfoByHashClick(object sender, RoutedEventArgs e)
+		{
+			Rfr.InfoByHash(FileSelector.ValuePath).ContinueWith(t =>
+			{
+				if (t.Exception != null)
+				{
+					CsGlobal.Message.Push(t.Exception.MostInner());
+					return;
+				}
+				if (t.Result == null)
+				{
+					CsGlobal.Message.Push("Does not exist");
+					return;
+				}
+				CsGlobal.Message.Push($"{t.Result.Id}\n" +
+									$"{t.Result.Name}\n" +
+									$"{t.Result.Description}\n" +
+									$"{t.Result.Length.ToByteSizeString()}");
+			});
+		}
+
+		private void DeleteClick(object sender, RoutedEventArgs e)
+		{
+			Rfr.Delete(Guid.Parse(IdSelector.Value)).ContinueWith(t =>
+			{
+				if(t.Exception != null)
+				{
+					CsGlobal.Message.Push(t.Exception.MostInner());
+					return;
+				}
+				
+				CsGlobal.Message.Push($"Succeeded with {IdSelector.Value}");
+			}, TaskScheduler.FromCurrentSynchronizationContext());
 		}
 	}
 }

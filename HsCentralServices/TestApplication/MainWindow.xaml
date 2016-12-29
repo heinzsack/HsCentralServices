@@ -10,10 +10,12 @@
 		<EditorGroup Header="Upload">
 			<FPathEditor x:Name="FileSelector" Header="File"/>
 			<GlyphIconButton Icon="G_Upload" Content="Hochladen" Click="UploadClick" HorizontalAlignment="Right"/>
+			<GlyphIconButton Icon="G_Riflescope" Content="Find info" Click="InfoByHashClick" HorizontalAlignment="Right"/>
 		</EditorGroup>
 		<EditorGroup Header="Download">
 			<StringEditor x:Name="IdSelector" Header="ID" Validation="IdSelector_OnValidation"/>
 			<GlyphIconButton Icon="G_Download" Content="Download" Click="DownloadClick" HorizontalAlignment="Right"/>
+			<GlyphIconButton Icon="G_Remove" Content="Delete" Click="DeleteClick" HorizontalAlignment="Right"/>
 		</EditorGroup>
 	</EditorGrid>
 </CsWindow>
