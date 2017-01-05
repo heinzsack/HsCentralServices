@@ -1,4 +1,5 @@
-﻿@using HsCentralServiceWebInterfacesServer._dbs.hsserver.ringplayerdb.rows
+﻿@using HsCentralServiceWeb._sys
+@using HsCentralServiceWebInterfacesServer._dbs.hsserver.ringplayerdb.rows
 @model HsCentralServiceWeb.Models.RingController.ViewModel
 
 @if (Model.RemoteInstance == null)
@@ -6,7 +7,7 @@
 	return;
 	}
 <h3>
-	@Model.RemoteInstance.RemoteUser.RemoteComputer.Name > @Model.RemoteInstance.RemoteUser.Name > Ring [@Model.Ring.Id] > Sender [@Model.Ring.SenderName]
+	@Model.RemoteInstance.RemoteUser.RemoteComputer.Name > @Model.RemoteInstance.RemoteUser.Name > Ring [@Model.Ring.Id] > @Model.Ring.DiagnosticText
 </h3>
 
 <button onclick="$('#active').prev().prev().prev().prev().prev()[0].scrollIntoView();" class="btn btn-primary">Aktuell</button><br /><br />

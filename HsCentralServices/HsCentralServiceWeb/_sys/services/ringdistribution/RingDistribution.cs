@@ -8,10 +8,10 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-#if HS
-using AddOnRingDistribution.RingManager;
-#else
+#if CS
 //using AddOnRingDistribution.RingManager;
+#else
+using AddOnRingDistribution.RingManager;
 #endif
 using CsWpfBase.Ev.Public.Extensions;
 using HsCentralServiceWeb._sys.services.ringdistribution.communication;
@@ -83,10 +83,10 @@ namespace HsCentralServiceWeb._sys.services.ringdistribution
 					return DynamicRingManager;
 				if (_staticRingManager == null)
 				{
-#if HS
-					_staticRingManager = new RingManger();
-#else
+#if CS
 					_staticRingManager = new MockRingManager();
+#else
+					_staticRingManager = new RingManger();
 #endif
 					_staticRingManager.Initialize(Sys.Server);
 				}

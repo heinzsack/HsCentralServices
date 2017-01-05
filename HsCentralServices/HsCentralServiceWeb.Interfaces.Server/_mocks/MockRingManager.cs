@@ -145,7 +145,7 @@ namespace HsCentralServiceWebInterfacesServer._mocks
 			private void GenerateGroup()
 			{
 				PageGroup = Db.PageGroups.NewRow();
-				PageGroup.Name = "Beitrag1";
+				PageGroup.Name = $"[HS] Flag not set in project [HsCentralServiceWeb] properties";
 				PageGroup.AddToTable();
 			}
 
