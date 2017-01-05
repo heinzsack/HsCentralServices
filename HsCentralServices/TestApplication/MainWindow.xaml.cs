@@ -2,16 +2,13 @@
 // <author>Christian Sack</author>
 // <email>christian@sack.at</email>
 // <website>christian.sack.at</website>
-// <date>2016-12-29</date>
+// <date>2017-01-05</date>
 
 using System;
 using System.IO;
-using System.Threading.Tasks;
 using System.Windows;
-using CsWpfBase.Ev.Public.Extensions;
 using CsWpfBase.Global;
-using CsWpfBase.Global.transmission.remoteFileRepository.client;
-using CsWpfBase.Global.transmission.remoteFileRepository.client.actions;
+using CsWpfBase.Remote;
 using CsWpfBase.Themes.Controls.Containers;
 using CsWpfBase.Themes.Controls.Editors._baseControls;
 
@@ -25,32 +22,28 @@ namespace TestApplication
 	/// <summary>Interaction logic for MainWindow.xaml</summary>
 	public partial class MainWindow : CsWindow
 	{
-		private RemoteFileRepository Rfr { get; }
-
 		public MainWindow()
 		{
 			CsGlobal.Install(GlobalFunctions.Storage);
-			Rfr = new RemoteFileRepository("http://localhost:16411/FileRepo");
+			CsRemote.InstallClient("http://localhost:16411", "LocalServerTest");
 
 			InitializeComponent();
-			FileSelector.ValuePath = new FileInfo(@"\\sack\_Videos\Filme\8.Mile.2002.German.DL.1080p.BluRay.x264-DEFUSED\dfd-8mile-1080p.mkv");
+			FileSelector.ValuePath = new FileInfo(@"C:\Data\Personal\OneDrive\Bilder\Wallpaper\6.jpg");
 			IdSelector.Value = "2cac40bb-36d1-4e75-8b07-c328d07e0f2d";
 		}
 
 		private void DownloadClick(object sender, RoutedEventArgs e)
 		{
-			var downloadTask = Rfr.Get(new GetCommand(Guid.Parse(IdSelector.Value)));
-			downloadTask.ShowDialog();
+			var filedownload = CsRemote.Client.FileRepository.FindOrDownloadAsync(Guid.Parse(IdSelector.Value));
+			filedownload.ShowDialog();
 		}
 
 		private void UploadClick(object sender, RoutedEventArgs e)
 		{
-
-			var saveCommand = new SaveCommand(FileSelector.ValuePath);
-			var uploadTask = Rfr.Save(saveCommand);
-			uploadTask.ShowDialog();
-
-			IdSelector.Value = saveCommand?.Result?.Id.ToString();
+			var fileupload = CsRemote.Client.FileRepository.UploadAsync(FileSelector.ValuePath);
+			fileupload.ShowDialog();
+			if (fileupload.IsSucceeded)
+			IdSelector.Value = fileupload.Result[0].Id.ToString();
 		}
 
 		private ValidationResult IdSelector_OnValidation(object value)
@@ -61,39 +54,20 @@ namespace TestApplication
 			return ValidationResult.Error("not an id");
 		}
 
-		private void InfoByHashClick(object sender, RoutedEventArgs e)
-		{
-			Rfr.InfoByHash(FileSelector.ValuePath).ContinueWith(t =>
-			{
-				if (t.Exception != null)
-				{
-					CsGlobal.Message.Push(t.Exception.MostInner());
-					return;
-				}
-				if (t.Result == null)
-				{
-					CsGlobal.Message.Push("Does not exist");
-					return;
-				}
-				CsGlobal.Message.Push($"{t.Result.Id}\n" +
-									$"{t.Result.Name}\n" +
-									$"{t.Result.Description}\n" +
-									$"{t.Result.Length.ToByteSizeString()}");
-			});
-		}
+		//	{
+		//	Rfr.Delete(Guid.Parse(IdSelector.Value)).ContinueWith(t =>
+		//{
 
-		private void DeleteClick(object sender, RoutedEventArgs e)
-		{
-			Rfr.Delete(Guid.Parse(IdSelector.Value)).ContinueWith(t =>
-			{
-				if(t.Exception != null)
-				{
-					CsGlobal.Message.Push(t.Exception.MostInner());
-					return;
-				}
-				
-				CsGlobal.Message.Push($"Succeeded with {IdSelector.Value}");
-			}, TaskScheduler.FromCurrentSynchronizationContext());
-		}
+
+		//private void DeleteClick(object sender, RoutedEventArgs e)
+		//		if (t.Exception != null)
+		//		{
+		//			CsGlobal.Message.Push(t.Exception.MostInner());
+		//			return;
+		//		}
+
+		//		CsGlobal.Message.Push($"Succeeded with {IdSelector.Value}");
+		//	}, TaskScheduler.FromCurrentSynchronizationContext());
+		//}
 	}
 }

@@ -2,15 +2,14 @@
 // <author>Christian Sack</author>
 // <email>christian@sack.at</email>
 // <website>christian.sack.at</website>
-// <date>2016-12-20</date>
+// <date>2017-01-05</date>
 
 using System;
 using System.IO;
 using System.Text;
-using System.Threading;
 using System.Web.Mvc;
-using CsWpfBase.Global.transmission.remoteFileRepository.client;
-using CsWpfBase.Global.transmission.remoteFileRepository.server;
+using CsWpfBase.Remote;
+using CsWpfBase.Remote._protocols;
 using HsCentralServiceWeb._sys;
 
 
@@ -22,67 +21,67 @@ namespace HsCentralServiceWeb.Controllers.services
 {
 	public class FileRepoController : Controller
 	{
+
+		public FileRepoController()
+		{
 #if DEBUG
-		private static readonly RemoteFileRepositoryServer Repo = new RemoteFileRepositoryServer(new DirectoryInfo(@"\\speicher\AData2\HsCentralServiceWeb"));
+			CsRemote.InstallServer(new DirectoryInfo(@"\\speicher\AData2\HsCentralServiceWeb"));
 #else
-		private static readonly RemoteFileRepositoryServer Repo = new RemoteFileRepositoryServer(new DirectoryInfo(Sys.Data.CentralService.WebConfigurations.FileManagementService.StorageDirectory));
+			Remote.InstallServer(new DirectoryInfo(new DirectoryInfo(Sys.Data.CentralService.WebConfigurations.FileManagementService.StorageDirectory)));
 #endif
-
-
-		[HttpGet]
-		[ActionName(nameof(RemoteFileRepository.RelativeRoutes.InfoById))]
-		public ActionResult InfoById(Guid id)
-		{
-			lock(Sys.Data.CentralService)
-			{
-				Repo.InfoById(id, Sys.Data.CentralService.RepositoryFiles);
-				return new ContentResult { Content = "found", ContentEncoding = Encoding.UTF8, ContentType = "string" };
-			}
 		}
 
-		[HttpGet]
-		[ActionName(nameof(RemoteFileRepository.RelativeRoutes.InfoByHash))]
-		public ActionResult InfoByHash(string hash)
-		{
-			lock(Sys.Data.CentralService)
-			{
-				Repo.InfoByHash(hash, Sys.Data.CentralService.RepositoryFiles);
-				return new ContentResult {Content = "found", ContentEncoding = Encoding.UTF8, ContentType = "string"};
-			}
-		}
 
 		[HttpGet]
-		[ActionName(nameof(RemoteFileRepository.RelativeRoutes.Get))]
-		public ActionResult Get(Guid id)
+		[ActionName(nameof(RemoteProtocol.FileRepository.Http.Routes.Info))]
+		public ActionResult Info()
 		{
 			lock (Sys.Data.CentralService)
 			{
-				return new FileStreamResult(Repo.Open(id, Sys.Data.CentralService.RepositoryFiles), "file");
+				CsRemote.Server.FileRepository.Info(Sys.Data.CentralService.RepositoryFiles);
+				return new ContentResult {Content = "success", ContentEncoding = Encoding.UTF8, ContentType = "string"};
 			}
 		}
 
-		[HttpPost]
-		[ActionName(nameof(RemoteFileRepository.RelativeRoutes.Save))]
-		public ActionResult Save()
+		[HttpGet]
+		[ActionName(nameof(RemoteProtocol.FileRepository.Http.Routes.Download))]
+		public ActionResult Download()
 		{
-			lock (Sys.Data.CentralService)
+			Stream stream = null;
+			try
 			{
-				return new ContentResult
+				lock (Sys.Data.CentralService)
 				{
-					Content = Repo.Save(Sys.Data.CentralService.RepositoryFiles).ToString(),
-					ContentEncoding = Encoding.UTF8,
-					ContentType = "Guid"
-				};
+					stream = CsRemote.Server.FileRepository.Download(Sys.Data.CentralService.RepositoryFiles);
+				}
+				return new FileStreamResult(stream, "file");
+			}
+			catch
+			{
+				stream?.Close();
+				stream?.Dispose();
+				throw;
 			}
 		}
 
 		[HttpPost]
-		[ActionName(nameof(RemoteFileRepository.RelativeRoutes.Delete))]
-		public ActionResult Delete(Guid id)
+		[ActionName(nameof(RemoteProtocol.FileRepository.Http.Routes.Upload))]
+		public ActionResult Upload()
 		{
 			lock (Sys.Data.CentralService)
 			{
-				Repo.Delete(id, Sys.Data.CentralService.RepositoryFiles);
+				CsRemote.Server.FileRepository.Upload(Sys.Data.CentralService.RepositoryFiles);
+				return new ContentResult { Content = "success", ContentEncoding = Encoding.UTF8, ContentType = "string" };
+			}
+		}
+
+		[HttpPost]
+		[ActionName(nameof(RemoteProtocol.FileRepository.Http.Routes.Delete))]
+		public ActionResult Delete()
+		{
+			lock (Sys.Data.CentralService)
+			{
+				CsRemote.Server.FileRepository.Delete(Sys.Data.CentralService.RepositoryFiles);
 				return new ContentResult() {Content = "Succeeded"};
 			}
 		}
