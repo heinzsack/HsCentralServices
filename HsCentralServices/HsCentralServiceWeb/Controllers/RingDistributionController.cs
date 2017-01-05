@@ -50,6 +50,9 @@ namespace HsCentralServiceWeb.Controllers
 
 		public ActionResult DownloadRing(int ringId)
 		{
+		lock (Sys.Data)
+			{
+			
 			CsClientIdentification clientIdentification = CsClientIdentification.Transmission.Get(Request.Headers);
 			FileInfo ringPath = Sys.Services.RingDistribution.Storage.Paths.RingFilePath(clientIdentification.Computer, ringId);
 			if (!ringPath.Exists)
@@ -58,7 +61,8 @@ namespace HsCentralServiceWeb.Controllers
 				throw new HttpException((int) HttpStatusCode.LengthRequired, $"Der angegebene ring [{ringId}] mit dem FileNamen {ringPath.FullName} hat beim computer [{clientIdentification.Computer.Name}] die Länge 0");
 
 			return new FilePathResult(ringPath.FullName, MimeMapping.GetMimeMapping(ringPath.FullName));
-		}
+				}
+			}
 
 		public ActionResult DownloadImage(Guid imageId)
 		{

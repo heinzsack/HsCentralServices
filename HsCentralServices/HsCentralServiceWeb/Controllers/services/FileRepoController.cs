@@ -40,7 +40,7 @@ namespace HsCentralServiceWeb.Controllers.services
 		[ActionName(nameof(RemoteProtocol.FileRepository.Http.Routes.Info))]
 		public ActionResult Info()
 		{
-			lock (Sys.Data.CentralService)
+			lock (Sys.Data)
 			{
 				CsRemoteServer.I.FileRepository.Info(Sys.Data.CentralService.RepositoryFiles);
 				return new ContentResult {Content = "success", ContentEncoding = Encoding.UTF8, ContentType = "string"};
@@ -56,7 +56,7 @@ namespace HsCentralServiceWeb.Controllers.services
 			Stream stream = null;
 			try
 			{
-				lock (Sys.Data.CentralService)
+				lock (Sys.Data)
 				{
 					stream = CsRemoteServer.I.FileRepository.Download(Sys.Data.CentralService.RepositoryFiles);
 				}
@@ -76,7 +76,7 @@ namespace HsCentralServiceWeb.Controllers.services
 		[ActionName(nameof(RemoteProtocol.FileRepository.Http.Routes.Upload))]
 		public ActionResult Upload()
 		{
-			lock (Sys.Data.CentralService)
+			lock (Sys.Data)
 			{
 				CsRemoteServer.I.FileRepository.Upload(Sys.Data.CentralService.RepositoryFiles);
 				return new ContentResult {Content = "success", ContentEncoding = Encoding.UTF8, ContentType = "string"};
@@ -87,7 +87,7 @@ namespace HsCentralServiceWeb.Controllers.services
 		[ActionName(nameof(RemoteProtocol.FileRepository.Http.Routes.Delete))]
 		public ActionResult Delete()
 		{
-			lock (Sys.Data.CentralService)
+			lock (Sys.Data)
 			{
 				CsRemoteServer.I.FileRepository.Delete(Sys.Data.CentralService.RepositoryFiles);
 				return new ContentResult {Content = "success"};
