@@ -8,7 +8,9 @@ using System;
 using System.IO;
 using System.Text;
 using System.Web.Mvc;
-using CsWpfBase.Remote;
+using CsWpfBase.Global;
+using CsWpfBase.Remote.clientSide.fileRepository;
+using CsWpfBase.Remote.serverSide;
 using CsWpfBase.Remote._protocols;
 using HsCentralServiceWeb._sys;
 
@@ -19,30 +21,34 @@ using HsCentralServiceWeb._sys;
 
 namespace HsCentralServiceWeb.Controllers.services
 {
+	/// <summary>
+	///     This <see cref="FileRepoController" /> represents the server side interface for accessing the file repository over the internet. Clients can
+	///     access this via the <see cref="CsGlobal.Remote" /> scope.
+	/// </summary>
 	public class FileRepoController : Controller
 	{
-
-		public FileRepoController()
+		/// <summary>Installs the <see cref="CsRemoteServer.I" /> module for the whole website.</summary>
+		static FileRepoController()
 		{
-#if DEBUG
-			CsRemote.InstallServer(new DirectoryInfo(@"\\speicher\AData2\HsCentralServiceWeb"));
-#else
-			Remote.InstallServer(new DirectoryInfo(new DirectoryInfo(Sys.Data.CentralService.WebConfigurations.FileManagementService.StorageDirectory)));
-#endif
+			CsRemoteServer.InstallServer(new DirectoryInfo(Sys.Data.CentralService.WebConfigurations.FileManagementService.StorageDirectory));
 		}
 
 
+		/// <summary>Used for downloading infos about files. This is the server interface for the <see cref="FileRepositoryClient.FindOrDownloadInfo(Guid)" />
+		///     method.</summary>
 		[HttpGet]
 		[ActionName(nameof(RemoteProtocol.FileRepository.Http.Routes.Info))]
 		public ActionResult Info()
 		{
 			lock (Sys.Data.CentralService)
 			{
-				CsRemote.Server.FileRepository.Info(Sys.Data.CentralService.RepositoryFiles);
+				CsRemoteServer.I.FileRepository.Info(Sys.Data.CentralService.RepositoryFiles);
 				return new ContentResult {Content = "success", ContentEncoding = Encoding.UTF8, ContentType = "string"};
 			}
 		}
 
+		/// <summary>Used for downloading a complete file. This is the server interface for the <see cref="FileRepositoryClient.FindOrDownload(Guid)" />
+		///     method.</summary>
 		[HttpGet]
 		[ActionName(nameof(RemoteProtocol.FileRepository.Http.Routes.Download))]
 		public ActionResult Download()
@@ -52,7 +58,7 @@ namespace HsCentralServiceWeb.Controllers.services
 			{
 				lock (Sys.Data.CentralService)
 				{
-					stream = CsRemote.Server.FileRepository.Download(Sys.Data.CentralService.RepositoryFiles);
+					stream = CsRemoteServer.I.FileRepository.Download(Sys.Data.CentralService.RepositoryFiles);
 				}
 				return new FileStreamResult(stream, "file");
 			}
@@ -64,14 +70,16 @@ namespace HsCentralServiceWeb.Controllers.services
 			}
 		}
 
+		/// <summary>Used for uploading a complete file. This is the server interface for the <see cref="FileRepositoryClient.Upload(FileInfo,string,Guid?)" />
+		///     method.</summary>
 		[HttpPost]
 		[ActionName(nameof(RemoteProtocol.FileRepository.Http.Routes.Upload))]
 		public ActionResult Upload()
 		{
 			lock (Sys.Data.CentralService)
 			{
-				CsRemote.Server.FileRepository.Upload(Sys.Data.CentralService.RepositoryFiles);
-				return new ContentResult { Content = "success", ContentEncoding = Encoding.UTF8, ContentType = "string" };
+				CsRemoteServer.I.FileRepository.Upload(Sys.Data.CentralService.RepositoryFiles);
+				return new ContentResult {Content = "success", ContentEncoding = Encoding.UTF8, ContentType = "string"};
 			}
 		}
 
@@ -81,8 +89,8 @@ namespace HsCentralServiceWeb.Controllers.services
 		{
 			lock (Sys.Data.CentralService)
 			{
-				CsRemote.Server.FileRepository.Delete(Sys.Data.CentralService.RepositoryFiles);
-				return new ContentResult() {Content = "Succeeded"};
+				CsRemoteServer.I.FileRepository.Delete(Sys.Data.CentralService.RepositoryFiles);
+				return new ContentResult {Content = "success"};
 			}
 		}
 	}
