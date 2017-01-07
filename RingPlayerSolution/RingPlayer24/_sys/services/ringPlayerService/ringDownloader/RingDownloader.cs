@@ -11,7 +11,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using CsWpfBase.Ev.Public.Extensions;
-using CsWpfBase.Global.transmission.clientIdentification;
+using CsWpfBase.Global.remote.clientIdentification;
 using CsWpfBase.Utilitys;
 using HsCentralServiceWebInterfacesClient.steadyConnection.hubs.ringDistribution.newRingAvailableArgs;
 using HsCentralServiceWebInterfacesClient.steadyConnection.hubs.ringDistribution.ringValidationArgs;

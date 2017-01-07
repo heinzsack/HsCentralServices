@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 using CsWpfBase.Global;
-using CsWpfBase.Global.transmission.clientIdentification;
+using CsWpfBase.Global.remote.clientIdentification;
 using CsWpfBase.Utilitys;
 using HsCentralServiceWebInterfacesClient.steadyConnection.hubs.management;
 using HsCentralServiceWebInterfacesClient.steadyConnection.hubs.ringDistribution;

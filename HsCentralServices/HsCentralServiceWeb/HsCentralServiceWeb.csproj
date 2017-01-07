@@ -32,7 +32,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\</OutputPath>
-    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;CS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -156,7 +156,7 @@
     <Compile Include="Controllers\RemoteManagementController.cs" />
     <Compile Include="Controllers\RingController.cs" />
     <Compile Include="Controllers\RingDistributionController.cs" />
-    <Compile Include="Controllers\services\DbProxyServiceController.cs" />
+    <Compile Include="Controllers\services\DbAccessController.cs" />
     <Compile Include="Controllers\services\FileRepoController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -245,6 +245,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\DbAccess\" />
     <Folder Include="Views\DbProxyService\" />
     <Folder Include="Views\FileRepo\" />
     <Folder Include="Views\RingDistribution\" />

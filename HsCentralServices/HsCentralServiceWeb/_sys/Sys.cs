@@ -6,8 +6,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using CsWpfBase.Ev.Public.Extensions;
+using CsWpfBase.Global.remote.serverSide;
 using HsCentralServiceWeb._sys.data;
 using HsCentralServiceWeb._sys.hubs;
 using HsCentralServiceWeb._sys.services;
@@ -32,7 +35,14 @@ namespace HsCentralServiceWeb._sys
 		public static IServer Server => _rcData ?? (_rcData = new ServerHandler());
 		public static Data Data => _data ?? (_data = new Data());
 		public static Services Services => _services ?? (_services = new Services());
-		
+
+
+		public static void InstallCsRemoteServer()
+		{
+			var privateKey = new RSACryptoServiceProvider();
+			privateKey.FromXmlString(Data.CentralService.WebConfigurations.DbAccess.PrivateKey);
+			CsRemoteServer.InstallServer(new DirectoryInfo(Data.CentralService.WebConfigurations.FileRepository.StorageDirectory), privateKey);
+		}
 
 		private class ServerHandler : IServer
 		{

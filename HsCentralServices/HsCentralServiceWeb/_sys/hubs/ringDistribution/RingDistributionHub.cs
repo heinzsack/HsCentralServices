@@ -7,7 +7,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using CsWpfBase.Global.transmission.clientIdentification;
+using CsWpfBase.Global.remote.clientIdentification;
 using HsCentralServiceWeb._dbs.hsserver.centralservicedb.rows;
 using HsCentralServiceWeb._sys._extensions;
 using HsCentralServiceWebInterfacesClient.steadyConnection.hubs.ringDistribution;

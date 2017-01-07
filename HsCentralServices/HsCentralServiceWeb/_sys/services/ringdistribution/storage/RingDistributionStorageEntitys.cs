@@ -9,7 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using CsWpfBase.Ev.Public.Extensions;
-using CsWpfBase.Global.transmission.clientIdentification.interfaces;
+using CsWpfBase.Global.remote.clientIdentification.interfaces;
 using HsCentralServiceWebInterfacesServer._dbs.hsserver.ringplayerdb.dataset;
 using HsCentralServiceWebInterfacesServer._dbs.hsserver.ringplayerdb.rows;
 

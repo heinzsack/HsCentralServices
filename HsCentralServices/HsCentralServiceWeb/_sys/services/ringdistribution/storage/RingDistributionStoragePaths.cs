@@ -8,7 +8,7 @@ using System;
 using System.IO;
 using System.Linq;
 using CsWpfBase.Ev.Public.Extensions;
-using CsWpfBase.Global.transmission.clientIdentification.interfaces;
+using CsWpfBase.Global.remote.clientIdentification.interfaces;
 
 
 
