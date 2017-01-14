@@ -6,7 +6,7 @@ using CsWpfBase.Ev.Public.Extensions;
 using CsWpfBase.Global;
 using HsCentralServiceWebInterfacesClient.steadyConnection.hubs.ringDistribution.newRingAvailableArgs;
 using HsCentralServiceWebInterfacesClient.steadyConnection.hubs.ringDistribution.playerDataArgs;
-using HsCentralServiceWebInterfacesServer._dbs.hsserver.ringplayerdb.rows;
+using RingPlayer24._dbs.hsserver.ringplayerdb.rows;
 using RingPlayer24._sys;
 
 namespace RingPlayer24
@@ -68,7 +68,7 @@ namespace RingPlayer24
 			{
 			Sys.Services.RingPlayerService.SendInstanceArgs();
 			}
-		private void RingPlayerService_RingDownloadCompleted(RingMetaData ring)
+		private void RingPlayerService_RingDownloadCompleted(Ring ring)
 			{
 			Sys.Services.RingPlayerService.CurrentPlayingRing = ring;
 			}

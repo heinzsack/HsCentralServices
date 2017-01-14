@@ -1,4 +1,4 @@
-﻿@using HsCentralServiceWeb.Models.RingController
+﻿@*@using HsCentralServiceWeb.Models.RingController
 @model PageGroupViewModel
 <style type="text/css">
 	.carousel-indicators > li {
@@ -18,4 +18,4 @@
 	<a href="@Url.Action("View", "Ring", new { remoteInstanceId = Model.RemoteInstance.Id, ringId =Model.Ring.Id})" class="btn btn-outline-primary">Zurück zur Ringansicht</a>
 </div>
 
-@Html.Partial("AnyPageGroup", new DbPageGroupViewModel(Model.PageGroup))
+@Html.Partial("AnyPageGroup", new DbPageGroupViewModel(Model.PageGroup))*@

@@ -5,7 +5,7 @@ namespace RingPlayer24._sys.storage.LruStorages
 {
 	public class RingStore : LruFileStore<int>
 	{
-		public string Extension { get; set; } = ".Ring24";
+		public string Extension { get; set; } = ".ring24";
 		public RingStore(DirectoryInfo targetDirectory, ulong maximumCapacity) : base(targetDirectory, maximumCapacity)
 		{
 		}

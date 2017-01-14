@@ -128,17 +128,17 @@ namespace HsCentralServiceWebInterfacesClient.steadyConnection
 			}
 
 		private void Connection_StateChanged(StateChange obj)
-			{
-			if (obj.NewState == ConnectionState.Connected || obj.NewState == ConnectionState.Connecting)
+		{
+			if(obj.NewState == ConnectionState.Connected || obj.NewState == ConnectionState.Connecting)
 				return;
-//TODO by HS the nect if, for do not disturb an automaated Reconnect 
+			//TODO by HS the nect if, for do not disturb an automaated Reconnect 
 
-			if (obj.NewState == ConnectionState.Reconnecting)
+			if(obj.NewState == ConnectionState.Reconnecting)
 				return;
 			Debug.WriteLine($"{obj.NewState} - try to Open");
-			Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, 
+			Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
 				new Action(() => { Open(); }));
-			}
+		}
 
 		
 

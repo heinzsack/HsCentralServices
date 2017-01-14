@@ -2,7 +2,7 @@
 // <author>Christian Sack</author>
 // <email>christian@sack.at</email>
 // <website>christian.sack.at</website>
-// <date>2016-12-20</date>
+// <date>2017-01-14</date>
 
 using System;
 using System.Linq;
@@ -13,9 +13,9 @@ using CsWpfBase.Ev.Public.Extensions;
 using HsCentralServiceWebInterfacesClient.steadyConnection.hubs.management.args;
 using HsCentralServiceWebInterfacesClient.steadyConnection.hubs.ringDistribution.newRingAvailableArgs;
 using HsCentralServiceWebInterfacesClient.steadyConnection.hubs.ringDistribution.playerDataArgs;
-using HsCentralServiceWebInterfacesServer._dbs.hsserver.ringplayerdb.dataset;
-using HsCentralServiceWebInterfacesServer._dbs.hsserver.ringplayerdb.rows;
 using PlayerControls.Interfaces;
+using RingPlayer24._dbs.hsserver.ringplayerdb.dataset;
+using RingPlayer24._dbs.hsserver.ringplayerdb.rows;
 using RingPlayer24._sys.services.ringPlayerService.ringDownloader;
 
 
@@ -29,7 +29,7 @@ namespace RingPlayer24._sys.services.ringPlayerService
 	{
 		private RingDownloader _activeRingDownloader;
 		private IPageSchedule[] _bindableSchedules;
-		private RingMetaData _currentPlayingRing;
+		private Ring _currentPlayingRing;
 
 
 		public IPageSchedule[] BindableSchedules
@@ -38,7 +38,7 @@ namespace RingPlayer24._sys.services.ringPlayerService
 			set { SetProperty(ref _bindableSchedules, value); }
 		}
 		///<summary>Gets the current playing ring.</summary>
-		public RingMetaData CurrentPlayingRing
+		public Ring CurrentPlayingRing
 		{
 			get { return _currentPlayingRing; }
 			set
@@ -60,19 +60,8 @@ namespace RingPlayer24._sys.services.ringPlayerService
 				var sourceFile = Sys.Storage.Ring.GetFile_And_SetUsed(value.Id);
 				sourceFile.CopyTo(targetFilePath.FullName, true);
 
-				//TODO HS Inserted Zero Propagation in both FileRequested callbacks
 
-				_currentPlayingRing.DataSet.Images.FileRequested += image =>
-				{
-					var imagePath = Sys.Storage.Lru.Image.GetFile_And_SetUsed(image);
-					return imagePath.FullName;
-				};
-				_currentPlayingRing.DataSet.Videos.FileRequested += video =>
-				{
-					var videoPath = Sys.Storage.Lru.Video.GetFile_And_SetUsed(video);
-					return videoPath.FullName;
-				};
-				BindableSchedules = _currentPlayingRing.PageSchedules.OrderBy(x => x.StartTime).OfType<IPageSchedule>().ToArray();
+				BindableSchedules = _currentPlayingRing.RingEntries.OrderBy(x => x.StartTime).OfType<IPageSchedule>().ToArray();
 				OnPropertyChanged();
 				SendInstanceArgs();
 			}
@@ -85,7 +74,7 @@ namespace RingPlayer24._sys.services.ringPlayerService
 			private set { SetProperty(ref _activeRingDownloader, value); }
 		}
 
-		public event Action<RingMetaData> RingDownloadCompleted;
+		public event Action<Ring> RingDownloadCompleted;
 
 		public void LoadCurrentPlayingDataSetFromFile()
 		{
@@ -96,7 +85,7 @@ namespace RingPlayer24._sys.services.ringPlayerService
 			try
 			{
 				var dataSet = playingRingFile.LoadAs_Object_From_SerializedBinary<RingPlayerDb>();
-				CurrentPlayingRing = dataSet.RingMetaDatas[0];
+				CurrentPlayingRing = dataSet.Rings[0];
 			}
 			catch (Exception Excp)
 			{

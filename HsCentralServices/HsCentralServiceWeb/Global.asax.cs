@@ -11,7 +11,6 @@ using CsWpfBase.Ev.Public.Extensions;
 using HsCentralServiceWeb._dbs.hsserver.centralservicedb.rows;
 using HsCentralServiceWeb._sys;
 using HsCentralServiceWeb._sys._extensions;
-using HsCentralServiceWebInterfacesServer._dbs.hsserver.ringplayerdb.rows;
 
 
 namespace HsCentralServiceWeb

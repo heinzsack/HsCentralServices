@@ -45,7 +45,7 @@
 					</Style>
 				</Border.Style>
 				<Grid>
-					<MediaElement Source="{Binding Path=IFileName}" 
+					<MediaElement Source="{Binding Path=IFilePath}" 
 								  LoadedBehavior="Manual" MediaFailed="MediaElement_OnMediaFailed" />
 					<!--<TextBlock Text="VIDEO PLAYING" Foreground="Red" VerticalAlignment="Bottom" HorizontalAlignment="Right" FontSize="20"></TextBlock>-->
 				</Grid>
