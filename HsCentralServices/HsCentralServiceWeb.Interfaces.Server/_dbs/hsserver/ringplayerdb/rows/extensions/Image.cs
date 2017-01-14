@@ -10,6 +10,8 @@ using System.Windows;
 using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using CsWpfBase.Global;
+using CsWpfBase.Global.remote.clientSide.fileRepository.components.parts;
 using PlayerControls.Interfaces;
 
 
@@ -19,9 +21,9 @@ using PlayerControls.Interfaces;
 
 namespace HsCentralServiceWebInterfacesServer._dbs.hsserver.ringplayerdb.rows
 {
-	partial class Image : IImageVisual, IDownloadAble
+	partial class Image : IImageVisual
 	{
-		private static readonly object imageLock = new object();
+		private static object ImageLock { get; }= new object();
 
 
 		#region Overrides/Interfaces
@@ -31,36 +33,21 @@ namespace HsCentralServiceWebInterfacesServer._dbs.hsserver.ringplayerdb.rows
 		[DependsOn(nameof(SortOrder))]
 		public int ISortOrder => SortOrder;
 
-		[DependsOn(nameof(FileIdentifier))]
-		[DependsOn(nameof(Extension))]
+		[DependsOn(nameof(ImageId))]
 		public BitmapSource IBitmapSource
 		{
 			get
 			{
-				lock (imageLock)
+				lock (ImageLock)
 				{
 					try
 					{
-						BitmapImage img;
-						var stream = Table.OnStreamRequested(this);
-						if (stream == null)
+						var repoInfo = CsGlobal.Remote.FileRepository.FindOrDownload(ImageId);
+						if (repoInfo == null)
 							return null;
 
-						using (stream)
-						{
-							var sr = new MemoryStream();
-							stream.CopyTo(sr);
-							sr.Seek(0, SeekOrigin.Begin);
-							img = new BitmapImage();
-							img.BeginInit();
-							img.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
-							img.CacheOption = BitmapCacheOption.OnLoad;
-							img.StreamSource = sr;
-							img.EndInit();
-							img.Freeze();
-							sr.Close();
-							stream.Close();
-						}
+						var img = new BitmapImage(new Uri(repoInfo.LocalCachedFile.FullName, UriKind.RelativeOrAbsolute));
+						img.Freeze();
 						return img;
 					}
 					catch (Exception exc)
@@ -71,12 +58,6 @@ namespace HsCentralServiceWebInterfacesServer._dbs.hsserver.ringplayerdb.rows
 				}
 			}
 		}
-
-		[DependsOn(nameof(FileIdentifier))]
-		public Guid IFileIdentifier => FileIdentifier;
-
-		[DependsOn(nameof(Extension))]
-		public string IExtension => Extension;
 
 		[DependsOn(nameof(Background))]
 		public Color IBackground => Convert.Color.Getter(Background);

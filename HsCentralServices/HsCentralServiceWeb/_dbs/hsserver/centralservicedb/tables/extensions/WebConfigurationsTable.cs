@@ -5,7 +5,9 @@
 // <date>2016-12-20</date>
 
 using System;
+using System.Security.Cryptography;
 using CsWpfBase.Db.tools.configurationTable;
+using CsWpfBase.Ev.Public.Extensions;
 using CsWpfBase.Utilitys;
 
 
@@ -17,10 +19,11 @@ namespace HsCentralServiceWeb._dbs.hsserver.centralservicedb.tables
 {
 	partial class WebConfigurationsTable
 	{
-		private FileManagementServiceConfiguration _fileManagementService;
+		private ServiceFileRepository _serviceFileManagementService;
 		private RemoteLogConfiguration _remoteLog;
 		private RingDistributionConfiguration _ringDistribution;
 		private SmtpConfiguration _smtp;
+		private ServiceDbAccess _serviceDbAccess;
 
 
 		#region Abstract
@@ -42,7 +45,8 @@ namespace HsCentralServiceWeb._dbs.hsserver.centralservicedb.tables
 		internal RemoteLogConfiguration RemoteLog => _remoteLog ?? (_remoteLog = new RemoteLogConfiguration(this));
 		internal RingDistributionConfiguration RingDistribution => _ringDistribution ?? (_ringDistribution = new RingDistributionConfiguration(this));
 		internal SmtpConfiguration Smtp => _smtp ?? (_smtp = new SmtpConfiguration(this));
-		internal FileManagementServiceConfiguration FileManagementService => _fileManagementService ?? (_fileManagementService = new FileManagementServiceConfiguration(this));
+		internal ServiceFileRepository FileRepository => _serviceFileManagementService ?? (_serviceFileManagementService = new ServiceFileRepository(this));
+		internal ServiceDbAccess DbAccess => _serviceDbAccess ?? (_serviceDbAccess = new ServiceDbAccess(this));
 
 
 
@@ -93,15 +97,56 @@ namespace HsCentralServiceWeb._dbs.hsserver.centralservicedb.tables
 
 
 
-		internal class FileManagementServiceConfiguration : SubConfiguration
+		internal class ServiceFileRepository : SubConfiguration
 		{
-			public FileManagementServiceConfiguration(WebConfigurationsTable parent) : base(parent, nameof(FileManagementService))
+			public ServiceFileRepository(WebConfigurationsTable parent) : base(parent, nameof(ServiceFileRepository))
 			{
 			}
 
 			public string StorageDirectory
 			{
 				get { return Parent.GetConfigurationValue(@"\\speicher\AData2\HsCentralServiceWeb", Context); }
+				set { Parent.SetConfigurationValue(value, Context); }
+			}
+		}
+
+
+		internal class ServiceDbAccess : SubConfiguration
+		{
+			public ServiceDbAccess(WebConfigurationsTable parent) : base(parent, nameof(ServiceDbAccess))
+			{
+			}
+
+			public string PrivateKey
+			{
+				get
+				{
+					var value = Parent.GetConfigurationValue("", Context);
+					if (value.IsNullOrEmpty())
+					{
+						RSACryptoServiceProvider key = new RSACryptoServiceProvider(1024);
+						PublicKey = key.ToXmlString(false);
+						value = PrivateKey = key.ToXmlString(true);
+					}
+					return value;
+				}
+				set { Parent.SetConfigurationValue(value, Context); }
+			}
+
+
+			public string PublicKey
+			{
+				get
+				{
+					var value = Parent.GetConfigurationValue("", Context);
+					if(value.IsNullOrEmpty())
+					{
+						RSACryptoServiceProvider key = new RSACryptoServiceProvider(1024);
+						value = PublicKey = key.ToXmlString(false);
+						PrivateKey = key.ToXmlString(true);
+					}
+					return value;
+				}
 				set { Parent.SetConfigurationValue(value, Context); }
 			}
 		}

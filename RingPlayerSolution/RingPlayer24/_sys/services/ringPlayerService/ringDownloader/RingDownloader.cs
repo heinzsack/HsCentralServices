@@ -2,23 +2,21 @@
 // <author>Christian Sack</author>
 // <email>christian@sack.at</email>
 // <website>christian.sack.at</website>
-// <date>2016-12-20</date>
+// <date>2017-01-14</date>
 
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using CsWpfBase.Ev.Public.Extensions;
-using CsWpfBase.Global.transmission.clientIdentification;
+using CsWpfBase.Global.remote.clientIdentification;
+using CsWpfBase.Global.remote.clientSide.fileRepository.components;
 using CsWpfBase.Utilitys;
 using HsCentralServiceWebInterfacesClient.steadyConnection.hubs.ringDistribution.newRingAvailableArgs;
 using HsCentralServiceWebInterfacesClient.steadyConnection.hubs.ringDistribution.ringValidationArgs;
-using HsCentralServiceWebInterfacesServer._dbs.hsserver.ringplayerdb.dataset;
-using HsCentralServiceWebInterfacesServer._dbs.hsserver.ringplayerdb.rows;
-using PlayerControls.Interfaces;
-using PlayerControls.Storage.Utils;
+using RingPlayer24._dbs.hsserver.ringplayerdb.dataset;
+using RingPlayer24._dbs.hsserver.ringplayerdb.rows;
 
 
 
@@ -32,10 +30,8 @@ namespace RingPlayer24._sys.services.ringPlayerService.ringDownloader
 		private readonly object _syncLock = new object();
 		private bool _isCanceled = false;
 		private List<WebClient> ActiveDownloads { get; set; } = new List<WebClient>();
-		private RingMetaData CurrentRing { get; set; }
-		private IDownloadAble[] MissingImages { get; set; }
-		private IDownloadAble[] MissingVideos { get; set; }
-		private DependencyDownloader DependencyDownloader { get; set; }
+		private Ring CurrentRing { get; set; }
+		private FileDownloadTask FileDownload { get; set; }
 
 		public RingDownloader(NewRingAvailableArgs arguments)
 		{
@@ -48,12 +44,11 @@ namespace RingPlayer24._sys.services.ringPlayerService.ringDownloader
 
 		public NewRingAvailableArgs Arguments { get; set; }
 
-		public Task<RingMetaData> Start()
+		public Task<Ring> Start()
 		{
-			var t = new Task<RingMetaData>(() =>
+			var t = new Task<Ring>(() =>
 			{
 				DownloadRing();
-				FindMissingFiles();
 				DownloadMissingFiles();
 				ApproveNewRing();
 
@@ -78,7 +73,7 @@ namespace RingPlayer24._sys.services.ringPlayerService.ringDownloader
 				{
 					activeDownload.CancelAsync();
 				}
-				DependencyDownloader?.Stop();
+				FileDownload?.Cancle();
 			}
 		}
 
@@ -87,7 +82,7 @@ namespace RingPlayer24._sys.services.ringPlayerService.ringDownloader
 			using (IsRingDownloading.Activate())
 			{
 				Sys.Services.RingPlayerService.SendInstanceArgs();
-				var tempFilePath = new FileInfo(Path.Combine(Sys.Storage.Lru.DownloadsFolder.FullName, Arguments.RingId + ".dataset"));
+				var tempFilePath = new FileInfo(Path.Combine(Sys.Storage.DownloadDirectory.FullName, Arguments.RingId + ".dataset"));
 				var task = DownloadFile(Arguments.DownloadUrl, tempFilePath);
 				if (task != null && task.Status == TaskStatus.RanToCompletion)
 					Sys.Storage.Ring.Add(Arguments.RingId, tempFilePath);
@@ -101,14 +96,8 @@ namespace RingPlayer24._sys.services.ringPlayerService.ringDownloader
 				if (task.Status != TaskStatus.RanToCompletion)
 					throw new OperationCanceledException();
 
-				CurrentRing = Sys.Storage.Ring.GetFile_And_SetUsed(Arguments.RingId).LoadAs_Object_From_SerializedBinary<RingPlayerDb>().RingMetaDatas[0];
+				CurrentRing = Sys.Storage.Ring.GetFile_And_SetUsed(Arguments.RingId).LoadAs_Object_From_SerializedBinary<RingPlayerDb>().Rings[0];
 			}
-		}
-
-		private void FindMissingFiles()
-		{
-			MissingImages = CurrentRing.DataSet.Images.Where(i => Sys.Storage.Lru.Image.GetFile_And_SetUsed(i) == null).OfType<IDownloadAble>().Distinct(new AnonComparer<IDownloadAble, Guid>(x => x.IFileIdentifier)).ToArray();
-			MissingVideos = CurrentRing.DataSet.Videos.Where(i => Sys.Storage.Lru.Video.GetFile_And_SetUsed(i) == null).OfType<IDownloadAble>().Distinct(new AnonComparer<IDownloadAble, Guid>(x => x.IFileIdentifier)).ToArray();
 		}
 
 		private void DownloadMissingFiles()
@@ -116,9 +105,11 @@ namespace RingPlayer24._sys.services.ringPlayerService.ringDownloader
 			using (IsFileDownloading.Activate())
 			{
 				Sys.Services.RingPlayerService.SendInstanceArgs();
-				var downloadInformations = new DownloadInformations(Arguments.ImageDownloadUrl, Arguments.VideoDownloadUrl, Arguments.ImageVideoReplacementString);
-				var downloader = Sys.Storage.Lru.GetFileDownloader(MissingImages, MissingVideos, downloadInformations);
-				downloader.Start().Wait();
+				FileDownload = CurrentRing.DataSet.DownloadDependencys();
+				if (FileDownload == null)
+					return;
+
+				FileDownload.Wait();
 			}
 		}
 
@@ -166,22 +157,6 @@ namespace RingPlayer24._sys.services.ringPlayerService.ringDownloader
 			}
 			return task;
 
-		}
-
-
-
-		private class DownloadInformations : IContainDownloadInformations
-		{
-			public DownloadInformations(string imageDownloadUrl, string videoDownloadUrl, string replacementString)
-			{
-				ImageDownloadUrl = imageDownloadUrl;
-				VideoDownloadUrl = videoDownloadUrl;
-				ReplacementString = replacementString;
-			}
-
-			public string ImageDownloadUrl { get; }
-			public string VideoDownloadUrl { get; }
-			public string ReplacementString { get; }
 		}
 	}
 }

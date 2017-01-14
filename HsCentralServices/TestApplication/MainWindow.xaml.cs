@@ -5,10 +5,10 @@
 // <date>2017-01-05</date>
 
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using CsWpfBase.Global;
-using CsWpfBase.Remote;
 using CsWpfBase.Themes.Controls.Containers;
 using CsWpfBase.Themes.Controls.Editors._baseControls;
 
@@ -25,22 +25,39 @@ namespace TestApplication
 		public MainWindow()
 		{
 			CsGlobal.Install(GlobalFunctions.Storage);
-			CsRemote.InstallClient("http://localhost:16411", "LocalServerTest");
+			CsGlobal.InstallRemote("http://localhost:16411", "LocalServerTest");
+			CsGlobal.Remote.Event.Connect();
+			CsGlobal.Remote.Event.Connected += Connected;
 
 			InitializeComponent();
 			FileSelector.ValuePath = new FileInfo(@"C:\Data\Personal\OneDrive\Bilder\Wallpaper\6.jpg");
 			IdSelector.Value = "2cac40bb-36d1-4e75-8b07-c328d07e0f2d";
 		}
 
+		private void Connected()
+		{
+			CsGlobal.Remote.Event.Handle<int>("SimpleEvent", SimpleEvent);
+		}
+
+		private void SendEventClick(object sender, RoutedEventArgs e)
+		{
+			CsGlobal.Remote.Event.Raise("SimpleEvent", Process.GetCurrentProcess().Id);
+		}
+
+		private void SimpleEvent(int eventData)
+		{
+			CsGlobal.Message.Push(eventData);
+		}
+
 		private void DownloadClick(object sender, RoutedEventArgs e)
 		{
-			var filedownload = CsRemote.Client.FileRepository.FindOrDownloadAsync(Guid.Parse(IdSelector.Value));
+			var filedownload = CsGlobal.Remote.FileRepository.FindOrDownloadAsync(Guid.Parse(IdSelector.Value));
 			filedownload.ShowDialog();
 		}
 
 		private void UploadClick(object sender, RoutedEventArgs e)
 		{
-			var fileupload = CsRemote.Client.FileRepository.UploadAsync(FileSelector.ValuePath);
+			var fileupload = CsGlobal.Remote.FileRepository.UploadAsync(FileSelector.ValuePath);
 			fileupload.ShowDialog();
 			if (fileupload.IsSucceeded)
 			IdSelector.Value = fileupload.Result[0].Id.ToString();
@@ -54,20 +71,6 @@ namespace TestApplication
 			return ValidationResult.Error("not an id");
 		}
 
-		//	{
-		//	Rfr.Delete(Guid.Parse(IdSelector.Value)).ContinueWith(t =>
-		//{
-
-
-		//private void DeleteClick(object sender, RoutedEventArgs e)
-		//		if (t.Exception != null)
-		//		{
-		//			CsGlobal.Message.Push(t.Exception.MostInner());
-		//			return;
-		//		}
-
-		//		CsGlobal.Message.Push($"Succeeded with {IdSelector.Value}");
-		//	}, TaskScheduler.FromCurrentSynchronizationContext());
-		//}
+		
 	}
 }

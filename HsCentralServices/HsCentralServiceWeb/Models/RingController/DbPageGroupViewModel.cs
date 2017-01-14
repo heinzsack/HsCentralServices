@@ -7,7 +7,6 @@
 using System;
 using System.Linq;
 using CsWpfBase.Ev.Public.Extensions;
-using HsCentralServiceWebInterfacesServer._dbs.hsserver.ringplayerdb.rows;
 using PlayerControls.Extensions;
 
 
@@ -17,26 +16,18 @@ using PlayerControls.Extensions;
 
 namespace HsCentralServiceWeb.Models.RingController
 {
-	public class DbPageGroupViewModel
-	{
-		public DbPageGroupViewModel(PageGroup pageGroup)
-		{
-			PageGroup = pageGroup;
-			Entries = pageGroup.Pages.Select(x =>
-									new Entry()
-									{
-										Page = x,
-										Base64Image = x.GetRenderedImage(1920.0/2, 1080.0/2).Result.ConvertTo_JpgByteArray().ConvertTo_Base64()
-									}).ToArray();
-		}
+	//public class DbPageGroupViewModel
+	//{
+	//	public DbPageGroupViewModel()
+	//	{
+	//	}
 
-		public PageGroup PageGroup { get; set; }
-		public Entry[] Entries { get; set; }
+	//	public Entry[] Entries { get; set; }
 
-		public class Entry
-		{
-			public Page Page { get; set; }
-			public string Base64Image { get; set; }
-		}
-	}
+	//	public class Entry
+	//	{
+	//		public Page Page { get; set; }
+	//		public string Base64Image { get; set; }
+	//	}
+	//}
 }

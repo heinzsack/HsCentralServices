@@ -7,7 +7,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using CsWpfBase.Global.transmission.clientIdentification;
+using CsWpfBase.Global.remote.clientIdentification;
 using HsCentralServiceWeb._dbs.hsserver.centralservicedb.rows;
 using HsCentralServiceWeb._sys._extensions;
 using HsCentralServiceWebInterfacesClient.steadyConnection.hubs.ringDistribution;
@@ -77,17 +77,17 @@ namespace HsCentralServiceWeb._sys.hubs.ringDistribution
 		#endregion
 
 
-		[HubMethodName(nameof(IRingDistributionHubProtocol.UpdatePlayerData))]
-		public void UpdatePlayerData(PlayerDataArgs args)
-		{
-			var instance = GetIdentification(Context);
-			Sys.Services.RingDistribution.Communication.UpdatePlayerData(instance, args);
-		}
+		//[HubMethodName(nameof(IRingDistributionHubProtocol.UpdatePlayerData))]
+		//public void UpdatePlayerData(PlayerDataArgs args)
+		//{
+		//	var instance = GetIdentification(Context);
+		//	Sys.Services.RingDistribution.Communication.UpdatePlayerData(instance, args);
+		//}
 
-		[HubMethodName(nameof(IRingDistributionHubProtocol.RingValidation))]
-		public RingValidationResultArgs RingValidation(RingValidationArgs args)
-		{
-			return Sys.Services.RingDistribution.Communication.RingValidation(GetIdentification(Context), args);
-		}
+		//[HubMethodName(nameof(IRingDistributionHubProtocol.RingValidation))]
+		//public RingValidationResultArgs RingValidation(RingValidationArgs args)
+		//{
+		//	return Sys.Services.RingDistribution.Communication.RingValidation(GetIdentification(Context), args);
+		//}
 	}
 }

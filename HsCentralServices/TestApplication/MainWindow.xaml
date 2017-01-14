@@ -14,5 +14,8 @@
 			<StringEditor x:Name="IdSelector" Header="ID" Validation="IdSelector_OnValidation" />
 			<GlyphIconButton Icon="G_Download" Content="Download" Click="DownloadClick" HorizontalAlignment="Right" />
 		</EditorGroup>
+		<EditorGroup Header="Event">
+			<GlyphIconButton Icon="G_Download" Content="Send Event" Click="SendEventClick" HorizontalAlignment="Right" />
+		</EditorGroup>
 	</EditorGrid>
 </CsWindow>

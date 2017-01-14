@@ -20,6 +20,7 @@ namespace DbsGenerator
 	public partial class App
 	{
 		static readonly string SolutionFolder = new FileInfo("temp").Directory.GoUpward_Until("HsCentralServices").FullName;
+		static readonly string RingPlayerSolutionFolder = new FileInfo("temp").Directory.GoUpward_Until("SharedComponents").Combine("RingPlayerSolution").FullName;
 
 		static void Main(string[] args)
 		{
@@ -37,9 +38,9 @@ namespace DbsGenerator
 				DbAccounts.Generator.RingPlayer.DataSource,
 				DbAccounts.Generator.RingPlayer.UserName,
 				DbAccounts.Generator.RingPlayer.Password,
-				Path.Combine(SolutionFolder, @"HsCentralServiceWeb.Interfaces.Server", "_dbs"),
-				Path.Combine(SolutionFolder, "HsCentralServiceWeb.Interfaces.Server", "HsCentralServiceWeb.Interfaces.Server.csproj"),
-				"HsCentralServiceWebInterfacesServer._dbs"
+				Path.Combine(RingPlayerSolutionFolder, @"RingPlayer24", "_dbs"),
+				Path.Combine(RingPlayerSolutionFolder, "RingPlayer24", "RingPlayer24.csproj"),
+				"RingPlayer24._dbs"
 			);
 			Environment.Exit(0);
 		}

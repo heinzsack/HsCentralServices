@@ -1,4 +1,4 @@
-﻿@using HsCentralServiceWeb._sys
+﻿@*@using HsCentralServiceWeb._sys
 @using HsCentralServiceWebInterfacesServer._dbs.hsserver.ringplayerdb.rows
 @model HsCentralServiceWeb.Models.RingController.ViewModel
 
@@ -25,7 +25,7 @@
 	<tbody>
 		@for (int i = 0; i < Model.Ring.ScheduledPageGroups.Length; i++)
 			{
-			ScheduledPageGroup scheduledPageGroup = Model.Ring.ScheduledPageGroups[i]; string cla = "";
+			RingMetaData.ScheduledPageGroup scheduledPageGroup = Model.Ring.ScheduledPageGroups[i]; string cla = "";
 			TimeSpan startTime = scheduledPageGroup.StartTime.TimeOfDay;
 			TimeSpan endTime = startTime.Add(scheduledPageGroup.Duration);
 			bool isActive = startTime < DateTime.Now.TimeOfDay && endTime > DateTime.Now.TimeOfDay;
@@ -44,10 +44,9 @@
 				<td>@scheduledPageGroup.Duration.ToString("hh\\:mm\\:ss")</td>
 				<td>[NOT IMPLEMENTED]</td>
 				<td style="width: 100%">@scheduledPageGroup.PageGroup.Name</td>
-@*				<td><a href="@Url.Action("ViewMmUnit", "Ring", new {remoteInstanceId = Model.RemoteInstance.Id, ringId = Model.Ring.Id, pageGroupId = scheduledPageGroup.PageGroup.Id })" class="btn btn-sm btn-outline-danger">@scheduledPageGroup.PageSchedules.Length</a></td>*@
 				<td><a href="@Url.Action("ViewMmUnit", "Ring", new {Id = scheduledPageGroup.PageGroup.Id })" 
 					   class="btn btn-sm btn-outline-danger">@scheduledPageGroup.NumberOfLogicalPages</a></td>
 			</tr>
 			}
 	</tbody>
-</table>
+</table>*@

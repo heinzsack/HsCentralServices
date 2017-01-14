@@ -7,7 +7,6 @@
 using System;
 using System.Collections.Generic;
 using HsCentralServiceWeb._dbs.hsserver.centralservicedb.rows;
-using HsCentralServiceWebInterfacesServer._dbs.hsserver.ringplayerdb.rows;
 
 
 
@@ -16,17 +15,17 @@ using HsCentralServiceWebInterfacesServer._dbs.hsserver.ringplayerdb.rows;
 
 namespace HsCentralServiceWeb.Models.RingController
 {
-	public class ViewModel
-		{
+	//public class ViewModel
+	//	{
 
 
-		public ViewModel(RemoteInstance remoteInstance, RingMetaData ring)
-		{
-			RemoteInstance = remoteInstance;
-			Ring = ring;
-		}
+	//	public ViewModel(RemoteInstance remoteInstance, RingMetaData ring)
+	//	{
+	//		RemoteInstance = remoteInstance;
+	//		Ring = ring;
+	//	}
 
-		public RemoteInstance RemoteInstance { get; set; }
-		public RingMetaData Ring { get; set; }
-	}
+	//	public RemoteInstance RemoteInstance { get; set; }
+	//	public RingMetaData Ring { get; set; }
+	//}
 }

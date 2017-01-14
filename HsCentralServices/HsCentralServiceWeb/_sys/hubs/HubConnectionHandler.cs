@@ -1,8 +1,12 @@
-﻿using System;
+﻿// Copyright (c) 2016 All rights reserved Christian Sack
+// <author>Christian Sack</author>
+// <email>christian@sack.at</email>
+// <website>christian.sack.at</website>
+// <date>2017-01-14</date>
+
+using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Windows.Media.Animation;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
 
@@ -15,8 +19,9 @@ namespace HsCentralServiceWeb._sys.hubs
 {
 	public class HubConnectionHandler<TIdentification>
 	{
-
 		private readonly Func<HubCallerContext, TIdentification> _getIdentificationFunc;
+		private IHubContext Context { get; }
+		private Dictionary<TIdentification, HubConnection> Connections { get; } = new Dictionary<TIdentification, HubConnection>();
 
 		public HubConnectionHandler(IHubContext context, Func<HubCallerContext, TIdentification> getIdentificationFunc)
 		{
@@ -25,8 +30,6 @@ namespace HsCentralServiceWeb._sys.hubs
 		}
 
 		public IEnumerable<HubConnection> CurrentConnections => Connections.Values;
-		private IHubContext Context { get; }
-		private Dictionary<TIdentification, HubConnection> Connections { get; } = new Dictionary<TIdentification, HubConnection>();
 
 
 		public dynamic GetConnection(TIdentification identification)
@@ -34,7 +37,7 @@ namespace HsCentralServiceWeb._sys.hubs
 			lock (this)
 			{
 				HubConnection connection;
-				if(!Connections.TryGetValue(identification, out connection))
+				if (!Connections.TryGetValue(identification, out connection))
 					return null;
 
 				return Context.Clients.Clients(connection.EstablishedConnections.ToList());
@@ -45,7 +48,7 @@ namespace HsCentralServiceWeb._sys.hubs
 		{
 			lock (this)
 			{
-				HubConnection connection = GetOrCreate_ClientConnection(hc);
+				var connection = GetOrCreate_ClientConnection(hc);
 				connection.EstablishedConnections.Add(hc.ConnectionId);
 			}
 		}
@@ -54,7 +57,7 @@ namespace HsCentralServiceWeb._sys.hubs
 		{
 			lock (this)
 			{
-				HubConnection connection = GetOrCreate_ClientConnection(hc);
+				var connection = GetOrCreate_ClientConnection(hc);
 				connection.EstablishedConnections.Add(hc.ConnectionId);
 			}
 		}
@@ -63,7 +66,7 @@ namespace HsCentralServiceWeb._sys.hubs
 		{
 			lock (this)
 			{
-				HubConnection connection = Connections.Values.FirstOrDefault(x => x.EstablishedConnections.Contains(hc.ConnectionId));
+				var connection = Connections.Values.FirstOrDefault(x => x.EstablishedConnections.Contains(hc.ConnectionId));
 				if (connection == null)
 					return;
 				connection.EstablishedConnections.Remove(hc.ConnectionId);
@@ -74,18 +77,18 @@ namespace HsCentralServiceWeb._sys.hubs
 
 		private HubConnection GetOrCreate_ClientConnection(HubCallerContext context)
 		{
-		lock (this)
+			lock (this)
 			{
-				TIdentification identification = _getIdentificationFunc(context);
+				var identification = _getIdentificationFunc(context);
 				HubConnection connection;
 				if (!Connections.TryGetValue(identification, out connection))
-					{
+				{
 					connection = new HubConnection(identification);
 					Connections.Add(identification, connection);
-					}
-				return connection;
 				}
+				return connection;
 			}
+		}
 
 
 

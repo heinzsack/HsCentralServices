@@ -32,7 +32,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\</OutputPath>
-    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;CS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -156,7 +156,7 @@
     <Compile Include="Controllers\RemoteManagementController.cs" />
     <Compile Include="Controllers\RingController.cs" />
     <Compile Include="Controllers\RingDistributionController.cs" />
-    <Compile Include="Controllers\services\DbProxyServiceController.cs" />
+    <Compile Include="Controllers\services\DbAccessController.cs" />
     <Compile Include="Controllers\services\FileRepoController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -169,6 +169,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="_sys\data\Data.cs" />
+    <Compile Include="_sys\hubs\CsNotificationHub.cs" />
     <Compile Include="_sys\hubs\HubConnectionHandler.cs" />
     <Compile Include="_sys\hubs\hubs.cs" />
     <Compile Include="_sys\hubs\management\RemoteManagementHub.cs" />
@@ -177,14 +178,6 @@
     <Compile Include="_sys\hubs\ringDistribution\RingDistributionHubModule.cs" />
     <Compile Include="_sys\hubs\webManagement\RingDistributionHubModule.cs" />
     <Compile Include="_sys\hubs\webManagement\WwwSurferNotificationHub.cs" />
-    <Compile Include="_sys\services\dbproxy\DbProxyService.cs" />
-    <Compile Include="_sys\services\ringdistribution\communication\RingDistributionCommunication.cs" />
-    <Compile Include="_sys\services\ringdistribution\generate\RingDistributionGenerator.cs" />
-    <Compile Include="_sys\services\ringdistribution\RingDistribution.cs" />
-    <Compile Include="_sys\services\ringdistribution\storage\RingDistributionStorage.cs" />
-    <Compile Include="_sys\services\ringdistribution\storage\RingDistributionStorageEntitys.cs" />
-    <Compile Include="_sys\services\ringdistribution\storage\RingDistributionStoragePaths.cs" />
-    <Compile Include="_sys\services\Services.cs" />
     <Compile Include="_sys\Sys.cs" />
     <Compile Include="_sys\_extensions\CsClientIdentityExtensions.cs" />
     <Compile Include="_sys\_extensions\ObjectExtensions.cs" />
@@ -245,10 +238,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\DbAccess\" />
     <Folder Include="Views\DbProxyService\" />
     <Folder Include="Views\FileRepo\" />
     <Folder Include="Views\RingDistribution\" />
-    <Folder Include="_sys\services\dbManagement\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -292,10 +285,6 @@
     <ProjectReference Include="..\HsCentralServiceWeb.Interfaces.Client\HsCentralServiceWeb.Interfaces.Client.csproj">
       <Project>{595f881e-6f13-4248-b07b-cea9bf225d15}</Project>
       <Name>HsCentralServiceWeb.Interfaces.Client</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\HsCentralServiceWeb.Interfaces.Server\HsCentralServiceWeb.Interfaces.Server.csproj">
-      <Project>{7f3e2872-8300-4a56-8cc1-1e87244dacee}</Project>
-      <Name>HsCentralServiceWeb.Interfaces.Server</Name>
     </ProjectReference>
     <Compile Include="_dbs\hsserver\HsServerContext.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
     <Compile Include="_dbs\hsserver\centralservicedb\dataset\CentralServiceDb.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]">

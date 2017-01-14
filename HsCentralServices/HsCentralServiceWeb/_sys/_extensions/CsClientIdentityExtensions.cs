@@ -6,8 +6,8 @@
 
 using System;
 using CsWpfBase.Ev.Public.Extensions;
-using CsWpfBase.Global.transmission.clientIdentification;
-using CsWpfBase.Global.transmission.clientIdentification.interfaces;
+using CsWpfBase.Global.remote.clientIdentification;
+using CsWpfBase.Global.remote.clientIdentification.interfaces;
 using HsCentralServiceWeb._dbs.hsserver.centralservicedb.dataset;
 using HsCentralServiceWeb._dbs.hsserver.centralservicedb.rows;
 

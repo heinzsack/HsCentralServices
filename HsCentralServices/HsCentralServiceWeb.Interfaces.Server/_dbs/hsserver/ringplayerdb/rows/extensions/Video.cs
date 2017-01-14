@@ -8,6 +8,7 @@ using System;
 using System.Windows;
 using System.Windows.Markup;
 using System.Windows.Media;
+using CsWpfBase.Global;
 using PlayerControls.Interfaces;
 
 
@@ -17,7 +18,7 @@ using PlayerControls.Interfaces;
 
 namespace HsCentralServiceWebInterfacesServer._dbs.hsserver.ringplayerdb.rows
 {
-	partial class Video : IVideoVisual, IDownloadAble
+	partial class Video : IVideoVisual
 	{
 		#region Overrides/Interfaces
 		[DependsOn(nameof(MarginThickness))]
@@ -25,15 +26,6 @@ namespace HsCentralServiceWebInterfacesServer._dbs.hsserver.ringplayerdb.rows
 
 		[DependsOn(nameof(SortOrder))]
 		public int ISortOrder => SortOrder;
-
-		[DependsOn(nameof(FileIdentifier))]
-		public string IFileName => Table.OnFileRequested(this);
-
-		[DependsOn(nameof(FileIdentifier))]
-		public Guid IFileIdentifier => FileIdentifier;
-
-		[DependsOn(nameof(Extension))]
-		public string IExtension => Extension;
 
 		[DependsOn(nameof(Background))]
 		public Color IBackground => Convert.Color.Getter(Background);
@@ -46,6 +38,9 @@ namespace HsCentralServiceWebInterfacesServer._dbs.hsserver.ringplayerdb.rows
 
 		[DependsOn(nameof(Rotation))]
 		public double IRotation => Rotation;
+
+		[DependsOn(nameof(VideoId))]
+		public string IFilePath => CsGlobal.Remote.FileRepository.FindOrDownload(VideoId)?.LocalCachedFile?.FullName;
 		#endregion
 	}
 }

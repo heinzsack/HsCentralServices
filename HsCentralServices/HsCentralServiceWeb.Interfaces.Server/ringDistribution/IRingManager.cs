@@ -47,7 +47,6 @@ namespace HsCentralServiceWebInterfacesServer.ringDistribution
 
 		void Update(IServer serverContext, string computerName, RingMetaData ring);
 
-		PageGroup GeneratePageGroup(IServer serverContext, Guid mmUnitId, RingMetaData ring);
 
 		/// <summary>Should return an always valid file path for the given <paramref name="id" />.</summary>
 		/// <param name="serverContext">The current active server context.</param>

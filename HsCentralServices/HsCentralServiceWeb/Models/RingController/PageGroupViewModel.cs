@@ -6,7 +6,6 @@
 
 using System;
 using HsCentralServiceWeb._dbs.hsserver.centralservicedb.rows;
-using HsCentralServiceWebInterfacesServer._dbs.hsserver.ringplayerdb.rows;
 
 
 
@@ -15,20 +14,20 @@ using HsCentralServiceWebInterfacesServer._dbs.hsserver.ringplayerdb.rows;
 
 namespace HsCentralServiceWeb.Models.RingController
 {
-	public class PageGroupViewModel
-	{
-		public PageGroupViewModel(RemoteInstance remoteInstance, RingMetaData ring,
-			PageGroup pageGroup)
-		{
-			RemoteInstance = remoteInstance;
-			Ring = ring;
-			PageGroup = pageGroup;
-		}
+	//public class PageGroupViewModel
+	//{
+	//	public PageGroupViewModel(RemoteInstance remoteInstance, RingMetaData ring,
+	//		PageGroup pageGroup)
+	//	{
+	//		RemoteInstance = remoteInstance;
+	//		Ring = ring;
+	//		PageGroup = pageGroup;
+	//	}
 
-		public RemoteInstance RemoteInstance { get; set; }
-		public RingMetaData Ring { get; set; }
-		public PageGroup PageGroup { get; set; }
-	}
+	//	public RemoteInstance RemoteInstance { get; set; }
+	//	public RingMetaData Ring { get; set; }
+	//	public PageGroup PageGroup { get; set; }
+	//}
 
 
 }
