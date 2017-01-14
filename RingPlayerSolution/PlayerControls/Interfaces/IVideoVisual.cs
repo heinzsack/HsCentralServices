@@ -9,6 +9,8 @@ namespace PlayerControls.Interfaces
 	{
 	public interface IVideoVisual : IBaseVisual
 		{
-		string IFullFilePath { get; }
+		string IFileName { get; }
+		Guid IFileIdentifier { get; }
+		string IExtension { get; }
 		}
 	}

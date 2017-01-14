@@ -19,7 +19,7 @@ using PlayerControls.Interfaces;
 
 namespace HsCentralServiceWebInterfacesServer._dbs.hsserver.ringplayerdb.rows
 {
-	partial class Image : IImageVisual
+	partial class Image : IImageVisual, IDownloadAble
 	{
 		private static readonly object imageLock = new object();
 
