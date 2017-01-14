@@ -59,7 +59,6 @@
     <Compile Include="Controls\VisualSelector.cs" />
     <Compile Include="Extensions\PageExtensions.cs" />
     <Compile Include="Interfaces\IBaseVisual.cs" />
-    <Compile Include="Interfaces\IDownloadAble.cs" />
     <Compile Include="Interfaces\IDuratedPage.cs" />
     <Compile Include="Interfaces\IImageVisual.cs" />
     <Compile Include="Interfaces\IPage.cs" />
@@ -88,10 +87,6 @@
     <Compile Include="Themes\RingPlayer24.xaml.cs">
       <DependentUpon>RingPlayer24.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Storage\LruStorage.cs" />
-    <Compile Include="Storage\StoreForDownloadables.cs" />
-    <Compile Include="Storage\Utils\FileDownloader.cs" />
-    <Compile Include="Storage\Utils\IContainDownloadInformations.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

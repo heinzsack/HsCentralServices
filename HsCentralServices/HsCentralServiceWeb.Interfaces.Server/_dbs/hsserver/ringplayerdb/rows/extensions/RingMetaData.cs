@@ -10,21 +10,6 @@ namespace HsCentralServiceWebInterfacesServer._dbs.hsserver.ringplayerdb.rows
 	{
 	partial class RingMetaData
 		{
-
-		public Dictionary<Guid, String> SenderNames = new Dictionary<Guid, string>()
-			{
-				{Guid.Parse("87A84BBD-9765-4B8B-B5A7-0A1B9C1EB4BF"), "Archiv"},
-				{Guid.Parse("540688C9-7259-4EB6-AC42-1F34E1542BF0"), "Haus"},
-				{Guid.Parse("54A498C9-4272-478D-9D7F-201073D62305"), "KircheAdvent"},
-				{Guid.Parse("029B51A5-7BEF-469E-A9DD-2B0F629473F1"), "Heinz"},
-				{Guid.Parse("BB5BDABB-83FE-4001-946D-37C3EA991018"), "Pauli"},
-				{Guid.Parse("D1AB6B15-6A9C-441B-8F37-5E65CD172B8A"), "Kirche"},
-				{Guid.Parse("51B2E946-AA46-436A-97AE-A2C95C753078"), "KaufPark"},
-				{Guid.Parse("BABA6EF3-9905-4925-ADA8-BC5EB0A3B656"), "Clone von Heinz"},
-				{Guid.Parse("5D680DE3-94E2-4AC6-AC2F-BDBA344AC8EC"), "WohnPark"},
-				{Guid.Parse("6C7DDD6A-A6CA-42FF-A794-D305EA7AE6FF"), "Schule"},
-				{Guid.Parse("7615CCCD-8AA1-44B0-8805-DECC5CC1003A"), "WendelTreppe"}
-			};
 		private ScheduledPageGroup[] _scheduledPageGroups;
 
 		public ScheduledPageGroup[] ScheduledPageGroups
@@ -63,10 +48,6 @@ namespace HsCentralServiceWebInterfacesServer._dbs.hsserver.ringplayerdb.rows
 			}
 
 
-public String SenderName
-	{
-	get { return SenderNames[SenderId]; }
-	}
 
 
 		private string _sourceFileName;

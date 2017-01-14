@@ -17,7 +17,7 @@ using PlayerControls.Interfaces;
 
 namespace HsCentralServiceWebInterfacesServer._dbs.hsserver.ringplayerdb.rows
 {
-	partial class Video : IVideoVisual, IDownloadAble
+	partial class Video : IVideoVisual
 	{
 		#region Overrides/Interfaces
 		[DependsOn(nameof(MarginThickness))]
@@ -46,6 +46,9 @@ namespace HsCentralServiceWebInterfacesServer._dbs.hsserver.ringplayerdb.rows
 
 		[DependsOn(nameof(Rotation))]
 		public double IRotation => Rotation;
-		#endregion
+
+	public string IFullFilePath { get; }
+
+	#endregion
 	}
 }

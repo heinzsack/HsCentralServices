@@ -25,7 +25,7 @@ namespace TestApplication
 		public MainWindow()
 		{
 			CsGlobal.Install(GlobalFunctions.Storage);
-			CsRemote.InstallClient("http://localhost:16411", "LocalServerTest");
+			CsGlobal.InstallRemote("http://localhost:16411", "LocalServerTest");
 
 			InitializeComponent();
 			FileSelector.ValuePath = new FileInfo(@"C:\Data\Personal\OneDrive\Bilder\Wallpaper\6.jpg");
@@ -34,13 +34,13 @@ namespace TestApplication
 
 		private void DownloadClick(object sender, RoutedEventArgs e)
 		{
-			var filedownload = CsRemote.Client.FileRepository.FindOrDownloadAsync(Guid.Parse(IdSelector.Value));
+			var filedownload = CsGlobal.Remote.FileRepository.FindOrDownloadAsync(Guid.Parse(IdSelector.Value));
 			filedownload.ShowDialog();
 		}
 
 		private void UploadClick(object sender, RoutedEventArgs e)
 		{
-			var fileupload = CsRemote.Client.FileRepository.UploadAsync(FileSelector.ValuePath);
+			var fileupload = CsGlobal.Remote.FileRepository.UploadAsync(FileSelector.ValuePath);
 			fileupload.ShowDialog();
 			if (fileupload.IsSucceeded)
 			IdSelector.Value = fileupload.Result[0].Id.ToString();

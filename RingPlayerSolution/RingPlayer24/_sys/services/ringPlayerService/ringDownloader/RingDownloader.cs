@@ -11,7 +11,9 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using CsWpfBase.Ev.Public.Extensions;
+using CsWpfBase.Global;
 using CsWpfBase.Global.transmission.clientIdentification;
+using CsWpfBase.Remote.clientSide.fileRepository.components.parts;
 using CsWpfBase.Utilitys;
 using HsCentralServiceWebInterfacesClient.steadyConnection.hubs.ringDistribution.newRingAvailableArgs;
 using HsCentralServiceWebInterfacesClient.steadyConnection.hubs.ringDistribution.ringValidationArgs;
@@ -116,7 +118,11 @@ namespace RingPlayer24._sys.services.ringPlayerService.ringDownloader
 			using (IsFileDownloading.Activate())
 			{
 				Sys.Services.RingPlayerService.SendInstanceArgs();
-				var downloadInformations = new DownloadInformations(Arguments.ImageDownloadUrl, Arguments.VideoDownloadUrl, Arguments.ImageVideoReplacementString);
+			var ringDependencys = CurrentRing.DataSet.Images.Select(x=>x.ImageId).Union(CurrentRing.DataSet.Videos.Select(x=>x.VideoId)).Distinct().ToArray();
+
+			FileRepoInfo[] downloads = CsGlobal.Remote.FileRepository.FindOrDownload(ringDependencys);
+
+			var downloadInformations = new DownloadInformations(Arguments.ImageDownloadUrl, Arguments.VideoDownloadUrl, Arguments.ImageVideoReplacementString);
 				var downloader = Sys.Storage.Lru.GetFileDownloader(MissingImages, MissingVideos, downloadInformations);
 				downloader.Start().Wait();
 			}
