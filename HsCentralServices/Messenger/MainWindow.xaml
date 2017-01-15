@@ -1,0 +1,18 @@
+﻿<CsWindow x:Class="Messenger.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Messenger"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="525" Padding="10,20,10,20" FooterVisibility="Collapsed">
+	<CsWindow.Header>
+		<Border Background="Transparent" AWindowDragMove.IsActive="True" Padding="5">
+			<TextBlock Text="MainWindow" FontSize="20"/>
+		</Border>
+	</CsWindow.Header>
+	<EditorGrid Margin="0" >
+        <StringEditor EditorGrid.HasStarRow="True" AcceptsReturn="True" VerticalContentAlignment="Top" HeaderVerticalAlignment="Top" x:Name="MessageInput"/>
+		<GlyphIconButton Icon="H_Send" Click="SendClicked" Content="Senden"/>
+    </EditorGrid>
+</CsWindow>

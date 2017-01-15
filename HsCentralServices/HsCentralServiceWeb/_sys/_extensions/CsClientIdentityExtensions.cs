@@ -51,6 +51,7 @@ namespace HsCentralServiceWeb._sys._extensions
 				id.Application.CopyTo<ICsClientInfoApp>(application);
 				id.AppInstance.CopyTo<ICsClientInfoAppInstance>(appInstance);
 
+				appInstance.Created = DateTime.Now;
 				appInstance.LastSeen = DateTime.Now;
 
 				user.RemoteComputer = computer;
