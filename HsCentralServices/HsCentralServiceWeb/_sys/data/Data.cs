@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Web;
 using CsWpfBase.Db.models.helper;
+using CsWpfBase.Global;
 using DbsGenerator;
 using HsCentralServiceWeb._dbs.hsserver;
 using HsCentralServiceWeb._dbs.hsserver.centralservicedb.dataset;
@@ -28,6 +29,7 @@ namespace HsCentralServiceWeb._sys.data
 			{
 				if(_hsserver != null)
 					return _hsserver;
+
 				_hsserver = new HsServerContext();
 				_hsserver.Set_DbProxy<HsServerDirectConnector>();
 				_hsserver.LoadConstraints();

@@ -153,9 +153,8 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\OwinStartup.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\RemoteManagementController.cs" />
-    <Compile Include="Controllers\RingController.cs" />
-    <Compile Include="Controllers\RingDistributionController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PartialViewsController.cs" />
     <Compile Include="Controllers\services\DbAccessController.cs" />
     <Compile Include="Controllers\services\FileRepoController.cs" />
     <Compile Include="Global.asax.cs">
@@ -169,18 +168,13 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="_sys\data\Data.cs" />
-    <Compile Include="_sys\hubs\CsNotificationHub.cs" />
+    <Compile Include="_sys\hubs\CsRemoteEventHub.cs" />
     <Compile Include="_sys\hubs\HubConnectionHandler.cs" />
     <Compile Include="_sys\hubs\hubs.cs" />
-    <Compile Include="_sys\hubs\management\RemoteManagementHub.cs" />
-    <Compile Include="_sys\hubs\management\RemoteManagementHubModule.cs" />
-    <Compile Include="_sys\hubs\ringDistribution\RingDistributionHub.cs" />
-    <Compile Include="_sys\hubs\ringDistribution\RingDistributionHubModule.cs" />
-    <Compile Include="_sys\hubs\webManagement\RingDistributionHubModule.cs" />
+    <Compile Include="_sys\hubs\webManagement\WwwSurferNotificationHubModule.cs" />
     <Compile Include="_sys\hubs\webManagement\WwwSurferNotificationHub.cs" />
     <Compile Include="_sys\Sys.cs" />
     <Compile Include="_sys\_extensions\CsClientIdentityExtensions.cs" />
-    <Compile Include="_sys\_extensions\ObjectExtensions.cs" />
     <Compile Include="_sys\_extensions\_razorExtensions\AjaxExtensions.cs" />
     <Compile Include="_sys\_extensions\_razorExtensions\HelperBase.cs" />
   </ItemGroup>
@@ -233,15 +227,12 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Shared\controls\List_RemoteLogs.cshtml" />
-    <Content Include="Views\Shared\controls\List_RingDistributionConnectedClients.cshtml" />
+    <Content Include="Views\Shared\controls\List_ConnectedClients.cshtml" />
     <Content Include="Views\Shared\controls\List_RingDistributionUnConnectedClients.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\DbAccess\" />
-    <Folder Include="Views\DbProxyService\" />
-    <Folder Include="Views\FileRepo\" />
-    <Folder Include="Views\RingDistribution\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -250,7 +241,6 @@
     <Compile Include="_dbs\hsserver\centralservicedb\rows\extensions\RemoteApplication.cs" />
     <Compile Include="_dbs\hsserver\centralservicedb\rows\extensions\RemoteComputer.cs" />
     <Compile Include="_dbs\hsserver\centralservicedb\rows\extensions\RemoteInstance.cs" />
-    <Compile Include="_dbs\hsserver\centralservicedb\rows\extensions\RemoteRingPlayerInstanceArg.cs" />
     <Compile Include="_dbs\hsserver\centralservicedb\rows\extensions\RemoteUser.cs" />
     <Compile Include="_dbs\hsserver\centralservicedb\rows\extensions\WebConfiguration.cs" />
     <Compile Include="_dbs\hsserver\centralservicedb\tables\extensions\WebConfigurationsTable.cs">
@@ -282,10 +272,6 @@
       <Project>{DF0322D9-BF49-4245-9001-00060FF7A8CA}</Project>
       <Name>PlayerControls</Name>
     </ProjectReference>
-    <ProjectReference Include="..\HsCentralServiceWeb.Interfaces.Client\HsCentralServiceWeb.Interfaces.Client.csproj">
-      <Project>{595f881e-6f13-4248-b07b-cea9bf225d15}</Project>
-      <Name>HsCentralServiceWeb.Interfaces.Client</Name>
-    </ProjectReference>
     <Compile Include="_dbs\hsserver\HsServerContext.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
     <Compile Include="_dbs\hsserver\centralservicedb\dataset\CentralServiceDb.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]">
       <SubType>Component</SubType>
@@ -311,6 +297,9 @@
     <Compile Include="_dbs\hsserver\centralservicedb\tables\RemoteInstancesTable.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="_dbs\hsserver\centralservicedb\tables\RemoteConnectionsTable.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="_dbs\hsserver\centralservicedb\tables\RemoteLogsTable.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]">
       <SubType>Component</SubType>
     </Compile>
@@ -318,9 +307,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="_dbs\hsserver\centralservicedb\tables\SysdiagramsTable.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="_dbs\hsserver\centralservicedb\tables\RemoteRingPlayerManagementsTable.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="_dbs\hsserver\centralservicedb\views\ShowInstancenSituationView.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]">
@@ -333,10 +319,10 @@
     <Compile Include="_dbs\hsserver\centralservicedb\rowinterfaces\IRemoteUser.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
     <Compile Include="_dbs\hsserver\centralservicedb\rowinterfaces\IWebLog.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
     <Compile Include="_dbs\hsserver\centralservicedb\rowinterfaces\IRemoteInstance.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\centralservicedb\rowinterfaces\IRemoteConnection.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
     <Compile Include="_dbs\hsserver\centralservicedb\rowinterfaces\IRemoteLog.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
     <Compile Include="_dbs\hsserver\centralservicedb\rowinterfaces\IWebConfiguration.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
     <Compile Include="_dbs\hsserver\centralservicedb\rowinterfaces\ISysdiagram.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
-    <Compile Include="_dbs\hsserver\centralservicedb\rowinterfaces\IRemoteRingPlayerManagement.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
     <Compile Include="_dbs\hsserver\centralservicedb\rowpocos\Poco_RemoteComputer.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
     <Compile Include="_dbs\hsserver\centralservicedb\rowpocos\Poco_RemoteApplication.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
     <Compile Include="_dbs\hsserver\centralservicedb\rowpocos\Poco_WebUser.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
@@ -344,10 +330,10 @@
     <Compile Include="_dbs\hsserver\centralservicedb\rowpocos\Poco_RemoteUser.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
     <Compile Include="_dbs\hsserver\centralservicedb\rowpocos\Poco_WebLog.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
     <Compile Include="_dbs\hsserver\centralservicedb\rowpocos\Poco_RemoteInstance.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\centralservicedb\rowpocos\Poco_RemoteConnection.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
     <Compile Include="_dbs\hsserver\centralservicedb\rowpocos\Poco_RemoteLog.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
     <Compile Include="_dbs\hsserver\centralservicedb\rowpocos\Poco_WebConfiguration.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
     <Compile Include="_dbs\hsserver\centralservicedb\rowpocos\Poco_Sysdiagram.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
-    <Compile Include="_dbs\hsserver\centralservicedb\rowpocos\Poco_RemoteRingPlayerManagement.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
     <Compile Include="_dbs\hsserver\centralservicedb\rows\RemoteComputer.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
     <Compile Include="_dbs\hsserver\centralservicedb\rows\RemoteApplication.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
     <Compile Include="_dbs\hsserver\centralservicedb\rows\WebUser.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
@@ -355,10 +341,10 @@
     <Compile Include="_dbs\hsserver\centralservicedb\rows\RemoteUser.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
     <Compile Include="_dbs\hsserver\centralservicedb\rows\WebLog.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
     <Compile Include="_dbs\hsserver\centralservicedb\rows\RemoteInstance.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\centralservicedb\rows\RemoteConnection.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
     <Compile Include="_dbs\hsserver\centralservicedb\rows\RemoteLog.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
     <Compile Include="_dbs\hsserver\centralservicedb\rows\WebConfiguration.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
     <Compile Include="_dbs\hsserver\centralservicedb\rows\Sysdiagram.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
-    <Compile Include="_dbs\hsserver\centralservicedb\rows\RemoteRingPlayerManagement.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
     <Compile Include="_dbs\hsserver\centralservicedb\rows\ShowInstancenSituation.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
   </ItemGroup>
   <PropertyGroup>
@@ -379,7 +365,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>16411</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:16411/</IISUrl>
+          <IISUrl>http://localhost:16412/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

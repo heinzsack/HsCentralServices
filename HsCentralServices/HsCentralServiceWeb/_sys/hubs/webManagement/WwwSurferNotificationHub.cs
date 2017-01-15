@@ -2,7 +2,7 @@
 // <author>Christian Sack</author>
 // <email>christian@sack.at</email>
 // <website>christian.sack.at</website>
-// <date>2016-09-18</date>
+// <date>2017-01-14</date>
 
 using System;
 using System.Linq;
@@ -30,58 +30,40 @@ namespace HsCentralServiceWeb._sys.hubs.webManagement
 		{
 			return EnterNotificationsScript(formId, nameof(WwwSurferNotificationHubModule.LogsChanged));
 		}
-		public static MvcHtmlString Attach_RingDistributionClientsChanged(string formId)
+
+		public static MvcHtmlString Attach_ConnectedClientsChanged(string formId)
 		{
-			return EnterNotificationsScript(formId, nameof(WwwSurferNotificationHubModule.RingDistributionClientsChanged));
+			return EnterNotificationsScript(formId, nameof(WwwSurferNotificationHubModule.ConnectedClientsChanged));
 		}
 
-		public static MvcHtmlString Attach_ComputerConnectionChanged(string formId)
+
+		public static void SendSignal(Guid[] ids = null, [CallerMemberName] string signal = null)
+		{
+			var hubContext = GlobalHost.ConnectionManager.GetHubContext<WwwSurferNotificationHub>();
+			hubContext.Clients.Group(signal).Invoke(signal);
+
+
+			if (ids == null)
+				return;
+			foreach (var id in ids)
 			{
-			return EnterNotificationsScript(formId, nameof(WwwSurferNotificationHubModule.ComputerConnectionChanged));
+				hubContext.Clients.Group($"{signal}:{id}").Invoke(signal);
 			}
-		
+		}
+
 
 
 		private static string GetIdentification(HubCallerContext hubCallerContext)
 		{
 			return hubCallerContext.ConnectionId;
 		}
+
 		private static MvcHtmlString EnterNotificationsScript(string formid, string signal, Guid[] ids = null)
 		{
-			TagBuilder builder = new TagBuilder("script");
+			var builder = new TagBuilder("script");
 			builder.Attributes.Add("type", "text/javascript");
 			builder.InnerHtml = ids != null ? $"EnterNotification($('#{formid}'), '{signal}', '{ids.Select(x => x.ToString()).Join()}');" : $"EnterNotification($('#{formid}'), '{signal}', '');";
 			return new MvcHtmlString(builder.ToString());
-		}
-
-
-		public static void SendSignal(Guid[] ids = null, [CallerMemberName] string signal = null)
-		{
-			IHubContext hubContext = GlobalHost.ConnectionManager.GetHubContext<WwwSurferNotificationHub>();
-			hubContext.Clients.Group(signal).Invoke(signal);
-
-
-			if (ids == null)
-				return;
-			foreach (Guid id in ids)
-			{
-				hubContext.Clients.Group($"{signal}:{id}").Invoke(signal);
-			}
-		}
-
-		[UsedImplicitly]
-		public void JoinSignal(string signal, string mergedIds)
-		{
-			if(string.IsNullOrEmpty(mergedIds))
-			{
-				Groups.Add(Context.ConnectionId, $"{signal}");
-				return;
-			}
-			string[] ids = mergedIds.Split(", ");
-			foreach(string id in ids)
-			{
-				Groups.Add(Context.ConnectionId, $"{signal}:{id}");
-			}
 		}
 
 
@@ -104,5 +86,21 @@ namespace HsCentralServiceWeb._sys.hubs.webManagement
 			return base.OnDisconnected(stopCalled);
 		}
 		#endregion
+
+
+		[UsedImplicitly]
+		public void JoinSignal(string signal, string mergedIds)
+		{
+			if (string.IsNullOrEmpty(mergedIds))
+			{
+				Groups.Add(Context.ConnectionId, $"{signal}");
+				return;
+			}
+			var ids = mergedIds.Split(", ");
+			foreach (var id in ids)
+			{
+				Groups.Add(Context.ConnectionId, $"{signal}:{id}");
+			}
+		}
 	}
 }

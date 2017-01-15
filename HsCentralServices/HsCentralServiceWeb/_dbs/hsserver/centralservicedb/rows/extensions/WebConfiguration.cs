@@ -2,9 +2,15 @@
 // <author>Christian Sack</author>
 // <email>christian@sack.at</email>
 // <website>christian.sack.at</website>
-// <date>2016-09-18</date>
+// <date>2017-01-14</date>
 
+using System;
 using CsWpfBase.Db.tools.configurationTable;
+
+
+
+
+
 
 namespace HsCentralServiceWeb._dbs.hsserver.centralservicedb.rows
 {

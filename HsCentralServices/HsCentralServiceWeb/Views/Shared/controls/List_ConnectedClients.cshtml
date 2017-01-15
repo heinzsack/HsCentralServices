@@ -1,0 +1,49 @@
+﻿@using System
+@using CsWpfBase.Global
+@using HsCentralServiceWeb._sys
+@using HsCentralServiceWeb._sys.hubs.webManagement
+@using HsCentralServiceWeb._sys._extensions._razorExtensions
+@{
+	Sys.Data.CentralService.RemoteConnections.DownloadRows();
+	CsAjaxForm csAjaxForm;
+}
+@using (csAjaxForm = Ajax.Cs().Form("Partial_ConnectedClients", "PartialViews", null))
+{
+	<div class="col-md-12">
+		@if (Sys.Data.CentralService.RemoteConnections.Collection.Count == 0)
+		{
+			<h5>keine verbundenen Applikationen</h5>
+		}
+		else
+		{
+			foreach (var group in Sys.Data.CentralService.RemoteConnections.GroupBy(x => x.RemoteInstance.RemoteApplication).OrderBy(x => x.Key.Name))
+			{
+				<h5>@group.Key.Name Clients</h5>
+				<div class="table-responsive" style="margin-left: 20px">
+					<table class="table table-striped table-sm table-bordered table-hover">
+						<thead>
+						<tr>
+							<th>Server</th>
+							<th>Computer\User</th>
+							<th style="width: 100%">Events</th>
+							<th>Connected</th>
+						</tr>
+						</thead>
+						<tbody>
+						@foreach (var connection in group.OrderBy(x => x.RemoteInstance.RemoteUser.RemoteComputer.Name))
+						{
+							<tr class="text-justify" style="@(connection.Server != CsGlobal.Os.Info.ComputerName ? "color:lightgray;" : "")">
+								<td style="white-space: nowrap;">@connection.Server</td>
+								<td style="white-space: nowrap">@connection.RemoteInstance.RemoteUser.RemoteComputer.Name\@connection.RemoteInstance.RemoteUser.Name</td>
+								<td>@connection.Events</td>
+								<td style="white-space: nowrap">@connection.Established.ToString("dd.MM HH:mm:ss")</td>
+							</tr>
+						}
+						</tbody>
+					</table>
+				</div>
+			}
+		}
+	</div>
+}
+@WwwSurferNotificationHub.Attach_ConnectedClientsChanged(csAjaxForm.Id)

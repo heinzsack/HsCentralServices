@@ -21,7 +21,6 @@ namespace HsCentralServiceWeb._dbs.hsserver.centralservicedb.tables
 	{
 		private ServiceFileRepository _serviceFileManagementService;
 		private RemoteLogConfiguration _remoteLog;
-		private RingDistributionConfiguration _ringDistribution;
 		private SmtpConfiguration _smtp;
 		private ServiceDbAccess _serviceDbAccess;
 
@@ -43,7 +42,6 @@ namespace HsCentralServiceWeb._dbs.hsserver.centralservicedb.tables
 
 
 		internal RemoteLogConfiguration RemoteLog => _remoteLog ?? (_remoteLog = new RemoteLogConfiguration(this));
-		internal RingDistributionConfiguration RingDistribution => _ringDistribution ?? (_ringDistribution = new RingDistributionConfiguration(this));
 		internal SmtpConfiguration Smtp => _smtp ?? (_smtp = new SmtpConfiguration(this));
 		internal ServiceFileRepository FileRepository => _serviceFileManagementService ?? (_serviceFileManagementService = new ServiceFileRepository(this));
 		internal ServiceDbAccess DbAccess => _serviceDbAccess ?? (_serviceDbAccess = new ServiceDbAccess(this));
@@ -80,20 +78,7 @@ namespace HsCentralServiceWeb._dbs.hsserver.centralservicedb.tables
 		}
 
 
-
-		internal class RingDistributionConfiguration : SubConfiguration
-		{
-
-			public RingDistributionConfiguration(WebConfigurationsTable parent) : base(parent, nameof(RingDistribution))
-			{
-			}
-
-			public int MaxStoredRingsPerComputer
-			{
-				get { return Parent.GetConfigurationValue(20, Context); }
-				set { Parent.SetConfigurationValue(value, Context); }
-			}
-		}
+		
 
 
 

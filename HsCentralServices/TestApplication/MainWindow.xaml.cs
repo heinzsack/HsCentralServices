@@ -25,7 +25,7 @@ namespace TestApplication
 		public MainWindow()
 		{
 			CsGlobal.Install(GlobalFunctions.Storage);
-			CsGlobal.InstallRemote("http://localhost:16411", "LocalServerTest");
+			CsGlobal.InstallRemote("service.wpmedia.at");
 			CsGlobal.Remote.Event.Connect();
 			CsGlobal.Remote.Event.Connected += Connected;
 
@@ -37,6 +37,9 @@ namespace TestApplication
 		private void Connected()
 		{
 			CsGlobal.Remote.Event.Handle<int>("SimpleEvent", SimpleEvent);
+			CsGlobal.Remote.Event.Handle<int>("SimpleEvent1", SimpleEvent);
+			CsGlobal.Remote.Event.Handle<int>("SimpleEvent2", SimpleEvent);
+			CsGlobal.Remote.Event.Handle<int>("SimpleEvent3", SimpleEvent);
 		}
 
 		private void SendEventClick(object sender, RoutedEventArgs e)

@@ -2,7 +2,7 @@
 // <author>Christian Sack</author>
 // <email>christian@sack.at</email>
 // <website>christian.sack.at</website>
-// <date>2017-01-06</date>
+// <date>2017-01-15</date>
 
 using System;
 using System.IO;
@@ -10,7 +10,6 @@ using System.Text;
 using System.Web.Mvc;
 using CsWpfBase.Global;
 using CsWpfBase.Global.remote.clientSide.fileRepository;
-using CsWpfBase.Global.remote.serverSide;
 using CsWpfBase.Global.remote._protocols;
 using HsCentralServiceWeb._dbs.hsserver.centralservicedb.dataset;
 using HsCentralServiceWeb._sys;
@@ -32,12 +31,6 @@ namespace HsCentralServiceWeb.Controllers.services
 
 		private CentralServiceDb Db { get; }
 
-		/// <summary>Installs the <see cref="CsRemoteServer.I" /> module for the whole website.</summary>
-		static FileRepoController()
-		{
-			Sys.InstallCsRemoteServer();
-		}
-
 		public FileRepoController()
 		{
 			Db = new CentralServiceDb();
@@ -50,7 +43,7 @@ namespace HsCentralServiceWeb.Controllers.services
 		[ActionName(nameof(RemoteProtocol.FileRepository.Http.Routes.Info))]
 		public ActionResult Info()
 		{
-			CsRemoteServer.I.FileRepository.Info(Db.RepositoryFiles);
+			Sys.RemoteServer.FileRepository.Info(Db.RepositoryFiles);
 			return new ContentResult {Content = "success", ContentEncoding = Encoding.UTF8, ContentType = "string"};
 		}
 
@@ -63,7 +56,7 @@ namespace HsCentralServiceWeb.Controllers.services
 			Stream stream = null;
 			try
 			{
-				stream = CsRemoteServer.I.FileRepository.Download(Db.RepositoryFiles);
+				stream = Sys.RemoteServer.FileRepository.Download(Db.RepositoryFiles);
 				return new FileStreamResult(stream, "file");
 			}
 			catch
@@ -80,7 +73,7 @@ namespace HsCentralServiceWeb.Controllers.services
 		[ActionName(nameof(RemoteProtocol.FileRepository.Http.Routes.Upload))]
 		public ActionResult Upload()
 		{
-			CsRemoteServer.I.FileRepository.Upload(Db.RepositoryFiles);
+			Sys.RemoteServer.FileRepository.Upload(Db.RepositoryFiles);
 			return new ContentResult {Content = "success", ContentEncoding = Encoding.UTF8, ContentType = "string"};
 		}
 
@@ -88,7 +81,7 @@ namespace HsCentralServiceWeb.Controllers.services
 		[ActionName(nameof(RemoteProtocol.FileRepository.Http.Routes.Delete))]
 		public ActionResult Delete()
 		{
-			CsRemoteServer.I.FileRepository.Delete(Db.RepositoryFiles);
+			Sys.RemoteServer.FileRepository.Delete(Db.RepositoryFiles);
 			return new ContentResult {Content = "success"};
 		}
 	}

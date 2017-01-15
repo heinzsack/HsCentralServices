@@ -11,6 +11,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
 using CsWpfBase.Ev.Public.Extensions;
+using CsWpfBase.Themes.Controls.Containers;
 using CsWpfBase.Utilitys;
 using PlayerControls.Controls;
 using PlayerControls.Interfaces;
@@ -41,14 +42,14 @@ namespace PlayerControls.Extensions
 		{
 			var t = new Task<BitmapSource>(() =>
 			{
-				var pageViewer = new PageViewer() {Page = page, Width = width, Height = height};
+				var pageViewer = new PageViewer {Page = page, Width = width, Height = height};
 
 				pageViewer.Measure(pageViewer.DesiredSize);
 				pageViewer.Arrange(new Rect(pageViewer.DesiredSize));
 				pageViewer.UpdateLayout();
 
 				var img = pageViewer.GetVisualChildsByCondition<Image>(i => true);
-				pageViewer.MakeVideoVisiblie(TimeSpan.FromSeconds(5));
+				pageViewer.MakeVideoVisible(TimeSpan.FromSeconds(5));
 				foreach (var image in img)
 				{
 					BindingOperations.ClearBinding(image, Image.SourceProperty);
@@ -61,6 +62,18 @@ namespace PlayerControls.Extensions
 			}, TaskCreationOptions.LongRunning);
 			t.Start(StaTaskScheduler);
 			return t;
+		}
+
+		public static void ShowDialog(this IPage page, string title = null)
+		{
+			new CsWindow
+			{
+				Title = title.IsNullOrEmpty()?"Page View": title,
+				Content = new PageViewer
+				{
+					Page = page
+				}
+			}.ShowDialog();
 		}
 
 	}

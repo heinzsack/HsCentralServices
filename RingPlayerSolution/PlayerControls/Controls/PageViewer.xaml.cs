@@ -181,7 +181,7 @@ namespace PlayerControls.Controls
 				}
 			}
 
-		public void MakeVideoVisiblie(TimeSpan position)
+		public void MakeVideoVisible(TimeSpan position)
 			{
 			foreach (var mediaElement in GetMediaElemente_FromPage())
 				{

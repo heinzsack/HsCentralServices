@@ -17,7 +17,7 @@ using Microsoft.AspNet.SignalR.Hubs;
 
 namespace HsCentralServiceWeb._sys.hubs
 {
-	public class HubConnectionHandler<TIdentification>
+	public class HubConnectionHandler<TIdentification> where TIdentification : class
 	{
 		private readonly Func<HubCallerContext, TIdentification> _getIdentificationFunc;
 		private IHubContext Context { get; }
@@ -44,34 +44,37 @@ namespace HsCentralServiceWeb._sys.hubs
 			}
 		}
 
-		public void Connected(HubCallerContext hc)
+		public TIdentification Connected(HubCallerContext hc)
 		{
 			lock (this)
 			{
 				var connection = GetOrCreate_ClientConnection(hc);
 				connection.EstablishedConnections.Add(hc.ConnectionId);
+				return connection.Identification;
 			}
 		}
 
-		public void Reconnected(HubCallerContext hc)
+		public TIdentification Reconnected(HubCallerContext hc)
 		{
 			lock (this)
 			{
 				var connection = GetOrCreate_ClientConnection(hc);
 				connection.EstablishedConnections.Add(hc.ConnectionId);
+				return connection.Identification;
 			}
 		}
 
-		public void Disconnected(HubCallerContext hc)
+		public TIdentification Disconnected(HubCallerContext hc)
 		{
 			lock (this)
 			{
 				var connection = Connections.Values.FirstOrDefault(x => x.EstablishedConnections.Contains(hc.ConnectionId));
 				if (connection == null)
-					return;
+					return null;
 				connection.EstablishedConnections.Remove(hc.ConnectionId);
 				if (connection.EstablishedConnections.Count == 0)
 					Connections.Remove(connection.Identification);
+				return connection.Identification;
 			}
 		}
 

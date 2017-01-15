@@ -3,8 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-		xmlns:sys="clr-namespace:RingPlayer24._sys"
 		xmlns:themes="clr-namespace:PlayerControls.Themes;assembly=PlayerControls"
+		xmlns:ringPlayer24="clr-namespace:RingPlayer24"
+		xmlns:sys="clr-namespace:RingPlayer24._sys"
 		Background="Black"
 		mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
@@ -14,9 +15,6 @@
 		</ContextMenu>
 	</Window.ContextMenu>
 	<Grid>
-		<themes:RingPlayer24 Pages="{Binding Source={x:Static sys:Sys.Services}, Path=RingPlayerService.BindableSchedules}" />
-		<Button VerticalAlignment="Bottom" HorizontalAlignment="Right" 
-				Background="Transparent" Foreground="Transparent" BorderBrush="Transparent" 
-				Click="ReOpenConnection_OnClick">Show State</Button>
+		<themes:RingPlayer24 Pages="{Binding Source={x:Static sys:RingManager.I}, Path=PageSchedules}" />
     </Grid>
 </Window>

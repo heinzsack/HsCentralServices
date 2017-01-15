@@ -5,8 +5,6 @@
 // <date>2016-09-17</date>
 
 using System;
-using HsCentralServiceWeb._sys.hubs.management;
-using HsCentralServiceWeb._sys.hubs.ringDistribution;
 using HsCentralServiceWeb._sys.hubs.webManagement;
 
 
@@ -18,13 +16,11 @@ namespace HsCentralServiceWeb._sys.hubs
 {
 	public class Hubs
 	{
-		private RemoteManagementHubModule _remoteManagement;
-		private RingDistributionHubModule _ringDistribution;
 		private WwwSurferNotificationHubModule _wwwSurferNotification;
+		private CsRemoteEventHub _csRemoteEventHub;
 
 
-		public RingDistributionHubModule RingDistribution => _ringDistribution ?? (_ringDistribution = new RingDistributionHubModule());
-		public RemoteManagementHubModule RemoteManagement => _remoteManagement ?? (_remoteManagement = new RemoteManagementHubModule());
+		public CsRemoteEventHub RemoteManagement => _csRemoteEventHub ?? (_csRemoteEventHub = new CsRemoteEventHub());
 		public WwwSurferNotificationHubModule WwwSurferNotification => _wwwSurferNotification ?? (_wwwSurferNotification = new WwwSurferNotificationHubModule());
 	}
 

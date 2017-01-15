@@ -6,10 +6,7 @@
 @{
 	lock (Sys.Data)
 	{
-		if (!Sys.Data.CentralService.RemoteLogs.HasBeenLoaded)
-		{
-			Sys.Data.CentralService.RemoteLogs.DownloadRows();
-		}
+		Sys.Data.CentralService.RemoteLogs.DownloadRows();
 	}
 }
 
@@ -17,7 +14,7 @@
 @{
 	CsAjaxForm csAjaxForm;
 }
-@using (csAjaxForm = Ajax.Cs().Form("Partial_LogsList", "RemoteManagement", null))
+@using (csAjaxForm = Ajax.Cs().Form("Partial_LogsList", "PartialViews", null))
 {
 	<h1>Remote Logs <small>die letzten 15</small></h1>
 	<div class="simpleBox">
