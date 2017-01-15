@@ -25,7 +25,7 @@ namespace TestApplication
 		public MainWindow()
 		{
 			CsGlobal.Install(GlobalFunctions.Storage);
-			CsGlobal.InstallRemote("service.wpmedia.at");
+			CsGlobal.InstallRemote("http://localhost:16412");
 			CsGlobal.Remote.Event.Connect();
 			CsGlobal.Remote.Event.Connected += Connected;
 
@@ -60,7 +60,7 @@ namespace TestApplication
 
 		private void UploadClick(object sender, RoutedEventArgs e)
 		{
-			var fileupload = CsGlobal.Remote.FileRepository.UploadAsync(FileSelector.ValuePath);
+			var fileupload = CsGlobal.Remote.FileRepository.UploadAsync(FileSelector.ValuePath, null, null, "MyGroup1", DateTime.Now.AddSeconds(30));
 			fileupload.ShowDialog();
 			if (fileupload.IsSucceeded)
 			IdSelector.Value = fileupload.Result[0].Id.ToString();
