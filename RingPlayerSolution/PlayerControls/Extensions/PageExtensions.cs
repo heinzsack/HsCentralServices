@@ -2,7 +2,7 @@
 // <author>Christian Sack</author>
 // <email>christian@sack.at</email>
 // <website>christian.sack.at</website>
-// <date>2017-01-14</date>
+// <date>2017-01-21</date>
 
 using System;
 using System.Threading.Tasks;
@@ -16,6 +16,10 @@ using CsWpfBase.Utilitys;
 using PlayerControls.Controls;
 using PlayerControls.Interfaces;
 using PlayerControls.Themes;
+
+
+
+
 
 
 namespace PlayerControls.Extensions
@@ -65,7 +69,7 @@ namespace PlayerControls.Extensions
 		{
 			new CsWindow
 			{
-				Title = title.IsNullOrEmpty()?"Page View": title,
+				Title = title.IsNullOrEmpty() ? "Page View" : title,
 				Content = new PageViewer
 				{
 					Page = page
@@ -73,14 +77,13 @@ namespace PlayerControls.Extensions
 			}.ShowDialog();
 		}
 
-	public static void ShowDialog(this IDuratedPage[] duratedPages, string title = null)
+		public static void ShowDialog(this IDuratedPage[] duratedPages, string title = null)
 		{
 			new CsWindow()
-				{
-				Title = title.IsNullOrEmpty()?"Page View": title,
-				Content = new RingPlayer() { Pages = duratedPages }
+			{
+				Title = title.IsNullOrEmpty() ? "Page View" : title,
+				Content = new RingPlayer() {Pages = duratedPages}
 			}.ShowDialog();
 		}
-
 	}
 }
