@@ -2,7 +2,7 @@
 // <author>Christian Sack</author>
 // <email>christian@sack.at</email>
 // <website>christian.sack.at</website>
-// <date>2016-10-11</date>
+// <date>2017-01-21</date>
 
 using System;
 using System.IO;
@@ -24,27 +24,33 @@ namespace DbsGenerator
 
 		static void Main(string[] args)
 		{
-			Generate // HsCentralServiceWeb DBS
+			Generate
 			(
 				DbAccounts.Generator.CentralService.DataSource,
 				DbAccounts.Generator.CentralService.UserName,
 				DbAccounts.Generator.CentralService.Password,
 				Path.Combine(SolutionFolder, "HsCentralServiceWeb", "_dbs"),
-				Path.Combine(SolutionFolder, "HsCentralServiceWeb", "HsCentralServiceWeb.csproj"),
-				"HsCentralServiceWeb._dbs"
+				Path.Combine(SolutionFolder, "HsCentralServiceWeb", "HsCentralServiceWeb.csproj"), "HsCentralServiceWeb._dbs"
 			);
-			Generate // HsCentralServiceWeb.Interfaces.Server DBS
+			Generate
 			(
 				DbAccounts.Generator.RingPlayer.DataSource,
 				DbAccounts.Generator.RingPlayer.UserName,
 				DbAccounts.Generator.RingPlayer.Password,
 				Path.Combine(RingPlayerSolutionFolder, @"RingPlayer24", "_dbs"),
-				Path.Combine(RingPlayerSolutionFolder, "RingPlayer24", "RingPlayer24.csproj"),
-				"RingPlayer24._dbs"
+				Path.Combine(RingPlayerSolutionFolder, "RingPlayer24", "RingPlayer24.csproj"),"RingPlayer24._dbs"
+			);
+			Generate
+			(
+				DbAccounts.Generator.CentralService.DataSource,
+				DbAccounts.Generator.CentralService.UserName,
+				DbAccounts.Generator.CentralService.Password,
+				Path.Combine(SolutionFolder, @"TestApplication", "_dbs"),
+				Path.Combine(SolutionFolder, "TestApplication", "TestApplication.csproj"), "TestApplication._dbs"
 			);
 			Environment.Exit(0);
 		}
-		
+
 
 		private static void Generate(string server, string user, string password, string projectFolder, string projectFile, string nameSpace)
 		{

@@ -111,9 +111,12 @@ namespace HsCentralServiceWeb._sys.hubs
 
 		[UsedImplicitly]
 		[HubMethodName(EventHubServer.Methods.RaiseEvent)]
-		public void RaiseEvent(string eventName, string data)
+		public void RaiseEvent(string eventName, string data, bool includeSelf)
 		{
-			Clients.Group(eventName).Invoke(EventHubServer.Methods.ReceiveEvent, eventName, data);
+			if (includeSelf)
+				Clients.Group(eventName).Invoke(EventHubServer.Methods.ReceiveEvent, eventName, data);
+			else
+				Clients.OthersInGroup(eventName).Invoke(EventHubServer.Methods.ReceiveEvent, eventName, data);
 		}
 	}
 }

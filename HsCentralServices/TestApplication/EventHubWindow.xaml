@@ -1,0 +1,38 @@
+﻿<CsWindow x:Class="TestApplication.EventHubWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TestApplication"
+        mc:Ignorable="d" Padding="10" FooterVisibility="Collapsed"
+        Title="EventHub Tester" Height="300" Width="300" x:Name="RootWindow">
+	<EditorGrid>
+		<EditorGroup EditorGrid.HasStarRow="True" Header="Messages" Grid.IsSharedSizeScope="True">
+			<ListView EditorGrid.HasStarRow="True" ItemsSource="{Binding ElementName=RootWindow, Path=Messages}">
+				<ListView.View>
+					<GridView>
+						<GridViewColumn Header="Absender">
+							<GridViewColumn.CellTemplate>
+								<DataTemplate DataType="{x:Type local:MessagePacket}">
+									<TextBlock Text="{Binding Path=Sender}"/>
+								</DataTemplate>
+							</GridViewColumn.CellTemplate>
+						</GridViewColumn>
+						<GridViewColumn Header="Message">
+							<GridViewColumn.CellTemplate>
+								<DataTemplate DataType="{x:Type local:MessagePacket}">
+									<TextBlock Text="{Binding Path=Message}"/>
+								</DataTemplate>
+							</GridViewColumn.CellTemplate>
+						</GridViewColumn>
+					</GridView>
+				</ListView.View>
+			</ListView>
+		</EditorGroup>
+		<EditorGroup Header="Ihre Nachricht">
+			<StringEditor Header="Sender" EmptyDisplayText="Name" x:Name="SenderEditor"/>
+			<StringEditor Header="Nachricht" EmptyDisplayText="Message" x:Name="MessageEditor"/>
+			<GlyphIconButton Icon="G_Send" Content="Senden" Click="SendButton_Clicked" HorizontalAlignment="Right" IsDefault="True"/>
+		</EditorGroup>
+	</EditorGrid>
+</CsWindow>
