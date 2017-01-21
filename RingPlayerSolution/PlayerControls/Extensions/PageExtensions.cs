@@ -15,10 +15,7 @@ using CsWpfBase.Themes.Controls.Containers;
 using CsWpfBase.Utilitys;
 using PlayerControls.Controls;
 using PlayerControls.Interfaces;
-
-
-
-
+using PlayerControls.Themes;
 
 
 namespace PlayerControls.Extensions
@@ -73,6 +70,15 @@ namespace PlayerControls.Extensions
 				{
 					Page = page
 				}
+			}.ShowDialog();
+		}
+
+	public static void ShowDialog(this IDuratedPage[] duratedPages, string title = null)
+		{
+			new CsWindow()
+				{
+				Title = title.IsNullOrEmpty()?"Page View": title,
+				Content = new RingPlayer() { Pages = duratedPages }
 			}.ShowDialog();
 		}
 
