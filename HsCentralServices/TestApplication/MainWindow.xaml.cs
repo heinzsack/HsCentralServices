@@ -7,6 +7,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Security.Cryptography;
 using System.Windows;
 using CsWpfBase.Global;
 using CsWpfBase.Themes.Controls.Containers;
@@ -25,26 +26,30 @@ namespace TestApplication
 		public MainWindow()
 		{
 			CsGlobal.Install(GlobalFunctions.Storage);
-			CsGlobal.InstallRemote("http://localhost:16412");
-			CsGlobal.Remote.Event.Connect();
-			CsGlobal.Remote.Event.Connected += Connected;
+			var publicKey = new RSACryptoServiceProvider();
+			publicKey.FromXmlString("<RSAKeyValue><Modulus>7bTXJULjf3ELHOv/57LyGUTBpgQ7CucbdSXusgy+270FPbK0Iboqkqrhs4rbeKkH6AWA6BwXGqUqAwwVNKHPEtXTpLe9GKM41eZOJyhU7QCw0X8BAQXLbTQbc+QGFn/J/t6wlh7cgrYgqe/3Q9u7yW9+j16Q8Uj4OG4N20fsqX0=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue>");
+			CsGlobal.InstallRemote("http://localhost:16412", null, publicKey);
+
+
+			CsGlobal.Remote.EventHub.Connect();
+			CsGlobal.Remote.EventHub.AfterConnectionEstablished += AfterConnectionEstablished;
 
 			InitializeComponent();
 			FileSelector.ValuePath = new FileInfo(@"C:\Data\Personal\OneDrive\Bilder\Wallpaper\6.jpg");
-			IdSelector.Value = "2cac40bb-36d1-4e75-8b07-c328d07e0f2d";
+			IdSelector.Value = "0A2D546F-B976-4566-8BAD-E910B3DF96E3";
 		}
 
-		private void Connected()
+		private void AfterConnectionEstablished()
 		{
-			CsGlobal.Remote.Event.Handle<int>("SimpleEvent", SimpleEvent);
-			CsGlobal.Remote.Event.Handle<int>("SimpleEvent1", SimpleEvent);
-			CsGlobal.Remote.Event.Handle<int>("SimpleEvent2", SimpleEvent);
-			CsGlobal.Remote.Event.Handle<int>("SimpleEvent3", SimpleEvent);
+			CsGlobal.Remote.EventHub.Handle<int>("SimpleEvent", SimpleEvent);
+			CsGlobal.Remote.EventHub.Handle<int>("SimpleEvent1", SimpleEvent);
+			CsGlobal.Remote.EventHub.Handle<int>("SimpleEvent2", SimpleEvent);
+			CsGlobal.Remote.EventHub.Handle<int>("SimpleEvent3", SimpleEvent);
 		}
 
 		private void SendEventClick(object sender, RoutedEventArgs e)
 		{
-			CsGlobal.Remote.Event.Raise("SimpleEvent", Process.GetCurrentProcess().Id);
+			CsGlobal.Remote.EventHub.Raise("SimpleEvent", Process.GetCurrentProcess().Id);
 		}
 
 		private void SimpleEvent(int eventData)

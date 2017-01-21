@@ -22,7 +22,7 @@ namespace RingPlayer24
 		{
 			CsGlobal.Install(GlobalFunctions.Storage | GlobalFunctions.AppData);
 			CsGlobal.InstallRemote("http://localhost:16412/"); //TODO
-			CsGlobal.Remote.Event.Connect();
+			CsGlobal.Remote.EventHub.Connect();
 
 			InitializeComponent();
 		}

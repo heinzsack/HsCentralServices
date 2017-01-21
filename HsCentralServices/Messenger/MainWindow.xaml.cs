@@ -23,14 +23,14 @@ namespace Messenger
 		{
 			CsGlobal.Install(GlobalFunctions.Storage);
 			CsGlobal.InstallRemote("service.wpmedia.at");
-			CsGlobal.Remote.Event.Connect();
-			CsGlobal.Remote.Event.Connected += OnConnected;
+			CsGlobal.Remote.EventHub.Connect();
+			CsGlobal.Remote.EventHub.AfterConnectionEstablished += OnAfterConnectionEstablished;
 			InitializeComponent();
 		}
 
-		private void OnConnected()
+		private void OnAfterConnectionEstablished()
 		{
-			CsGlobal.Remote.Event.Handle<string>(nameof(MessageReceived), MessageReceived);
+			CsGlobal.Remote.EventHub.Handle<string>(nameof(MessageReceived), MessageReceived);
 		}
 
 		private void MessageReceived(string eventData)
@@ -40,7 +40,7 @@ namespace Messenger
 
 		private void SendClicked(object sender, RoutedEventArgs e)
 		{
-			CsGlobal.Remote.Event.Raise(nameof(MessageReceived), MessageInput.Value);
+			CsGlobal.Remote.EventHub.Raise(nameof(MessageReceived), MessageInput.Value);
 		}
 	}
 }
