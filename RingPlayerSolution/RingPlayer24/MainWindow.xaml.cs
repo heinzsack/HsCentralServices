@@ -21,8 +21,8 @@ namespace RingPlayer24
 		public MainWindow()
 		{
 			CsGlobal.Install(GlobalFunctions.Storage | GlobalFunctions.AppData);
-			CsGlobal.InstallRemote("service.wpmedia.at"); //TODO
-			CsGlobal.Remote.Event.Connect();
+			CsGlobal.InstallRemote("http://localhost:16412/"); //TODO
+			CsGlobal.Remote.EventHub.Connect();
 
 			InitializeComponent();
 		}

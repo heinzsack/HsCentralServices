@@ -8,7 +8,7 @@ using System;
 using System.IO;
 using System.Security.Cryptography;
 using CsWpfBase.Global;
-using CsWpfBase.Global.remote.serverSide;
+using CsWpfBase.Global.remote.server;
 using HsCentralServiceWeb._dbs.hsserver.centralservicedb.tables;
 using HsCentralServiceWeb._sys.data;
 using HsCentralServiceWeb._sys.hubs;

@@ -8,8 +8,9 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using CsWpfBase.Global;
+using CsWpfBase.Global.remote;
 using CsWpfBase.Global.remote.clientIdentification;
-using CsWpfBase.Global.remote._protocols;
+using CsWpfBase.Global.remote.services.eventHub;
 using HsCentralServiceWeb._dbs.hsserver.centralservicedb.rows;
 using HsCentralServiceWeb._sys._extensions;
 using JetBrains.Annotations;
@@ -24,7 +25,7 @@ using Microsoft.AspNet.SignalR.Hubs;
 namespace HsCentralServiceWeb._sys.hubs
 {
 	[UsedImplicitly]
-	[HubName(nameof(RemoteProtocol.Notification.Hub.CsRemoteEventHub))]
+	[HubName(CsRemoteProtocol.ServiceRoutes.EventHubName)]
 	public class CsRemoteEventHub : Hub
 	{
 		private static HubConnectionHandler<RemoteConnection> ConnectionHandler { get; } = new HubConnectionHandler<RemoteConnection>(GlobalHost.ConnectionManager.GetHubContext<CsRemoteEventHub>(), GetIdentification);
@@ -94,7 +95,7 @@ namespace HsCentralServiceWeb._sys.hubs
 
 
 		[UsedImplicitly]
-		[HubMethodName(RemoteProtocol.Notification.Hub.Methods.JoinEvent)]
+		[HubMethodName(EventHubServer.Methods.JoinEvent)]
 		public void JoinEvent(string eventName)
 		{
 			lock (Sys.Data)
@@ -109,10 +110,10 @@ namespace HsCentralServiceWeb._sys.hubs
 		}
 
 		[UsedImplicitly]
-		[HubMethodName(RemoteProtocol.Notification.Hub.Methods.RaiseEvent)]
+		[HubMethodName(EventHubServer.Methods.RaiseEvent)]
 		public void RaiseEvent(string eventName, string data)
 		{
-			Clients.Group(eventName).Invoke(RemoteProtocol.Notification.Hub.Methods.ReceiveEvent, eventName, data);
+			Clients.Group(eventName).Invoke(EventHubServer.Methods.ReceiveEvent, eventName, data);
 		}
 	}
 }

@@ -81,9 +81,9 @@ namespace RingPlayer24._sys
 		{
 			if (_playingRingId != null)
 				PlayingRing = LoadRingFromFile(_playingRingId.Value);
-			CsGlobal.Remote.Event.Connected += () =>
+			CsGlobal.Remote.EventHub.AfterConnectionEstablished += () =>
 			{
-				CsGlobal.Remote.Event.Handle<RingUpdateArgs>("RingUpdate", OnRingUpdate);
+				CsGlobal.Remote.EventHub.Handle<RingUpdateArgs>("RingUpdate", OnRingUpdate);
 			};
 		}
 
