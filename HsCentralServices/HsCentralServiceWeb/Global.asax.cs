@@ -34,6 +34,8 @@ namespace HsCentralServiceWeb
 		{
 			var exception = Server.GetLastError();
 			Server.ClearError();
+			if (!Response.IsClientConnected)
+				return;
 			Response.Clear();
 			Response.StatusCode = exception is HttpException
 				? ((HttpException) exception).GetHttpCode()

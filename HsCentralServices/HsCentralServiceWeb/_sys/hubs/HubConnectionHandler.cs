@@ -7,6 +7,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CsWpfBase.Global.remote.services.eventHub;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
 
@@ -22,7 +23,6 @@ namespace HsCentralServiceWeb._sys.hubs
 		private readonly Func<HubCallerContext, TIdentification> _getIdentificationFunc;
 		private IHubContext Context { get; }
 		private Dictionary<TIdentification, HubConnection> Connections { get; } = new Dictionary<TIdentification, HubConnection>();
-
 		public HubConnectionHandler(IHubContext context, Func<HubCallerContext, TIdentification> getIdentificationFunc)
 		{
 			Context = context;
@@ -48,6 +48,7 @@ namespace HsCentralServiceWeb._sys.hubs
 		{
 			lock (this)
 			{
+
 				var connection = GetOrCreate_ClientConnection(hc);
 				connection.EstablishedConnections.Add(hc.ConnectionId);
 				return connection.Identification;

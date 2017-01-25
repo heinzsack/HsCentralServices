@@ -25,7 +25,7 @@ namespace TestApplication
 	{
 		public MainWindow()
 		{
-			CsGlobal.Install(GlobalFunctions.Storage);
+			CsGlobal.Install(GlobalFunctions.Storage | GlobalFunctions.AppData | GlobalFunctions.ConfigFile |GlobalFunctions.GermanThreadCulture);
 			CsGlobal.InstallRemote("http://localhost:16412/", "<RSAKeyValue><Modulus>7bTXJULjf3ELHOv/57LyGUTBpgQ7CucbdSXusgy+270FPbK0Iboqkqrhs4rbeKkH6AWA6BwXGqUqAwwVNKHPEtXTpLe9GKM41eZOJyhU7QCw0X8BAQXLbTQbc+QGFn/J/t6wlh7cgrYgqe/3Q9u7yW9+j16Q8Uj4OG4N20fsqX0=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue>");
 
 			InitializeComponent();

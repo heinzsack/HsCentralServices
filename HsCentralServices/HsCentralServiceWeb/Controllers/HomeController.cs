@@ -17,8 +17,7 @@ namespace HsCentralServiceWeb.Controllers
         // GET: Home
         public ActionResult Index()
         {
-			lock(Sys.Data)
-				return View();
+			return View();
         }
     }
 }
