@@ -31,7 +31,7 @@ namespace TestApplication
 			CsGlobal.InstallRemote("http://localhost:16412/", "<RSAKeyValue><Modulus>7bTXJULjf3ELHOv/57LyGUTBpgQ7CucbdSXusgy+270FPbK0Iboqkqrhs4rbeKkH6AWA6BwXGqUqAwwVNKHPEtXTpLe9GKM41eZOJyhU7QCw0X8BAQXLbTQbc+QGFn/J/t6wlh7cgrYgqe/3Q9u7yW9+j16Q8Uj4OG4N20fsqX0=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue>");
 
 
-			CsGlobal.Remote.EventHub.Subscribe<MessagePacket>("MessageEvent", MessageReceived);
+			CsGlobal.Remote.EventHub.TrySubscribe<MessagePacket>("MessageEvent", MessageReceived);
 			CsGlobal.Remote.EventHub.RemoteClients.Connected += EventHubOnRemoteClientConnected;
 			CsGlobal.Remote.EventHub.RemoteClients.Disconnected += EventHubOnRemoteClientDisconnected;
 			CsGlobal.Remote.EventHub.RemoteClients.EventSubscribed += EventHubOnRemoteClientEventSubscribed;
