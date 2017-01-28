@@ -2,20 +2,13 @@
 // <author>Christian Sack</author>
 // <email>christian@sack.at</email>
 // <website>christian.sack.at</website>
-// <date>2017-01-15</date>
+// <date>2017-01-26</date>
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using CsWpfBase.Global;
 using CsWpfBase.Global.remote;
-using CsWpfBase.Global.remote.clientIdentification;
-using CsWpfBase.Global.remote.clientIdentification.interfaces;
 using CsWpfBase.Global.remote.services.eventHub;
 using CsWpfBase.Global.remote.services.eventHub.components;
-using HsCentralServiceWeb._dbs.hsserver.centralservicedb.rows;
-using HsCentralServiceWeb._sys._extensions;
 using JetBrains.Annotations;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
@@ -31,7 +24,6 @@ namespace HsCentralServiceWeb._sys.hubs
 	[HubName(CsRemoteProtocol.ServiceRoutes.EventHubName)]
 	public class CsRemoteEventHub : Hub
 	{
-
 		#region Overrides/Interfaces
 		public override Task OnConnected()
 		{
@@ -61,6 +53,7 @@ namespace HsCentralServiceWeb._sys.hubs
 		public void SubscribeEvent(string eventName)
 		{
 			EventHubServer.I.OnSubscribeEvent(this, eventName);
+			Sys.Hubs.WwwSurferNotification.ConnectedClientsChanged();
 		}
 
 		[UsedImplicitly]
@@ -68,13 +61,14 @@ namespace HsCentralServiceWeb._sys.hubs
 		public void UnsubscribeEvent(string eventName)
 		{
 			EventHubServer.I.OnUnsubscribeEvent(this, eventName);
+			Sys.Hubs.WwwSurferNotification.ConnectedClientsChanged();
 		}
 
 		[UsedImplicitly]
 		[HubMethodName(EventHubServer.Methods.RaiseEvent)]
-		public void RaiseEvent(string eventName, string data, bool includeSelf)
+		public void RaiseEvent(string eventName, string data, bool includeSelf, string[] includedClients, string[] excludedClients)
 		{
-			EventHubServer.I.OnRaiseEvent(this, eventName, data, includeSelf);
+			EventHubServer.I.OnRaiseEvent(this, eventName, data, includeSelf, includedClients, excludedClients);
 		}
 
 		[UsedImplicitly]

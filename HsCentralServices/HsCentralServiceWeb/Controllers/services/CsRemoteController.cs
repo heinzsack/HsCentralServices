@@ -2,7 +2,7 @@
 // <author>Christian Sack</author>
 // <email>christian@sack.at</email>
 // <website>christian.sack.at</website>
-// <date>2017-01-15</date>
+// <date>2017-01-26</date>
 
 using System;
 using System.Web.Mvc;
@@ -37,6 +37,20 @@ namespace HsCentralServiceWeb.Controllers.services
 				db.Set_DbProxy<Data.HsServerDirectConnector>();
 				db.LoadSchema();
 				Sys.RemoteServer.FileRepository.HandleRequest(db.RepositoryFiles);
+			}
+			return new ContentResult();
+		}
+
+		[HttpPost]
+		[ActionName(CsRemoteProtocol.Mvc.ActionNames.Log)]
+		public ActionResult Log()
+		{
+			using (var db = new CentralServiceDb())
+			{
+				db.Set_DbProxy<Data.HsServerDirectConnector>();
+				db.LoadSchema();
+				Sys.RemoteServer.Log.HandleRequest(db.RemoteLogs);
+				Sys.Hubs.WwwSurferNotification.LogsChanged();
 			}
 			return new ContentResult();
 		}

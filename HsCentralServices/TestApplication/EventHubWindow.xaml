@@ -42,7 +42,7 @@
 			</EditorGroup>
 		</EditorGrid>
 
-		<ListView Grid.Column="1" ItemsSource="{Binding Source={x:Static CsGlobal.Remote},Path=EventHub.RemoteClients.All}">
+		<ListView Grid.Column="1" x:Name="TargetList" ItemsSource="{Binding Source={x:Static CsGlobal.Remote},Path=EventHub.RemoteClients.All}" SelectionMode="Multiple">
 			<ListView.View>
 				<GridView>
 					<GridViewColumn Header="Id">

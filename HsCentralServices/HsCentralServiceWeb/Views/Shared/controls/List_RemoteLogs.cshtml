@@ -1,46 +1,55 @@
 ﻿@using System
-@using HsCentralServiceWeb._dbs.hsserver.centralservicedb.rows
-@using HsCentralServiceWeb._sys
+@using CsWpfBase.Ev.Public.Extensions
+@using HsCentralServiceWeb._dbs.hsserver.centralservicedb.dataset
+@using HsCentralServiceWeb._dbs.hsserver.centralservicedb.tables
+@using HsCentralServiceWeb._sys.data
 @using HsCentralServiceWeb._sys.hubs.webManagement
 @using HsCentralServiceWeb._sys._extensions._razorExtensions
 @{
-	lock (Sys.Data)
-	{
-		Sys.Data.CentralService.RemoteLogs.DownloadRows();
-	}
+	var db = new CentralServiceDb();
+	db.Set_DbProxy<Data.HsServerDirectConnector>();
+	db.RemoteLogs.DownloadRows($"SELECT TOP 50 {db.RemoteLogs.DefaultSqlSelector} FROM {RemoteLogsTable.NativeName} ORDER BY [{RemoteLogsTable.CreatedCol}] DESC");
 }
-
 
 @{
 	CsAjaxForm csAjaxForm;
 }
 @using (csAjaxForm = Ajax.Cs().Form("Partial_LogsList", "PartialViews", null))
 {
-	<h1>Remote Logs <small>die letzten 15</small></h1>
-	<div class="simpleBox">
-		@foreach (RemoteLog log in Sys.Data.CentralService.RemoteLogs.OrderByDescending(x => x.Created).Take(15))
+	<div class="col-md-12">
+		@if (db.RemoteLogs.Rows.Count == 0)
 		{
-
-			<div class="card">
-				@if (DateTime.Now - log.Created < TimeSpan.FromMinutes(5))
-				{
-					<span class="tag tag-primary pull-xs-right" style="margin: 5px">aktuell</span>
-				}
-				<h5 class="card-header">
-					@log.Title <small>@log.RemoteInstance.RemoteUser.RemoteComputer.Name > @log.RemoteInstance.RemoteUser.Name > @log.RemoteInstance.RemoteApplication.Name</small>
-				</h5>
-				<div class="card-block">
-					<p class="card-text">
-						@(new MvcHtmlString(log.Message.Replace("\r\n", "\n").Replace("\n", "<br/>")))
-					</p>
-					<p class="card-text text-muted small">
-						@log.Created.ToString("dd.MM.yyyy HH:mm:ss.fff") @@@@@@ @(new FileInfo(log.CodeFile).Name) > @log.CodeMethod > @log.CodeLine
-					</p>
-				</div>
+			<h5>keine remote logs vorhanden</h5>
+		}
+		else
+		{
+			<h5>Remote Logs [@db.RemoteLogs.Rows.Count]</h5>
+			<div class="table-responsive" style="margin-left: 20px">
+				<table class="table table-striped table-sm table-bordered table-hover">
+					<thead>
+					<tr>
+						<th>Created</th>
+						<th>Issuer</th>
+						<th>Severity</th>
+						<th>Title</th>
+						<th style="width: 100%">Content</th>
+					</tr>
+					</thead>
+					<tbody>
+					@foreach (var log in db.RemoteLogs.OrderByDescending(x => x.Created))
+					{
+						<tr class="text-justify">
+							<td style="white-space: nowrap">@log.Created.ToString("dd.MM.yyyy HH:mm:ss")</td>
+							<td style="white-space: nowrap">@log.Issuer</td>
+							<td style="white-space: nowrap">@log.Severity.GetName()</td>
+							<td style="white-space: nowrap">@log.Title</td>
+							<td style="white-space: nowrap">@log.Content</td>
+						</tr>
+					}
+					</tbody>
+				</table>
 			</div>
 		}
-		<div class="clearfix"></div>
 	</div>
 }
-
 @WwwSurferNotificationHub.Attach_RemoteLogsChanged(csAjaxForm.Id)

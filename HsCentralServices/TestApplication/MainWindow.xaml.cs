@@ -9,9 +9,12 @@ using System.Diagnostics;
 using System.IO;
 using System.Security.Cryptography;
 using System.Windows;
+using CsWpfBase.Ev.Public.Extensions;
 using CsWpfBase.Global;
+using CsWpfBase.Global.remote.services.logging.components;
 using CsWpfBase.Themes.Controls.Containers;
 using CsWpfBase.Themes.Controls.Editors._baseControls;
+using CsWpfBase._todo;
 
 
 
@@ -31,6 +34,15 @@ namespace TestApplication
 			InitializeComponent();
 			FileSelector.ValuePath = new FileInfo(@"C:\Data\Personal\OneDrive\Bilder\Wallpaper\6.jpg");
 			IdSelector.Value = "0A2D546F-B976-4566-8BAD-E910B3DF96E3";
+
+
+
+			var applicationUpdate = ApplicationUpdate.New(new DirectoryInfo(@"C:\Users\chris\Desktop\CurrentApplication"));
+			var updateFile = new FileInfo("AppUpdate.upd").In_Desktop_Directory();
+			applicationUpdate.Save(updateFile);
+
+			var update = ApplicationUpdate.Load(updateFile);
+			update.Execute();
 		}
 
 		
@@ -60,6 +72,11 @@ namespace TestApplication
 		private void OpenEventHubTester(object sender, RoutedEventArgs e)
 		{
 			new EventHubWindow().ShowDialog();
+		}
+
+		private void OpenLoggingTester(object sender, RoutedEventArgs e)
+		{
+			new RemoteLogsWindow().Show();
 		}
 	}
 }
