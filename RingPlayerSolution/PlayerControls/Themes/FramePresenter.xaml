@@ -1,0 +1,122 @@
+﻿<UserControl x:Class="PlayerControls.Themes.FramePresenter"
+			xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			xmlns:controls="clr-namespace:PlayerControls.Controls"
+			xmlns:wpPlayer="clr-namespace:PlayerControls.Interfaces"
+			xmlns:frameItems="clr-namespace:PlayerControls.Interfaces.FrameItems"
+			xmlns:themes="clr-namespace:PlayerControls.Themes"
+			mc:Ignorable="d"
+			d:DesignHeight="300" d:DesignWidth="300" x:Name="Uc">
+	<UserControl.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="/CsWpfBase;component/Themes/Standard.xaml" />
+			</ResourceDictionary.MergedDictionaries>
+
+			<controls:FrameItemTemplateSelector x:Key="{x:Type controls:FrameItemTemplateSelector}" />
+			<themes:PercentToContainerMetricConverter x:Key="PercentToContainerMetric" />
+
+			<DataTemplate DataType="{x:Type frameItems:IFrameItemVideo}" x:Key="{x:Type frameItems:IFrameItemVideo}">
+				<Grid>
+					<Grid.Margin>
+						<MultiBinding Converter="{StaticResource PercentToContainerMetric}">
+							<Binding Path="FrameItemRelativePosition" />
+							<Binding RelativeSource="{RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type FrameworkElement}}" Path="ActualWidth" />
+							<Binding RelativeSource="{RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type FrameworkElement}}" Path="ActualHeight" />
+						</MultiBinding>
+					</Grid.Margin>
+					<Border BorderThickness="1" BorderBrush="#0000FF" Background="#300000FF" IsHitTestVisible="False"
+							Visibility="{Binding ElementName=Uc, Path=IsDiagnostic, Converter={StaticResource GConv-BoolVisibility}}" />
+					<Border BorderThickness="{Binding Path=FrameItemBorderThickness}"
+							Background="{Binding Path=FrameItemBackground, Converter={StaticResource GConv-ColorToSolidColorBrush}}"
+							BorderBrush="{Binding Path=FrameItemBorderColor, Converter={StaticResource GConv-ColorToSolidColorBrush}}">
+
+						<MediaElement Source="{Binding Path=FrameItemVideoFilePath}" LoadedBehavior="Manual" MediaFailed="MediaElement_OnMediaFailed" />
+					</Border>
+				</Grid>
+			</DataTemplate>
+			<DataTemplate DataType="{x:Type frameItems:IFrameItemImage}" x:Key="{x:Type frameItems:IFrameItemImage}">
+
+				<Grid>
+					<Grid.Margin>
+						<MultiBinding Converter="{StaticResource PercentToContainerMetric}">
+							<Binding Path="FrameItemRelativePosition" />
+							<Binding RelativeSource="{RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type FrameworkElement}}" Path="ActualWidth" />
+							<Binding RelativeSource="{RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type FrameworkElement}}" Path="ActualHeight" />
+						</MultiBinding>
+					</Grid.Margin>
+					<Border BorderThickness="1" BorderBrush="#00FF00" Background="#3000FF00" IsHitTestVisible="False"
+							Visibility="{Binding ElementName=Uc, Path=IsDiagnostic, Converter={StaticResource GConv-BoolVisibility}}" />
+					<Border BorderThickness="{Binding Path=FrameItemBorderThickness}"
+						Background="{Binding Path=FrameItemBackground, Converter={StaticResource GConv-ColorToSolidColorBrush}}"
+						BorderBrush="{Binding Path=FrameItemBorderColor, Converter={StaticResource GConv-ColorToSolidColorBrush}}">
+						<Image Source="{Binding Path=ImageBitmapSource, IsAsync=True}" />
+					</Border>
+				</Grid>
+			</DataTemplate>
+			<DataTemplate DataType="{x:Type frameItems:IFrameItemText}" x:Key="{x:Type frameItems:IFrameItemText}">
+				<Grid>
+					<Grid.Margin>
+						<MultiBinding Converter="{StaticResource PercentToContainerMetric}">
+							<Binding Path="FrameItemRelativePosition" />
+							<Binding RelativeSource="{RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type FrameworkElement}}" Path="ActualWidth" />
+							<Binding RelativeSource="{RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type FrameworkElement}}" Path="ActualHeight" />
+						</MultiBinding>
+					</Grid.Margin>
+					<Border BorderThickness="1" BorderBrush="#FF0000" Background="#30FF0000" IsHitTestVisible="False"
+							Visibility="{Binding ElementName=Uc, Path=IsDiagnostic, Converter={StaticResource GConv-BoolVisibility}}" />
+					<Border BorderThickness="{Binding Path=FrameItemBorderThickness}"
+							Background="{Binding Path=FrameItemBackground, Converter={StaticResource GConv-ColorToSolidColorBrush}}"
+							BorderBrush="{Binding Path=FrameItemBorderColor, Converter={StaticResource GConv-ColorToSolidColorBrush}}">
+						<Viewbox>
+							<TextBlock Text="{Binding Path=FrameItemText}" FontFamily="{Binding Path=FrameItemFontFamily}" x:Name="TextBlock1"
+										FontWeight="{Binding Path=FrameItemFontWeight}" FontStyle="{Binding Path=FrameItemFontStyle}"
+										Foreground="{Binding Path=FrameItemForeground, Converter={StaticResource GConv-ColorToSolidColorBrush}}" />
+						</Viewbox>
+					</Border>
+				</Grid>
+			</DataTemplate>
+			<DataTemplate DataType="{x:Type wpPlayer:IFrame}" x:Key="{x:Type wpPlayer:IFrame}">
+				<Grid>
+					<Grid.Margin>
+						<MultiBinding Converter="{StaticResource PercentToContainerMetric}">
+							<Binding Path="FrameItemRelativePosition" />
+							<Binding RelativeSource="{RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type FrameworkElement}}" Path="ActualWidth" />
+							<Binding RelativeSource="{RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type FrameworkElement}}" Path="ActualHeight" />
+						</MultiBinding>
+					</Grid.Margin>
+					<Border BorderThickness="1" BorderBrush="#FFFF00" Background="#30FFFF00" IsHitTestVisible="False"
+							Visibility="{Binding ElementName=Uc, Path=IsDiagnostic, Converter={StaticResource GConv-BoolVisibility}}" />
+					<controls:TransitionCover RotationAngle="{Binding Path=FrameItemRotation}" Transitions="{Binding Path=FrameTransitions}"
+										BorderThickness="{Binding Path=FrameItemBorderThickness}"
+										Background="{Binding Path=FrameItemBackground, Converter={StaticResource GConv-ColorToSolidColorBrush}}"
+										BorderBrush="{Binding Path=FrameItemBorderColor, Converter={StaticResource GConv-ColorToSolidColorBrush}}">
+						<ItemsControl ItemsSource="{Binding Path=FrameChildren}" ItemTemplateSelector="{StaticResource {x:Type controls:FrameItemTemplateSelector}}">
+							<ItemsControl.ItemsPanel>
+								<ItemsPanelTemplate>
+									<Grid />
+								</ItemsPanelTemplate>
+							</ItemsControl.ItemsPanel>
+							<ItemsControl.ItemContainerStyle>
+								<Style TargetType="ContentPresenter">
+									<Setter Property="Panel.ZIndex" Value="{Binding Path=FrameItemZIndex}" />
+								</Style>
+							</ItemsControl.ItemContainerStyle>
+						</ItemsControl>
+					</controls:TransitionCover>
+				</Grid>
+			</DataTemplate>
+			<DataTemplate DataType="{x:Type wpPlayer:IFrame}" x:Key="FixedRatioFrameTemplate">
+				<controls:FixedRatioBorder RatioX="{Binding Path=FrameRatioX}" RatioY="{Binding Path=FrameRatioY}">
+					<ContentControl ClipToBounds="True" Content="{Binding}" ContentTemplate="{StaticResource {x:Type wpPlayer:IFrame}}" />
+				</controls:FixedRatioBorder>
+			</DataTemplate>
+		</ResourceDictionary>
+
+
+	</UserControl.Resources>
+	<ContentControl x:Name="PagePresenter" Content="{Binding ElementName=Uc, Path=Item}"
+					ContentTemplateSelector="{StaticResource {x:Type controls:FrameItemTemplateSelector}}" />
+</UserControl>

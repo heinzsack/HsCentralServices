@@ -4,12 +4,12 @@ using PlayerControls.Interfaces;
 
 namespace RingPlayer24._dbs.hsserver.ringplayerdb.rows
 {
-	partial class RingEntry : IPageSchedule
+	partial class RingEntry : IScheduledFrame
 		{
 		[DependsOn(nameof(Page))]
-		public IPage IPage => Page;
+		public IFrame Frame => Page;
 
 		[DependsOn(nameof(StartTime))]
-		public TimeSpan IStartTime => StartTime.TimeOfDay;
+		public TimeSpan FrameStartTime => StartTime.TimeOfDay;
 		}
 	}

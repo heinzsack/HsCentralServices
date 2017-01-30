@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using CsWpfBase.Global;
 using PlayerControls.Interfaces;
+using PlayerControls.Interfaces.FrameItems;
 
 
 
@@ -19,20 +20,20 @@ using PlayerControls.Interfaces;
 
 namespace RingPlayer24._dbs.hsserver.ringplayerdb.rows
 {
-	partial class Image : IImageVisual
+	partial class Image : IFrameItemImage
 	{
 		private static object ImageLock { get; } = new object();
 
 
 		#region Overrides/Interfaces
 		[DependsOn(nameof(MarginThickness))]
-		public Thickness IRelativePositioning => Convert.Thickness.Getter(MarginThickness);
+		public Thickness FrameItemRelativePosition => Convert.Thickness.Getter(MarginThickness);
 
 		[DependsOn(nameof(SortOrder))]
-		public int ISortOrder => SortOrder;
+		public int FrameItemZIndex => SortOrder;
 
 		[DependsOn(nameof(ImageId))]
-		public BitmapSource IBitmapSource
+		public BitmapSource ImageBitmapSource
 		{
 			get
 			{
@@ -58,16 +59,16 @@ namespace RingPlayer24._dbs.hsserver.ringplayerdb.rows
 		}
 
 		[DependsOn(nameof(Background))]
-		public Color IBackground => Convert.Color.Getter(Background);
+		public Color FrameItemBackground => Convert.Color.Getter(Background);
 
 		[DependsOn(nameof(Background))]
-		public Color IBorderColor => Convert.Color.Getter(BorderColor);
+		public Color FrameItemBorderColor => Convert.Color.Getter(BorderColor);
 
 		[DependsOn(nameof(Background))]
-		public Thickness IBorderThickness => Convert.Thickness.Getter(BorderThickness);
+		public Thickness FrameItemBorderThickness => Convert.Thickness.Getter(BorderThickness);
 
 		[DependsOn(nameof(Rotation))]
-		public double IRotation => Rotation;
+		public double FrameItemRotation => Rotation;
 		#endregion
 	}
 }

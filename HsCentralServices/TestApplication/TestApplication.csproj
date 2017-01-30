@@ -151,6 +151,10 @@
     <Compile Include="_dbs\hsserver\centralservicedb\rows\RepositoryFile.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
     <Compile Include="_dbs\hsserver\centralservicedb\rows\RemoteLog.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
     <Compile Include="_dbs\hsserver\centralservicedb\rows\ShowInstancenSituation.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <ProjectReference Include="..\..\RingPlayerSolution\PlayerControls\PlayerControls.csproj">
+      <Project>{DF0322D9-BF49-4245-9001-00060FF7A8CA}</Project>
+      <Name>PlayerControls</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

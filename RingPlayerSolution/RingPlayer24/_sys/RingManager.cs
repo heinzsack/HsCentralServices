@@ -50,7 +50,7 @@ namespace RingPlayer24._sys
 			}
 		}
 
-		[field: NonSerialized] private IPageSchedule[] _pageSchedules;
+		[field: NonSerialized] private IScheduledFrame[] _scheduledFrames;
 		[field: NonSerialized] private Ring _playingRing;
 		private Guid? _playingRingId;
 
@@ -66,15 +66,15 @@ namespace RingPlayer24._sys
 			{
 				if (!SetProperty(ref _playingRing, value)) return;
 				_playingRingId = _playingRing?.Id;
-				PageSchedules = _playingRing?.RingEntries.OrderBy(x => x.StartTime).OfType<IPageSchedule>().ToArray();
+				ScheduledFrames = _playingRing?.RingEntries.OrderBy(x => x.StartTime).OfType<IScheduledFrame>().ToArray();
 			}
 		}
 
 		///<summary>The page schedules for 24h which should be played.</summary>
-		public IPageSchedule[] PageSchedules
+		public IScheduledFrame[] ScheduledFrames
 		{
-			get { return _pageSchedules; }
-			private set { SetProperty(ref _pageSchedules, value); }
+			get { return _scheduledFrames; }
+			private set { SetProperty(ref _scheduledFrames, value); }
 		}
 
 		private void Init()

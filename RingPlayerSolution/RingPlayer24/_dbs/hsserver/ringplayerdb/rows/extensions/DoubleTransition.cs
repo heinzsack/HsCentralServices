@@ -20,22 +20,22 @@ namespace RingPlayer24._dbs.hsserver.ringplayerdb.rows
 	{
 		#region Overrides/Interfaces
 		[DependsOn(nameof(BeginnTimeSeconds))]
-		public TimeSpan IBeginTime => TimeSpan.FromSeconds(BeginnTimeSeconds);
+		public TimeSpan TransitionBeginTime => TimeSpan.FromSeconds(BeginnTimeSeconds);
 
 		[DependsOn(nameof(DurationSeconds))]
-		public Duration IDuration => TimeSpan.FromSeconds(DurationSeconds);
+		public Duration TransitionDuration => TimeSpan.FromSeconds(DurationSeconds);
 
 		[DependsOn(nameof(FromValue))]
-		public double IFrom => FromValue;
+		public double TransitionFromValue => FromValue;
 
 		[DependsOn(nameof(ToValue))]
-		public double ITo => ToValue;
+		public double TransitionToValue => ToValue;
 
 		[DependsOn(nameof(TransitionType))]
-		public TransitionTypes ITransitionType => Convert.Enum.Getter(TransitionType, TransitionTypes.Linear);
+		public TransitionTypes TransitionsType => Convert.Enum.Getter(TransitionType, TransitionTypes.Linear);
 
 		[DependsOn(nameof(PropertyPath))]
-		public string IPropertyPath => PropertyPath;
+		public string TransitionPropertyPath => PropertyPath;
 		#endregion
 	}
 }

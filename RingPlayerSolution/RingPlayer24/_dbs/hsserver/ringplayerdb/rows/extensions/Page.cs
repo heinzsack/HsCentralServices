@@ -20,44 +20,44 @@ using PlayerControls.Interfaces.Transistions;
 
 namespace RingPlayer24._dbs.hsserver.ringplayerdb.rows
 {
-	partial class Page : IPage
+	partial class Page : IFrame
 	{
 		#region Overrides/Interfaces
 		[DependsOn(nameof(MarginThickness))]
-		public Thickness IRelativePositioning => Convert.Thickness.Getter(MarginThickness);
+		public Thickness FrameItemRelativePosition => Convert.Thickness.Getter(MarginThickness);
 
 		[DependsOn(nameof(SortOrder))]
-		public int ISortOrder => SortOrder;
+		public int FrameItemZIndex => SortOrder;
 
 		[DependsOn(nameof(Background))]
-		public Color IBackground => Convert.Color.Getter(Background);
+		public Color FrameItemBackground => Convert.Color.Getter(Background);
 
 		[DependsOn(nameof(BorderColor))]
-		public Color IBorderColor => Convert.Color.Getter(BorderColor);
+		public Color FrameItemBorderColor => Convert.Color.Getter(BorderColor);
 
 		[DependsOn(nameof(BorderThickness))]
-		public Thickness IBorderThickness => Convert.Thickness.Getter(BorderThickness);
+		public Thickness FrameItemBorderThickness => Convert.Thickness.Getter(BorderThickness);
 
 		[DependsOn(nameof(Rotation))]
-		public double IRotation => Rotation;
+		public double FrameItemRotation => Rotation;
 
 		[DependsOn(nameof(HasFixedRatio))]
-		public bool IHasFixedRatio => HasFixedRatio;
+		public bool FrameHasFixedRatio => HasFixedRatio;
 
 		[DependsOn(nameof(RatioX))]
-		public double IRatioX => RatioX;
+		public double FrameRatioX => RatioX;
 
 		[DependsOn(nameof(RatioY))]
-		public double IRatioY => RatioY;
+		public double FrameRatioY => RatioY;
 
-		public IEnumerable<IBaseVisual> IChildren =>
-			Images.OfType<IBaseVisual>()
+		public IEnumerable<IFrameItem> FrameChildren =>
+			Images.OfType<IFrameItem>()
 				.Concat(Videos)
 				.Concat(Texts)
 				.Concat(ChildPages);
 
 
-		public IEnumerable<ITransition> ITransitions => DoubleTransitions;
+		public IEnumerable<ITransition> FrameTransitions => DoubleTransitions;
 		#endregion
 
 

@@ -10,6 +10,7 @@ using System.Windows.Markup;
 using System.Windows.Media;
 using CsWpfBase.Ev.Public.Extensions;
 using PlayerControls.Interfaces;
+using PlayerControls.Interfaces.FrameItems;
 
 
 
@@ -18,41 +19,41 @@ using PlayerControls.Interfaces;
 
 namespace RingPlayer24._dbs.hsserver.ringplayerdb.rows
 {
-	partial class Text : ITextVisual
+	partial class Text : IFrameItemText
 	{
 		#region Overrides/Interfaces
 		[DependsOn(nameof(MarginThickness))]
-		public Thickness IRelativePositioning => Convert.Thickness.Getter(MarginThickness);
+		public Thickness FrameItemRelativePosition => Convert.Thickness.Getter(MarginThickness);
 
 		[DependsOn(nameof(SortOrder))]
-		public int ISortOrder => SortOrder;
+		public int FrameItemZIndex => SortOrder;
 
 		[DependsOn(nameof(TextColumn))]
-		public string IText => TextColumn;
+		public string FrameItemText => TextColumn;
 
 		[DependsOn(nameof(FontFamily))]
-		public string IFontFamily => FontFamily.IsNullOrEmpty() ? "Arial" : FontFamily;
+		public string FrameItemFontFamily => FontFamily.IsNullOrEmpty() ? "Arial" : FontFamily;
 
 		[DependsOn(nameof(FontWeight))]
-		public FontWeight IFontWeight => Convert.FontWeight.Getter(FontWeight);
+		public FontWeight FrameItemFontWeight => Convert.FontWeight.Getter(FontWeight);
 
 		[DependsOn(nameof(FontStyle))]
-		public FontStyle IFontStyle => Convert.FontStyle.Getter(FontStyle);
+		public FontStyle FrameItemFontStyle => Convert.FontStyle.Getter(FontStyle);
 
 		[DependsOn(nameof(Foreground))]
-		public Color IForeground => Convert.Color.Getter(Foreground);
+		public Color FrameItemForeground => Convert.Color.Getter(Foreground);
 
 		[DependsOn(nameof(Background))]
-		public Color IBackground => Convert.Color.Getter(Background);
+		public Color FrameItemBackground => Convert.Color.Getter(Background);
 
 		[DependsOn(nameof(BorderColor))]
-		public Color IBorderColor => Convert.Color.Getter(BorderColor);
+		public Color FrameItemBorderColor => Convert.Color.Getter(BorderColor);
 
 		[DependsOn(nameof(BorderThickness))]
-		public Thickness IBorderThickness => Convert.Thickness.Getter(BorderThickness);
+		public Thickness FrameItemBorderThickness => Convert.Thickness.Getter(BorderThickness);
 
 		[DependsOn(nameof(Rotation))]
-		public double IRotation => Rotation;
+		public double FrameItemRotation => Rotation;
 		#endregion
 	}
 }

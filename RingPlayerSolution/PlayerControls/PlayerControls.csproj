@@ -48,25 +48,34 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controls\AnimationCover.xaml.cs">
-      <DependentUpon>AnimationCover.xaml</DependentUpon>
+    <Compile Include="Controls\TransitionCover.xaml.cs">
+      <DependentUpon>TransitionCover.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\AreaTextBlock.cs" />
-    <Compile Include="Controls\PageViewer.xaml.cs">
-      <DependentUpon>PageViewer.xaml</DependentUpon>
+    <Compile Include="Controls\windows\ScheduledFramesPresenterWindow.xaml.cs">
+      <DependentUpon>ScheduledFramesPresenterWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\RatioBorder.cs" />
-    <Compile Include="Controls\VisualSelector.cs" />
-    <Compile Include="Extensions\PageExtensions.cs" />
-    <Compile Include="Interfaces\IBaseVisual.cs" />
-    <Compile Include="Interfaces\IDuratedPage.cs" />
-    <Compile Include="Interfaces\IImageVisual.cs" />
-    <Compile Include="Interfaces\IPage.cs" />
-    <Compile Include="Interfaces\IPageSchedule.cs" />
-    <Compile Include="Interfaces\ITextVisual.cs" />
-    <Compile Include="Interfaces\IVideoVisual.cs" />
+    <Compile Include="Themes\FramePresenter.xaml.cs">
+      <DependentUpon>FramePresenter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\windows\DuratedFramesPresenterWindow.xaml.cs">
+      <DependentUpon>DuratedFramesPresenterWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\windows\FramePresenterWindow.xaml.cs">
+      <DependentUpon>FramePresenterWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\FixedRatioBorder.cs" />
+    <Compile Include="Controls\FrameItemTemplateSelector.cs" />
+    <Compile Include="Extensions\FrameExtensions.cs" />
+    <Compile Include="Interfaces\IFrameItem.cs" />
+    <Compile Include="Interfaces\IDuratedFrame.cs" />
+    <Compile Include="Interfaces\FrameItems\IFrameItemImage.cs" />
+    <Compile Include="Interfaces\IFrame.cs" />
+    <Compile Include="Interfaces\IScheduledFrame.cs" />
+    <Compile Include="Interfaces\FrameItems\IFrameItemText.cs" />
+    <Compile Include="Interfaces\FrameItems\IFrameItemVideo.cs" />
     <Compile Include="Interfaces\Transistions\IDoubleTransition.cs" />
     <Compile Include="Interfaces\Transistions\ITransition.cs" />
+    <Compile Include="Interfaces\Transistions\TransitionExtensions.cs" />
     <Compile Include="Interfaces\Transistions\TransitionTypes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -81,12 +90,17 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Themes\RingPlayer.xaml.cs">
-      <DependentUpon>RingPlayer.xaml</DependentUpon>
+    <Compile Include="Themes\DuratedFramePresenter.xaml.cs">
+      <DependentUpon>DuratedFramePresenter.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Themes\RingPlayer24.xaml.cs">
-      <DependentUpon>RingPlayer24.xaml</DependentUpon>
+    <Compile Include="Themes\ScheduledFramePresenter.xaml.cs">
+      <DependentUpon>ScheduledFramePresenter.xaml</DependentUpon>
     </Compile>
+    <Compile Include="_mocks\MockDuratedFrame.cs" />
+    <Compile Include="_mocks\MockFrame.cs" />
+    <Compile Include="_mocks\MockImage.cs" />
+    <Compile Include="_mocks\MockScheduledFrame.cs" />
+    <Compile Include="_mocks\MockText.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -99,19 +113,31 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Controls\AnimationCover.xaml">
+    <Page Include="Controls\TransitionCover.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Controls\PageViewer.xaml">
+    <Page Include="Controls\windows\ScheduledFramesPresenterWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Themes\RingPlayer.xaml">
+    <Page Include="Themes\FramePresenter.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Themes\RingPlayer24.xaml">
+    <Page Include="Controls\windows\DuratedFramesPresenterWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\windows\FramePresenterWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\DuratedFramePresenter.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\ScheduledFramePresenter.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -2,19 +2,18 @@
 // <author>Christian Sack</author>
 // <email>christian@sack.at</email>
 // <website>christian.sack.at</website>
-// <date>2017-01-05</date>
+// <date>2017-01-28</date>
 
 using System;
-using System.Diagnostics;
 using System.IO;
-using System.Security.Cryptography;
 using System.Windows;
 using CsWpfBase.Ev.Public.Extensions;
 using CsWpfBase.Global;
-using CsWpfBase.Global.remote.services.logging.components;
 using CsWpfBase.Themes.Controls.Containers;
 using CsWpfBase.Themes.Controls.Editors._baseControls;
 using CsWpfBase._todo;
+using PlayerControls.Extensions;
+using PlayerControls.Themes;
 
 
 
@@ -28,24 +27,27 @@ namespace TestApplication
 	{
 		public MainWindow()
 		{
-			CsGlobal.Install(GlobalFunctions.Storage | GlobalFunctions.AppData | GlobalFunctions.ConfigFile |GlobalFunctions.GermanThreadCulture);
+			CsGlobal.Install(GlobalFunctions.Storage | GlobalFunctions.AppData | GlobalFunctions.ConfigFile | GlobalFunctions.GermanThreadCulture);
 			CsGlobal.InstallRemote("http://localhost:16412/", "<RSAKeyValue><Modulus>7bTXJULjf3ELHOv/57LyGUTBpgQ7CucbdSXusgy+270FPbK0Iboqkqrhs4rbeKkH6AWA6BwXGqUqAwwVNKHPEtXTpLe9GKM41eZOJyhU7QCw0X8BAQXLbTQbc+QGFn/J/t6wlh7cgrYgqe/3Q9u7yW9+j16Q8Uj4OG4N20fsqX0=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue>");
 
 			InitializeComponent();
 			FileSelector.ValuePath = new FileInfo(@"C:\Data\Personal\OneDrive\Bilder\Wallpaper\6.jpg");
 			IdSelector.Value = "0A2D546F-B976-4566-8BAD-E910B3DF96E3";
 
+			DuratedFramePresenter.GetMock().ShowDialog("test");
+			ScheduledFramePresenter.GetMock().ShowDialog("test");
+			CsGlobal.App.Exit();
 
 
-			var applicationUpdate = ApplicationUpdate.New(new DirectoryInfo(@"C:\Users\chris\Desktop\CurrentApplication"));
-			var updateFile = new FileInfo("AppUpdate.upd").In_Desktop_Directory();
-			applicationUpdate.Save(updateFile);
+			////var applicationUpdate = ApplicationUpdate.New(new DirectoryInfo(@"C:\_Data\DEV\Github\Hs\SharedComponents\HsCentralServices\TestApplication\bin\Debug"));
+			//var updateFile = new FileInfo("AppUpdate.upd").In_Desktop_Directory();
+			////applicationUpdate.Save(updateFile);
 
-			var update = ApplicationUpdate.Load(updateFile);
-			update.Execute();
+			//var update = ApplicationUpdate.Load(updateFile);
+			//update.Execute();
 		}
 
-		
+
 		private void DownloadClick(object sender, RoutedEventArgs e)
 		{
 			var filedownload = CsGlobal.Remote.FileRepository.FindOrDownloadAsync(Guid.Parse(IdSelector.Value));
@@ -57,7 +59,7 @@ namespace TestApplication
 			var fileupload = CsGlobal.Remote.FileRepository.UploadAsync(FileSelector.ValuePath, null, null, "MyGroup1", DateTime.Now.AddSeconds(30));
 			fileupload.ShowDialog();
 			if (fileupload.IsSucceeded)
-			IdSelector.Value = fileupload.Result[0].Id.ToString();
+				IdSelector.Value = fileupload.Result[0].Id.ToString();
 		}
 
 		private ValidationResult IdSelector_OnValidation(object value)
