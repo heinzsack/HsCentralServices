@@ -32,11 +32,9 @@ namespace HsCentralServiceWeb.Controllers.services
 		[ActionName(CsRemoteProtocol.Mvc.ActionNames.FileRepository)]
 		public ActionResult FileRepository()
 		{
-			using (var db = new CentralServiceDb())
+			using (var db = Sys.Data.GetConnectedContext())
 			{
-				db.Set_DbProxy<Data.HsServerDirectConnector>();
-				db.LoadSchema();
-				Sys.RemoteServer.FileRepository.HandleRequest(db.RepositoryFiles);
+				Sys.RemoteServer.FileRepository.HandleRequest(db.CentralServiceDb.RepositoryFiles);
 			}
 			return new ContentResult();
 		}
@@ -45,11 +43,9 @@ namespace HsCentralServiceWeb.Controllers.services
 		[ActionName(CsRemoteProtocol.Mvc.ActionNames.Log)]
 		public ActionResult Log()
 		{
-			using (var db = new CentralServiceDb())
+			using (var db = Sys.Data.GetConnectedContext())
 			{
-				db.Set_DbProxy<Data.HsServerDirectConnector>();
-				db.LoadSchema();
-				Sys.RemoteServer.Log.HandleRequest(db.RemoteLogs);
+				Sys.RemoteServer.Log.HandleRequest(db.CentralServiceDb.RemoteLogs);
 				Sys.Hubs.WwwSurferNotification.LogsChanged();
 			}
 			return new ContentResult();

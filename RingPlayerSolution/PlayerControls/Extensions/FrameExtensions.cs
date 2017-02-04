@@ -2,7 +2,7 @@
 // <author>Christian Sack</author>
 // <email>christian@sack.at</email>
 // <website>christian.sack.at</website>
-// <date>2017-01-28</date>
+// <date>2017-01-30</date>
 
 using System;
 using System.Threading.Tasks;
@@ -11,7 +11,6 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
 using CsWpfBase.Ev.Public.Extensions;
-using CsWpfBase.Themes.Controls.Containers;
 using CsWpfBase.Utilitys;
 using PlayerControls.Controls.windows;
 using PlayerControls.Interfaces;
@@ -40,7 +39,14 @@ namespace PlayerControls.Extensions
 			}
 		}
 
-		public static Task<BitmapSource> GetRenderedImage(this IFrame frame, double width = 1920D, double height = 1080D)
+		/// <summary>
+		///     Renders the associated <see cref="frame" /> into an image. You can specify <paramref name="width" /> and
+		///     <paramref name="height" />.
+		/// </summary>
+		/// <param name="frame">The frame which needs to be converted into an image.</param>
+		/// <param name="width">The width of the rendered image.</param>
+		/// <param name="height">The height of the rendered image.</param>
+		public static Task<BitmapSource> ConvertTo_RenderedImage(this IFrame frame, double width = 1920D, double height = 1080D)
 		{
 			var t = new Task<BitmapSource>(() =>
 			{

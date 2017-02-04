@@ -28,15 +28,16 @@ namespace TestApplication
 		public MainWindow()
 		{
 			CsGlobal.Install(GlobalFunctions.Storage | GlobalFunctions.AppData | GlobalFunctions.ConfigFile | GlobalFunctions.GermanThreadCulture);
-			CsGlobal.InstallRemote("http://localhost:16412/", "<RSAKeyValue><Modulus>7bTXJULjf3ELHOv/57LyGUTBpgQ7CucbdSXusgy+270FPbK0Iboqkqrhs4rbeKkH6AWA6BwXGqUqAwwVNKHPEtXTpLe9GKM41eZOJyhU7QCw0X8BAQXLbTQbc+QGFn/J/t6wlh7cgrYgqe/3Q9u7yW9+j16Q8Uj4OG4N20fsqX0=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue>");
+			//http://localhost:16412/
+			CsGlobal.InstallRemote("localhost:16412", "<RSAKeyValue><Modulus>7bTXJULjf3ELHOv/57LyGUTBpgQ7CucbdSXusgy+270FPbK0Iboqkqrhs4rbeKkH6AWA6BwXGqUqAwwVNKHPEtXTpLe9GKM41eZOJyhU7QCw0X8BAQXLbTQbc+QGFn/J/t6wlh7cgrYgqe/3Q9u7yW9+j16Q8Uj4OG4N20fsqX0=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue>");
 
 			InitializeComponent();
-			FileSelector.ValuePath = new FileInfo(@"C:\Data\Personal\OneDrive\Bilder\Wallpaper\6.jpg");
+			FileSelector.ValuePath = new FileInfo(@"x.mkv").In_Desktop_Directory();
 			IdSelector.Value = "0A2D546F-B976-4566-8BAD-E910B3DF96E3";
 
-			DuratedFramePresenter.GetMock().ShowDialog("test");
-			ScheduledFramePresenter.GetMock().ShowDialog("test");
-			CsGlobal.App.Exit();
+			//DuratedFramePresenter.GetMock().ShowDialog("test");
+			//ScheduledFramePresenter.GetMock().ShowDialog("test");
+			//CsGlobal.App.Exit();
 
 
 			////var applicationUpdate = ApplicationUpdate.New(new DirectoryInfo(@"C:\_Data\DEV\Github\Hs\SharedComponents\HsCentralServices\TestApplication\bin\Debug"));
@@ -56,7 +57,7 @@ namespace TestApplication
 
 		private void UploadClick(object sender, RoutedEventArgs e)
 		{
-			var fileupload = CsGlobal.Remote.FileRepository.UploadAsync(FileSelector.ValuePath, null, null, "MyGroup1", DateTime.Now.AddSeconds(30));
+			var fileupload = CsGlobal.Remote.FileRepository.UploadAsync(FileSelector.ValuePath, null, null, "MyGroup1", DateTime.Now.AddMinutes(10));
 			fileupload.ShowDialog();
 			if (fileupload.IsSucceeded)
 				IdSelector.Value = fileupload.Result[0].Id.ToString();

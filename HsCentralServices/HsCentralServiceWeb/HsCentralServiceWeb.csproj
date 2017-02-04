@@ -32,7 +32,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;CS</DefineConstants>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -235,22 +235,6 @@
       <SubType>Component</SubType>
     </Compile>
   </ItemGroup>
-  <Choose>
-    <When Condition="$(DefineConstants.Contains('CS'))">
-      <ItemGroup>
-        <!-- other ProjectReference elements -->
-      </ItemGroup>
-    </When>
-    <Otherwise>
-      <ItemGroup>
-        <ProjectReference Include="..\..\..\..\..\DEV\_HsComponents\AddOnRingDistribution\AddOnRingDistribution\AddOnRingDistribution.csproj">
-          <Project>{582E5E6C-38ED-42FE-9FC6-30B41B832A56}</Project>
-          <Name>AddOnRingDistribution</Name>
-        </ProjectReference>
-        <!-- other ProjectReference elements -->
-      </ItemGroup>
-    </Otherwise>
-  </Choose>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\CsGlobals\_CsWpfBase\_CsWpfBase.csproj">
       <Project>{63cb4e91-9d9c-4c97-8097-fc3964593796}</Project>
