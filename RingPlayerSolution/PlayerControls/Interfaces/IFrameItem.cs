@@ -35,17 +35,17 @@ namespace PlayerControls.Interfaces
 		///         </para>
 		///     </example>
 		/// </summary>
-		Thickness FrameItemRelativePosition { get; }
+		Thickness FrameItemRelativePosition { get; set; }
 		/// <summary>The color of the background of the element.</summary>
-		Color FrameItemBackground { get; }
+		Color FrameItemBackground { get; set; }
 		/// <summary>The color of the border of the element.</summary>
-		Color FrameItemBorderColor { get; }
+		Color FrameItemBorderColor { get; set; }
 		/// <summary>The thickness of the border.</summary>
-		Thickness FrameItemBorderThickness { get; }
+		Thickness FrameItemBorderThickness { get; set; }
 		/// <summary>The rotation of the element.</summary>
-		double FrameItemRotation { get; }
+		double FrameItemRotation { get; set; }
 		/// <summary>The z-index of the elemnt describes the layer on which this element sits.</summary>
-		int FrameItemZIndex { get; }
+		int FrameItemZIndex { get; set; }
 		#endregion
 	}
 }

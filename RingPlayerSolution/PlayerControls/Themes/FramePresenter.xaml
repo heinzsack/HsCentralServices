@@ -8,7 +8,7 @@
 			xmlns:frameItems="clr-namespace:PlayerControls.Interfaces.FrameItems"
 			xmlns:themes="clr-namespace:PlayerControls.Themes"
 			mc:Ignorable="d"
-			d:DesignHeight="300" d:DesignWidth="300" x:Name="Uc">
+			d:DesignHeight="300" d:DesignWidth="300" x:Name="Uc" ClipToBounds="True">
 	<UserControl.Resources>
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
@@ -19,7 +19,10 @@
 			<themes:PercentToContainerMetricConverter x:Key="PercentToContainerMetric" />
 
 			<DataTemplate DataType="{x:Type frameItems:IFrameItemVideo}" x:Key="{x:Type frameItems:IFrameItemVideo}">
-				<Grid>
+				<Grid RenderTransformOrigin="0.5 0.5">
+					<Grid.RenderTransform>
+						<RotateTransform Angle="{Binding Path=FrameItemRotation}" />
+					</Grid.RenderTransform>
 					<Grid.Margin>
 						<MultiBinding Converter="{StaticResource PercentToContainerMetric}">
 							<Binding Path="FrameItemRelativePosition" />
@@ -39,7 +42,10 @@
 			</DataTemplate>
 			<DataTemplate DataType="{x:Type frameItems:IFrameItemImage}" x:Key="{x:Type frameItems:IFrameItemImage}">
 
-				<Grid>
+				<Grid RenderTransformOrigin="0.5 0.5">
+					<Grid.RenderTransform>
+						<RotateTransform Angle="{Binding Path=FrameItemRotation}" />
+					</Grid.RenderTransform>
 					<Grid.Margin>
 						<MultiBinding Converter="{StaticResource PercentToContainerMetric}">
 							<Binding Path="FrameItemRelativePosition" />
@@ -57,7 +63,10 @@
 				</Grid>
 			</DataTemplate>
 			<DataTemplate DataType="{x:Type frameItems:IFrameItemText}" x:Key="{x:Type frameItems:IFrameItemText}">
-				<Grid>
+				<Grid RenderTransformOrigin="0.5 0.5">
+					<Grid.RenderTransform>
+						<RotateTransform Angle="{Binding Path=FrameItemRotation}" />
+					</Grid.RenderTransform>
 					<Grid.Margin>
 						<MultiBinding Converter="{StaticResource PercentToContainerMetric}">
 							<Binding Path="FrameItemRelativePosition" />
@@ -117,6 +126,5 @@
 
 
 	</UserControl.Resources>
-	<ContentControl x:Name="PagePresenter" Content="{Binding ElementName=Uc, Path=Item}"
-					ContentTemplateSelector="{StaticResource {x:Type controls:FrameItemTemplateSelector}}" />
+	<ContentControl x:Name="PagePresenter" Content="{Binding ElementName=Uc, Path=Item}" ContentTemplateSelector="{StaticResource {x:Type controls:FrameItemTemplateSelector}}" />
 </UserControl>

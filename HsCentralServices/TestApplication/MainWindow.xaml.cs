@@ -14,6 +14,7 @@ using CsWpfBase.Themes.Controls.Editors._baseControls;
 using CsWpfBase._todo;
 using PlayerControls.Extensions;
 using PlayerControls.Themes;
+using PlayerControls.Themes.editors;
 
 
 
@@ -29,15 +30,17 @@ namespace TestApplication
 		{
 			CsGlobal.Install(GlobalFunctions.Storage | GlobalFunctions.AppData | GlobalFunctions.ConfigFile | GlobalFunctions.GermanThreadCulture);
 			//http://localhost:16412/
-			CsGlobal.InstallRemote("localhost:16412", "<RSAKeyValue><Modulus>7bTXJULjf3ELHOv/57LyGUTBpgQ7CucbdSXusgy+270FPbK0Iboqkqrhs4rbeKkH6AWA6BwXGqUqAwwVNKHPEtXTpLe9GKM41eZOJyhU7QCw0X8BAQXLbTQbc+QGFn/J/t6wlh7cgrYgqe/3Q9u7yW9+j16Q8Uj4OG4N20fsqX0=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue>");
+			CsGlobal.InstallRemote("service.wpmedia.at", "<RSAKeyValue><Modulus>7bTXJULjf3ELHOv/57LyGUTBpgQ7CucbdSXusgy+270FPbK0Iboqkqrhs4rbeKkH6AWA6BwXGqUqAwwVNKHPEtXTpLe9GKM41eZOJyhU7QCw0X8BAQXLbTQbc+QGFn/J/t6wlh7cgrYgqe/3Q9u7yW9+j16Q8Uj4OG4N20fsqX0=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue>");
 
 			InitializeComponent();
 			FileSelector.ValuePath = new FileInfo(@"x.mkv").In_Desktop_Directory();
 			IdSelector.Value = "0A2D546F-B976-4566-8BAD-E910B3DF96E3";
 
-			//DuratedFramePresenter.GetMock().ShowDialog("test");
-			//ScheduledFramePresenter.GetMock().ShowDialog("test");
-			//CsGlobal.App.Exit();
+			var frame = FramePresenter.GetMock();
+			new FrameEditor { Item = frame}.ShowDialog("Frame Edit");
+
+			
+			CsGlobal.App.Exit();
 
 
 			////var applicationUpdate = ApplicationUpdate.New(new DirectoryInfo(@"C:\_Data\DEV\Github\Hs\SharedComponents\HsCentralServices\TestApplication\bin\Debug"));

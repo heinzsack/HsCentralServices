@@ -10,7 +10,11 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
 using System.Windows.Media;
+using CsWpfBase.Ev.Public.Extensions;
+using JetBrains.Annotations;
 using PlayerControls.Controls;
 using PlayerControls.Interfaces;
 using PlayerControls.Interfaces.FrameItems;
@@ -61,33 +65,33 @@ namespace PlayerControls.Themes
 		}
 
 
-		private static List<T> RecursiveGetVisualChildByCondition<T>(List<T> list, DependencyObject container, Func<T, bool> condition) where T : FrameworkElement
-		{
-			if (container == null) return null;
-			//Debug.WriteLine($"{container.GetType().Name} {typeof(T)}");
-			T foundElement = null;
-			if (container is FrameworkElement)
-				(container as FrameworkElement).ApplyTemplate();
-			if (container is ItemsControl)
-				((ItemsControl) container).UpdateLayout();
-			for (var i = 0; i < VisualTreeHelper.GetChildrenCount(container); i++)
-			{
-				var dpO = VisualTreeHelper.GetChild(container, i);
+		//private static List<T> RecursiveGetVisualChildByCondition<T>(List<T> list, DependencyObject container, Func<T, bool> condition) where T : FrameworkElement
+		//{
+		//	if (container == null) return null;
+		//	//Debug.WriteLine($"{container.GetType().Name} {typeof(T)}");
+		//	T foundElement = null;
+		//	if (container is FrameworkElement)
+		//		(container as FrameworkElement).ApplyTemplate();
+		//	if (container is ItemsControl)
+		//		((ItemsControl) container).UpdateLayout();
+		//	for (var i = 0; i < VisualTreeHelper.GetChildrenCount(container); i++)
+		//	{
+		//		var dpO = VisualTreeHelper.GetChild(container, i);
 
-				if (!(dpO is T))
-				{
-					RecursiveGetVisualChildByCondition(list, dpO, condition);
-					continue;
-				}
+		//		if (!(dpO is T))
+		//		{
+		//			RecursiveGetVisualChildByCondition(list, dpO, condition);
+		//			continue;
+		//		}
 
-				var element = (T) dpO;
-				if (!condition(element)) continue;
+		//		var element = (T) dpO;
+		//		if (!condition(element)) continue;
 
-				list.Add((T) element);
-			}
+		//		list.Add((T) element);
+		//	}
 
-			return list;
-		}
+		//	return list;
+		//}
 
 		private bool _animationsStarted;
 		private bool _videosStarted;
@@ -103,6 +107,7 @@ namespace PlayerControls.Themes
 			selector.FrameItemTextTemplate = (DataTemplate) Resources[typeof(IFrameItemText)];
 			selector.FrameItemImageTemplate = (DataTemplate) Resources[typeof(IFrameItemImage)];
 		}
+
 
 		/// <summary>The <see cref="IFrame" /> which should be displayed by the <see cref="FramePresenter" />.</summary>
 		public IFrame Item
@@ -161,7 +166,7 @@ namespace PlayerControls.Themes
 
 		private MediaElement[] GetMediaElemente_FromPage()
 		{
-			var mediaElements = RecursiveGetVisualChildByCondition(new List<MediaElement>(), PagePresenter, cover => true);
+			var mediaElements = PagePresenter.GetVisualChildsByCondition<MediaElement>(cover => true);
 			if (mediaElements == null)
 				return new MediaElement[0];
 			return mediaElements.ToArray();
@@ -170,7 +175,7 @@ namespace PlayerControls.Themes
 		private TransitionCover[] GetTransistionCovers_FromPage()
 		{
 
-			var animationCovers = RecursiveGetVisualChildByCondition(new List<TransitionCover>(), PagePresenter, cover => true);
+			var animationCovers = PagePresenter.GetVisualChildsByCondition<TransitionCover>(cover => true);
 			if (animationCovers == null)
 				return new TransitionCover[0];
 			return animationCovers.ToArray();
@@ -181,6 +186,7 @@ namespace PlayerControls.Themes
 			// throw new NotImplementedException();
 		}
 	}
+
 
 
 

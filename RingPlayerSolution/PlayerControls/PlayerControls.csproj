@@ -54,6 +54,9 @@
     <Compile Include="Controls\windows\ScheduledFramesPresenterWindow.xaml.cs">
       <DependentUpon>ScheduledFramesPresenterWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Themes\editors\FrameEditor.xaml.cs">
+      <DependentUpon>FrameEditor.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Themes\FramePresenter.xaml.cs">
       <DependentUpon>FramePresenter.xaml</DependentUpon>
     </Compile>
@@ -120,6 +123,10 @@
     <Page Include="Controls\windows\ScheduledFramesPresenterWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\editors\FrameEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Themes\FramePresenter.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -20,15 +20,15 @@ namespace PlayerControls.Interfaces.FrameItems
 	{
 		#region Abstract
 		/// <summary>The text which should be displayed.</summary>
-		string FrameItemText { get; }
+		string FrameItemText { get; set; }
 		/// <summary>The <see cref="Color" /> of the <see cref="FrameItemText" />.</summary>
-		Color FrameItemForeground { get; }
+		Color FrameItemForeground { get; set; }
 		/// <summary>The font family of the <see cref="FrameItemText" />.</summary>
-		string FrameItemFontFamily { get; }
+		string FrameItemFontFamily { get; set; }
 		/// <summary>The <see cref="FontWeight" /> of the <see cref="FrameItemText" />.</summary>
-		FontWeight FrameItemFontWeight { get; }
+		FontWeight FrameItemFontWeight { get; set; }
 		/// <summary>The <see cref="FontStyle" /> of the <see cref="FrameItemText" />.</summary>
-		FontStyle FrameItemFontStyle { get; }
+		FontStyle FrameItemFontStyle { get; set; }
 		#endregion
 	}
 }

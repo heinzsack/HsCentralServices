@@ -6,6 +6,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Windows;
+using System.Windows.Media;
 using PlayerControls.Interfaces.Transistions;
 
 
@@ -26,13 +28,13 @@ namespace PlayerControls.Interfaces
 		///     If true the two proeprties <see cref="FrameRatioX" /> and <see cref="FrameRatioY" /> will be used to determine an aspect
 		///     ratio wich is used to resize the frame.
 		/// </summary>
-		bool FrameHasFixedRatio { get; }
+		bool FrameHasFixedRatio { get; set; }
 
 		/// <summary>could be 16 when <see cref="FrameRatioY" /> is 9 to make a 16:9 frame.</summary>
-		double FrameRatioX { get; }
+		double FrameRatioX { get; set; }
 
 		/// <summary>could be 9 when <see cref="FrameRatioX" /> is 16 to make a 16:9 frame.</summary>
-		double FrameRatioY { get; }
+		double FrameRatioY { get; set; }
 
 		/// <summary>Could be any <see cref="IFrameItem" /> item.</summary>
 		IEnumerable<IFrameItem> FrameChildren { get; }
