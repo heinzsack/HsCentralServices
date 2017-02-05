@@ -138,13 +138,7 @@
     <Compile Include="_dbs\hsserver\ringplayerdb\dataset\RingPlayerDb.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="_dbs\hsserver\ringplayerdb\tables\VideosTable.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="_dbs\hsserver\ringplayerdb\tables\ImagesTable.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="_dbs\hsserver\ringplayerdb\tables\TextsTable.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]">
+    <Compile Include="_dbs\hsserver\ringplayerdb\tables\PagesTable.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="_dbs\hsserver\ringplayerdb\tables\SysdiagramsTable.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]">
@@ -153,39 +147,45 @@
     <Compile Include="_dbs\hsserver\ringplayerdb\tables\DoubleTransitionsTable.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="_dbs\hsserver\ringplayerdb\tables\PagesTable.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="_dbs\hsserver\ringplayerdb\tables\RingsTable.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="_dbs\hsserver\ringplayerdb\tables\RingEntriesTable.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="_dbs\hsserver\ringplayerdb\rowinterfaces\IVideo.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
-    <Compile Include="_dbs\hsserver\ringplayerdb\rowinterfaces\IImage.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
-    <Compile Include="_dbs\hsserver\ringplayerdb\rowinterfaces\IText.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\ringplayerdb\tables\VideosTable.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="_dbs\hsserver\ringplayerdb\tables\TextsTable.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="_dbs\hsserver\ringplayerdb\tables\ImagesTable.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="_dbs\hsserver\ringplayerdb\rowinterfaces\IPage.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
     <Compile Include="_dbs\hsserver\ringplayerdb\rowinterfaces\ISysdiagram.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
     <Compile Include="_dbs\hsserver\ringplayerdb\rowinterfaces\IDoubleTransition.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
-    <Compile Include="_dbs\hsserver\ringplayerdb\rowinterfaces\IPage.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
     <Compile Include="_dbs\hsserver\ringplayerdb\rowinterfaces\IRing.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
     <Compile Include="_dbs\hsserver\ringplayerdb\rowinterfaces\IRingEntry.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
-    <Compile Include="_dbs\hsserver\ringplayerdb\rowpocos\Poco_Video.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
-    <Compile Include="_dbs\hsserver\ringplayerdb\rowpocos\Poco_Image.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
-    <Compile Include="_dbs\hsserver\ringplayerdb\rowpocos\Poco_Text.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\ringplayerdb\rowinterfaces\IVideo.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\ringplayerdb\rowinterfaces\IText.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\ringplayerdb\rowinterfaces\IImage.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\ringplayerdb\rowpocos\Poco_Page.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
     <Compile Include="_dbs\hsserver\ringplayerdb\rowpocos\Poco_Sysdiagram.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
     <Compile Include="_dbs\hsserver\ringplayerdb\rowpocos\Poco_DoubleTransition.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
-    <Compile Include="_dbs\hsserver\ringplayerdb\rowpocos\Poco_Page.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
     <Compile Include="_dbs\hsserver\ringplayerdb\rowpocos\Poco_Ring.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
     <Compile Include="_dbs\hsserver\ringplayerdb\rowpocos\Poco_RingEntry.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
-    <Compile Include="_dbs\hsserver\ringplayerdb\rows\Video.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
-    <Compile Include="_dbs\hsserver\ringplayerdb\rows\Image.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
-    <Compile Include="_dbs\hsserver\ringplayerdb\rows\Text.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\ringplayerdb\rowpocos\Poco_Video.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\ringplayerdb\rowpocos\Poco_Text.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\ringplayerdb\rowpocos\Poco_Image.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\ringplayerdb\rows\Page.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
     <Compile Include="_dbs\hsserver\ringplayerdb\rows\Sysdiagram.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
     <Compile Include="_dbs\hsserver\ringplayerdb\rows\DoubleTransition.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
-    <Compile Include="_dbs\hsserver\ringplayerdb\rows\Page.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
     <Compile Include="_dbs\hsserver\ringplayerdb\rows\Ring.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
     <Compile Include="_dbs\hsserver\ringplayerdb\rows\RingEntry.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\ringplayerdb\rows\Video.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\ringplayerdb\rows\Text.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
+    <Compile Include="_dbs\hsserver\ringplayerdb\rows\Image.generated.cs" Label="CsWpfBase.Db.codegen.[HsServer]" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

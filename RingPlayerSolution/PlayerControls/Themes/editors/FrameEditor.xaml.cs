@@ -2,19 +2,20 @@
 // <author>Christian Sack</author>
 // <email>christian@sack.at</email>
 // <website>christian.sack.at</website>
-// <date>2017-02-04</date>
+// <date>2017-02-05</date>
 
 using System;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
+using CsWpfBase.Ev.Objects;
 using CsWpfBase.Ev.Public.Extensions;
 using CsWpfBase.Themes.Controls.Containers;
-using CsWpfBase.Themes.Controls.glyphicon;
 using PlayerControls.Interfaces;
-using PlayerControls.Interfaces.FrameItems;
+using PlayerControls.Themes.editors.components;
+using PlayerControls.Themes._components;
 
 
 
@@ -26,158 +27,208 @@ namespace PlayerControls.Themes.editors
 	/// <summary>Interaction logic for FrameEditor.xaml</summary>
 	public partial class FrameEditor : ItemControl<IFrame>
 	{
+
 		public FrameEditor()
 		{
 			InitializeComponent();
+			PreviewKeyDown += OnPreviewKeyDown;
 		}
+
+		public ObservableCollection<HistoryEntry> HistoryEntries { get; } = new ObservableCollection<HistoryEntry>();
+
+		private void OnPreviewKeyDown(object sender, KeyEventArgs keyEventArgs)
+		{
+			if (Keyboard.Modifiers == ModifierKeys.Control && Keyboard.IsKeyDown(Key.Z))
+				UndoHistoryAction();
+			else if (Keyboard.IsKeyDown(Key.Escape))
+			{
+				IsSelectedAdorner.Clear(this);
+			}
+		}
+
+
 
 		private void FramePreview_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
 		{
-			var element = (FrameworkElement) sender;
-			var clickedElement = element.InputHitTest(e.GetPosition(element)) as FrameworkElement;
-
-
-
-
-			var frameItem = clickedElement.DataContext as IFrameItem;
-			if (frameItem == null)
-				frameItem = clickedElement.GetVisualParentByCondition<FrameworkElement>(t => t.DataContext as IFrameItem != null)?.DataContext as IFrameItem;
+			var container = GetFrameItemContainer_FromMousePosition();
+			if (container == null)
+				return;
+			var frameItem = (IFrameItem) container.DataContext;
 
 			TreeView.Select(frameItem);
+			IsSelectedAdorner.Apply(container);
+
+			FrameItemDragMoveResize.Do(container, (thickness, thickness1) =>DoHistoryAction("Move/Resize", () => frameItem.FrameItemRelativePosition = thickness1, () => frameItem.FrameItemRelativePosition = thickness, false)
+			);
+
+			e.Handled = true;
+		}
+
+		private void FramePreview_MouseMove(object sender, MouseEventArgs mouseEventArgs)
+		{
+			var iFrameItemContainer = GetFrameItemContainer_FromMousePosition();
+			if (iFrameItemContainer != null)
+				IsMouseOverAdorner.Apply(iFrameItemContainer);
+			else
+				IsMouseOverAdorner.Clear(this);
+		}
+
+		private void TreeView_OnSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+		{
+			var dataContext = e.NewValue as IFrameItem;
+			if (dataContext == null)
+				return;
+			var frameItemContainerByItem = GetFrameItemContainer_ByItem(dataContext);
+			IsSelectedAdorner.Apply(frameItemContainerByItem);
+		}
+
+		private void FramePreview_OnMouseLeave(object sender, MouseEventArgs e)
+		{
+			IsMouseOverAdorner.Clear(this);
+		}
+
+		private void FramePreview_OnContextMenuOpening(object sender, ContextMenuEventArgs e)
+		{
+			var container = GetFrameItemContainer_FromMousePosition();
+			if (container == null)
+			{
+				e.Handled = true;
+				return;
+			}
+
+
+			var contextMenu = ((FrameworkElement) sender).ContextMenu;
+			if (container.DataContext is IFrameItem)
+			{
+				var frameItem = (IFrameItem) container.DataContext;
+				contextMenu.Items.Clear();
+
+				contextMenu.Items.Add(new MenuItem
+				{
+					Header = "Fullscreen",
+					Command = new RelayCommand(() =>
+					{
+						var val = frameItem.FrameItemRelativePosition;
+						DoHistoryAction("Fullscreen", () => frameItem.FrameItemRelativePosition = new Thickness(0), () => { frameItem.FrameItemRelativePosition = val; });
+					})
+				});
+				contextMenu.Items.Add(new Separator());
+				contextMenu.Items.Add(new MenuItem
+				{
+					Header = "In den Hintergrund",
+					Command = new RelayCommand(() => { DoHistoryAction("In den Hintergrund", () => SendToBack(container), () => SendToFront(container)); })
+				});
+				contextMenu.Items.Add(new MenuItem
+				{
+					Header = "In den Vordergrund",
+					Command = new RelayCommand(() => DoHistoryAction("In den Vordergrund", () => SendToFront(container), () => SendToBack(container)))
+				});
+			}
 		}
 
 
 
-		private void UIElement_OnMouseMove(object sender, MouseEventArgs e)
+		private void SendToBack(FrameItemContainer cont)
 		{
-			var element = (FrameworkElement) sender;
-			var mouseOverElement = element.InputHitTest(e.GetPosition(element)) as FrameworkElement;
+			var containingFrame = cont.GetVisualParentByCondition<FrameItemContainer>(t => t.DataContext is IFrame)?.DataContext as IFrame;
+			if (containingFrame == null)
+				return;
+			var orderedElements = containingFrame.FrameChildren.OrderBy(x => x.FrameItemZIndex).ToArray();
+			var indexOf = Array.IndexOf(orderedElements, cont.DataContext);
 
-			var frameItem = mouseOverElement.DataContext as IFrameItem;
-
-			while (frameItem == null)
-			{
-				mouseOverElement = (FrameworkElement) mouseOverElement.Parent;
-				frameItem = mouseOverElement.DataContext as IFrameItem;
-			}
-
-			while (frameItem == ((FrameworkElement) mouseOverElement.Parent)?.DataContext)
-			{
-				mouseOverElement = (FrameworkElement) mouseOverElement.Parent;
-			}
-
-			if (FocusAdorner._currentAdorner?.AdornedElement == mouseOverElement)
+			if (indexOf == 0)
 				return;
 
-			new FocusAdorner(mouseOverElement);
+			var temp = orderedElements[indexOf];
+			orderedElements[indexOf] = orderedElements[indexOf - 1];
+			orderedElements[indexOf - 1] = temp;
+
+
+			for (var i = 0; i < orderedElements.Length; i++)
+			{
+				orderedElements[i].FrameItemZIndex = (i + 1) * 10;
+			}
+		}
+
+		private void SendToFront(FrameItemContainer cont)
+		{
+			var containingFrame = cont.GetVisualParentByCondition<FrameItemContainer>(t => t.DataContext is IFrame)?.DataContext as IFrame;
+			if (containingFrame == null)
+				return;
+			var orderedElements = containingFrame.FrameChildren.OrderBy(x => x.FrameItemZIndex).ToArray();
+			var indexOf = Array.IndexOf(orderedElements, cont.DataContext);
+
+			if (indexOf == orderedElements.Length - 1)
+				return;
+
+			var temp = orderedElements[indexOf];
+			orderedElements[indexOf] = orderedElements[indexOf + 1];
+			orderedElements[indexOf + 1] = temp;
+
+
+			for (var i = 0; i < orderedElements.Length; i++)
+			{
+				orderedElements[i].FrameItemZIndex = (i + 1) * 10;
+			}
 		}
 
 
 
-		private class FocusAdorner : Adorner
+
+		private FrameItemContainer GetFrameItemContainer_FromMousePosition()
 		{
-			public static Adorner _currentAdorner = null;
-			private static AdornerLayer _currentLayer = null;
+			var mouseOverElement = InputHitTest(Mouse.GetPosition(this)) as FrameworkElement;
+			if (mouseOverElement is FrameItemContainer)
+				return (FrameItemContainer) mouseOverElement;
+			return mouseOverElement?.GetVisualParentByCondition<FrameItemContainer>(t => true);
+		}
 
-			private FrameworkElement _child;
-			private GlyphIcons? _icon;
-			protected override int VisualChildrenCount => _child == null?0:1;
+		private FrameItemContainer GetFrameItemContainer_ByItem(IFrameItem item)
+		{
+			return Presenter.GetVisualChildByCondition<FrameItemContainer>(t => t.DataContext == item);
+		}
 
-			protected override Visual GetVisualChild(int index)
+
+
+		private void DoHistoryAction(string name, Action redoAction, Action undoAction, bool execute = true)
+		{
+			HistoryEntries.Add(new HistoryEntry(name, redoAction, undoAction));
+			if (execute)
+				redoAction();
+		}
+
+		private void UndoHistoryAction()
+		{
+			if (HistoryEntries.Count == 0)
+				return;
+			var historyEntry = HistoryEntries.Last();
+			historyEntry.UndoAction();
+			HistoryEntries.RemoveAt(HistoryEntries.Count - 1);
+		}
+
+
+
+		private void UndoButtonClicked(object sender, RoutedEventArgs e)
+		{
+			UndoHistoryAction();
+		}
+
+
+
+		public class HistoryEntry
+		{
+			/// <summary>Initializes a new instance of the <see cref="T:System.Object" /> class.</summary>
+			public HistoryEntry(string name, Action redoAction, Action undoAction)
 			{
-				if(index != 0) throw new ArgumentOutOfRangeException();
-				return _child;
-			}
-			public FrameworkElement Child
-			{
-				get { return _child; }
-				set
-				{
-					if(_child != null)
-					{
-						RemoveVisualChild(_child);
-					}
-					_child = value;
-					if(_child != null)
-					{
-						AddVisualChild(_child);
-					}
-				}
-			}
-			public GlyphIcons? Icon
-			{
-				get { return _icon; }
-				set
-				{
-					_icon = value;
-					if (_icon == null)
-					{
-						Child = null;
-						return;
-					}
-					Child = new Border()
-					{
-						Background = Brushes.White,
-						MaxWidth = 100,
-						MaxHeight = 100,
-						Padding = new Thickness(10),
-						CornerRadius = new CornerRadius(5),
-						BorderThickness = new Thickness(1),
-						BorderBrush = new SolidColorBrush(Colors.Black),
-						Child = new Viewbox()
-						{
-							Child = new GlyphIcon()
-							{
-								Icon = _icon,
-							}
-						}
-					};
-				}
+				Name = name;
+				RedoAction = redoAction;
+				UndoAction = undoAction;
 			}
 
-			protected override Size MeasureOverride(Size constraint)
-			{
-				_child?.Measure(constraint);
-				return base.MeasureOverride(constraint);
-			}
-
-			protected override Size ArrangeOverride(Size finalSize)
-			{
-				_child?.Arrange(new Rect(new Point(0, 0), finalSize));
-				return base.ArrangeOverride(finalSize);
-			}
-
-			public FocusAdorner(FrameworkElement adornedElement) : base(adornedElement)
-			{
-				_currentLayer?.Remove(_currentAdorner);
-				_currentLayer = AdornerLayer.GetAdornerLayer(adornedElement);
-				if (_currentLayer == null)
-					return;
-				_currentAdorner = this;
-				_currentLayer.Add(_currentAdorner);
-				IsHitTestVisible = false;
-
-				if (adornedElement.DataContext as IFrameItemText != null)
-					Icon = GlyphIcons.H_Font;
-				else if (adornedElement.DataContext as IFrameItemImage != null)
-					Icon = GlyphIcons.E_Image;
-				else if (adornedElement.DataContext as IFrameItemVideo != null)
-					Icon = GlyphIcons.E_Youtube;
-				else if (adornedElement.DataContext as IFrame != null)
-					Icon = GlyphIcons.G_Vector_Path_All;
-			}
-
-
-			#region Overrides/Interfaces
-			protected override void OnRender(DrawingContext drawingContext)
-			{
-				base.OnRender(drawingContext);
-
-				var fre = (FrameworkElement) AdornedElement;
-
-				drawingContext.DrawRectangle(null, new Pen(new SolidColorBrush(Color.FromArgb(200,255,0,0)), 3), new Rect(-2.5, -2.5, fre.ActualWidth + 5, fre.ActualHeight + 5));
-			}
-			#endregion
+			public string Name { get; }
+			public Action RedoAction { get; }
+			public Action UndoAction { get; }
 		}
 	}
+
 }

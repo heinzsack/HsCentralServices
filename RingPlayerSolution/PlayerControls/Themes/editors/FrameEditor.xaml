@@ -7,6 +7,7 @@
 			xmlns:frameItems="clr-namespace:PlayerControls.Interfaces.FrameItems"
 			xmlns:themes="clr-namespace:PlayerControls.Themes"
 			xmlns:controls="clr-namespace:PlayerControls.Controls"
+			xmlns:components="clr-namespace:PlayerControls.Themes.editors.components"
 			mc:Ignorable="d"
 			d:DesignHeight="300" d:DesignWidth="300" x:Name="Uc">
 	<UserControl.Resources>
@@ -14,18 +15,19 @@
 			<ResourceDictionary.MergedDictionaries>
 				<ResourceDictionary Source="/CsWpfBase;component/Themes/Standard.xaml" />
 			</ResourceDictionary.MergedDictionaries>
+			<components:FrameItemsSortConverter x:Key="Sorter" />
 			<Style x:Key="IconStyle" TargetType="GlyphIcon">
-				<Setter Property="Margin" Value="0,0,4,0"/>
+				<Setter Property="Margin" Value="0,0,4,0" />
 			</Style>
 			<controls:FrameItemTemplateSelector x:Key="TreeViewSelector">
 				<controls:FrameItemTemplateSelector.FixedRatioFrameTemplate>
-					<HierarchicalDataTemplate DataType="{x:Type interfaces:IFrame}" ItemsSource="{Binding Path=FrameChildren}">
+					<HierarchicalDataTemplate DataType="{x:Type interfaces:IFrame}" ItemsSource="{Binding Path=FrameChildren, Converter={StaticResource Sorter}}">
 						<Grid>
 							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="Auto"/>
-								<ColumnDefinition Width="Auto"/>
+								<ColumnDefinition Width="Auto" />
+								<ColumnDefinition Width="Auto" />
 							</Grid.ColumnDefinitions>
-							<GlyphIcon Style="{StaticResource IconStyle}" Icon="G_Vector_Path_All"/>
+							<GlyphIcon Style="{StaticResource IconStyle}" Icon="G_Vector_Path_All" />
 							<TextBlock Grid.Column="1">
 								<TextBlock.Text>
 									<MultiBinding StringFormat="{}Fixed Container ({0}:{1})">
@@ -38,13 +40,13 @@
 					</HierarchicalDataTemplate>
 				</controls:FrameItemTemplateSelector.FixedRatioFrameTemplate>
 				<controls:FrameItemTemplateSelector.DynamicRatioFrameTemplate>
-					<HierarchicalDataTemplate DataType="{x:Type interfaces:IFrame}" ItemsSource="{Binding Path=FrameChildren}">
+					<HierarchicalDataTemplate DataType="{x:Type interfaces:IFrame}" ItemsSource="{Binding Path=FrameChildren, Converter={StaticResource Sorter}}">
 						<Grid>
 							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="Auto"/>
-								<ColumnDefinition Width="Auto"/>
+								<ColumnDefinition Width="Auto" />
+								<ColumnDefinition Width="*" />
 							</Grid.ColumnDefinitions>
-							<GlyphIcon Style="{StaticResource IconStyle}" Icon="G_Vector_Path_Square"/>
+							<GlyphIcon Style="{StaticResource IconStyle}" Icon="G_Vector_Path_Square" />
 							<TextBlock Grid.Column="1" Text="Dynamic Container" />
 						</Grid>
 					</HierarchicalDataTemplate>
@@ -53,11 +55,11 @@
 					<DataTemplate DataType="{x:Type frameItems:IFrameItemVideo}">
 						<Grid>
 							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="Auto"/>
-								<ColumnDefinition Width="*"/>
+								<ColumnDefinition Width="Auto" />
+								<ColumnDefinition Width="*" />
 							</Grid.ColumnDefinitions>
-							<GlyphIcon Style="{StaticResource IconStyle}" Icon="E_Youtube"/>
-							<TextBlock Grid.Column="1" Text="Text"/>
+							<GlyphIcon Style="{StaticResource IconStyle}" Icon="E_Youtube" />
+							<TextBlock Grid.Column="1" Text="Text" />
 						</Grid>
 					</DataTemplate>
 				</controls:FrameItemTemplateSelector.FrameItemVideoTemplate>
@@ -66,20 +68,20 @@
 						<Border Background="Transparent">
 							<Border.ToolTip>
 								<EditorGrid Editor.IsReadOnly="True">
-									<Image Source="{Binding Path=ImageBitmapSource}" MaxWidth="400" MaxHeight="400"/>
+									<Image Source="{Binding Path=ImageBitmapSource}" MaxWidth="400" MaxHeight="400" />
 								</EditorGrid>
 							</Border.ToolTip>
 							<Grid>
 								<Grid.ColumnDefinitions>
-									<ColumnDefinition Width="Auto"/>
-									<ColumnDefinition Width="Auto"/>
-									<ColumnDefinition Width="*"/>
+									<ColumnDefinition Width="Auto" />
+									<ColumnDefinition Width="Auto" />
+									<ColumnDefinition Width="*" />
 								</Grid.ColumnDefinitions>
-								<GlyphIcon Style="{StaticResource IconStyle}" Icon="E_Image"/>
-								<TextBlock Grid.Column="1" Text="Bildfarbe:"/>
+								<GlyphIcon Style="{StaticResource IconStyle}" Icon="E_Image" />
+								<TextBlock Grid.Column="1" Text="Bildfarbe:" />
 								<Border Grid.Column="2" x:Name="Vor" Width="{Binding ElementName=Vor, Path=ActualHeight}" Margin="5,1,0,1" HorizontalAlignment="Left">
 									<Border.Background>
-										<SolidColorBrush Color="{Binding Path=ImageBitmapSource, Converter={StaticResource GConv-ImageToDominantColor}}"/>
+										<SolidColorBrush Color="{Binding Path=ImageBitmapSource, Converter={StaticResource GConv-ImageToDominantColor}}" />
 									</Border.Background>
 								</Border>
 							</Grid>
@@ -91,15 +93,15 @@
 					<DataTemplate DataType="{x:Type frameItems:IFrameItemText}">
 						<Border Background="Transparent">
 							<Border.ToolTip>
-								<TextBlock Text="{Binding Path=FrameItemText, Mode=OneWay}"/>
+								<TextBlock Text="{Binding Path=FrameItemText, Mode=OneWay}" />
 							</Border.ToolTip>
 							<Grid>
 								<Grid.ColumnDefinitions>
-									<ColumnDefinition Width="Auto"/>
-									<ColumnDefinition Width="*"/>
+									<ColumnDefinition Width="Auto" />
+									<ColumnDefinition Width="*" />
 								</Grid.ColumnDefinitions>
-								<GlyphIcon Style="{StaticResource IconStyle}" Icon="H_Font"/>
-								<TextBlock Grid.Column="1" Text="{Binding Path=FrameItemText, Converter={StaticResource GConv-ShortSingleLineString}, ConverterParameter=20}"/>
+								<GlyphIcon Style="{StaticResource IconStyle}" Icon="H_Font" />
+								<TextBlock Grid.Column="1" Text="{Binding Path=FrameItemText, Converter={StaticResource GConv-ShortSingleLineString}, ConverterParameter=20}" />
 							</Grid>
 						</Border>
 					</DataTemplate>
@@ -107,32 +109,116 @@
 				</controls:FrameItemTemplateSelector.FrameItemTextTemplate>
 			</controls:FrameItemTemplateSelector>
 
+			<DataTemplate DataType="{x:Type interfaces:IFrame}" x:Key="IFrameEditor">
+				<EditorGroup Header="Container">
+					<BoolEditor Header="Fixed Ratio" Value="{Binding Path=FrameHasFixedRatio}"/>
+					<DoubleEditor Header="RatioX" Value="{Binding Path=FrameRatioX}"/>
+					<DoubleEditor Header="RatioY" Value="{Binding Path=FrameRatioY}"/>
+				</EditorGroup>
+			</DataTemplate>
+
+			<controls:FrameItemTemplateSelector x:Key="EditorSelector" FixedRatioFrameTemplate="{StaticResource IFrameEditor}" DynamicRatioFrameTemplate="{StaticResource IFrameEditor}">
+				<controls:FrameItemTemplateSelector.FrameItemVideoTemplate>
+					<DataTemplate DataType="{x:Type frameItems:IFrameItemVideo}">
+						<EditorGroup Header="Video">
+							<FPathEditor Header="Pfad" Value="{Binding Path=FrameItemVideoFilePath}"/>
+						</EditorGroup>
+					</DataTemplate>
+				</controls:FrameItemTemplateSelector.FrameItemVideoTemplate>
+				<controls:FrameItemTemplateSelector.FrameItemImageTemplate>
+					<DataTemplate DataType="{x:Type frameItems:IFrameItemImage}">
+						<EditorGroup Header="Bild">
+							
+						</EditorGroup>
+					</DataTemplate>
+				</controls:FrameItemTemplateSelector.FrameItemImageTemplate>
+				<controls:FrameItemTemplateSelector.FrameItemTextTemplate>
+					<DataTemplate DataType="{x:Type frameItems:IFrameItemText}">
+						<EditorGroup Header="Text">
+							<StringEditor Header="Content" Value="{Binding Path=FrameItemText}" TextWrapping="Wrap" AcceptsReturn="True" AcceptsTab="True" HeaderVerticalAlignment="Top"/>
+							<ColorEditor Header="Farbe" ValueColor="{Binding Path=FrameItemForeground}" />
+							<StringEditor Header="Family" Value="{Binding Path=FrameItemFontFamily}"/>
+						</EditorGroup>
+					</DataTemplate>
+				</controls:FrameItemTemplateSelector.FrameItemTextTemplate>
+			</controls:FrameItemTemplateSelector>
 		</ResourceDictionary>
 	</UserControl.Resources>
+
 	<Grid DataContext="{Binding ElementName=Uc}">
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="*" />
-			<ColumnDefinition Width="Auto"  MinWidth="200"/>
-		</Grid.ColumnDefinitions>
-		<EditorGroup Header="Vorschau" Margin="0,0,10,0">
-			<themes:FramePresenter EditorGrid.HasStarRow="True" Item="{Binding Path=Item}" MouseLeftButtonDown="FramePreview_MouseLeftButtonDown" MouseMove="UIElement_OnMouseMove"/>
-		</EditorGroup>
 
-		<Grid Grid.Column="1">
-			<Grid.RowDefinitions>
-				<RowDefinition Height="*"/>
-				<RowDefinition Height="Auto"/>
-				<RowDefinition Height="Auto"/>
-			</Grid.RowDefinitions>
-			<EditorGroup Margin="0,0,0,10" Header="Aufbau">
-				<TreeView x:Name="TreeView" ItemTemplateSelector="{StaticResource TreeViewSelector}" ItemsSource="{Binding Path=Item, Converter={StaticResource GConv-ItemToItemList}}"/>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
+
+
+		<Border Padding="2" Margin="0,0,0,5" MinHeight="34" Background="#10000000" BorderThickness="1" BorderBrush="LightGray">
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto"/>
+					<ColumnDefinition Width="Auto"/>
+				</Grid.ColumnDefinitions>
+				
+				<GlyphIconButton Icon="G_Undo" Content="Rückgängig" Visibility="{Binding Path=HistoryEntries.Count, Converter={StaticResource GConv-NullToVisibility}}" Click="UndoButtonClicked" Margin="0,0,5,0"/>
+			</Grid>
+		</Border>
+		<Grid Grid.Row="1">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*" />
+				<ColumnDefinition Width="250" MinWidth="200" />
+			</Grid.ColumnDefinitions>
+			<EditorGroup Header="Vorschau" Margin="0,0,10,0" VerticalAlignment="Stretch">
+				<themes:FramePresenter x:Name="Presenter" EditorGrid.HasStarRow="True" Item="{Binding Path=Item}" PreviewMouseLeftButtonDown="FramePreview_MouseLeftButtonDown"
+									MouseMove="FramePreview_MouseMove" MouseLeave="FramePreview_OnMouseLeave" ContextMenuOpening="FramePreview_OnContextMenuOpening">
+					<themes:FramePresenter.ContextMenu>
+						<ContextMenu />
+					</themes:FramePresenter.ContextMenu>
+				</themes:FramePresenter>
 			</EditorGroup>
 
-			<EditorGroup Grid.Row="1" Margin="0" Header="Allgemein" DataContext="{Binding ElementName=TreeView, Path=SelectedItem}" d:DataContext="{d:DesignInstance interfaces:IFrameItem}">
-				<DoubleEditor Header="Rotation" Value="{Binding Path=FrameItemRotation}" NullValue="0"/>
-			</EditorGroup>
+			<Grid Grid.Column="1">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="*" />
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+				</Grid.RowDefinitions>
+				<EditorGroup Margin="0,0,0,10" Header="Aufbau">
+					<TreeView x:Name="TreeView" ItemTemplateSelector="{StaticResource TreeViewSelector}"
+						ItemsSource="{Binding Path=Item, Converter={StaticResource GConv-ItemToItemList}}" SelectedItemChanged="TreeView_OnSelectedItemChanged" />
+				</EditorGroup>
+				<EditorGrid Grid.Row="1" DataContext="{Binding ElementName=TreeView, Path=SelectedItem}" d:DataContext="{d:DesignInstance interfaces:IFrameItem}"
+						Visibility="{Binding Converter={StaticResource GConv-NullToVisibility}, Mode=OneWay}">
+
+					<ContentControl Content="{Binding}" ContentTemplateSelector="{StaticResource EditorSelector}">
+						
+					</ContentControl>
+					
+					<EditorGroup Margin="0,0,0,10" Header="Abstände / Größen">
+						<EditorGroup.Resources>
+							<components:RelativeMargin_To_RelativeLeftTopWidthHeight x:Key="Conv" />
+						</EditorGroup.Resources>
+						<ThicknessEditor Header="Position" Value="{Binding Path=FrameItemRelativePosition, Converter={StaticResource Conv}}"
+									RightIcon="G_Resize_Horizontal" BottomIcon="G_Resize_Vertical" />
+						<ThicknessEditor Header="Rahmen" Value="{Binding Path=FrameItemBorderThickness}" />
+						<ThicknessEditor Header="Padding" Value="{Binding Path=FrameItemPadding}" />
+						<DoubleEditor Header="Rotation" Value="{Binding Path=FrameItemRotation}" NullValue="0" />
+					</EditorGroup>
+
+					<EditorGroup Margin="0" Header="Farben">
+						<ColorEditor Header="Rahmen" ValueColor="{Binding Path=FrameItemBorderColor}" />
+						<ColorEditor Header="Hintergrund" ValueColor="{Binding Path=FrameItemBackground}" />
+					</EditorGroup>
+				</EditorGrid>
+
+
+			</Grid>
 
 		</Grid>
-		
+
 	</Grid>
+	
 </ItemControl>

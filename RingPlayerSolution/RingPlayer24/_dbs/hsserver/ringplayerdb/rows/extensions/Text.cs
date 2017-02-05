@@ -58,6 +58,13 @@ namespace RingPlayer24._dbs.hsserver.ringplayerdb.rows
 			set { Convert.Thickness.Setter(s => BorderThickness = s, value); }
 		}
 
+		[DependsOn(nameof(Padding))]
+		public Thickness FrameItemPadding
+		{
+			get { return Convert.Thickness.Getter(Padding); }
+			set { Convert.Thickness.Setter(s => Padding = s, value); }
+		}
+
 		[DependsOn(nameof(Rotation))]
 		public double FrameItemRotation
 		{

@@ -2,11 +2,12 @@
 // <author>Christian Sack</author>
 // <email>christian@sack.at</email>
 // <website>christian.sack.at</website>
-// <date>2017-01-28</date>
+// <date>2017-02-05</date>
 
 using System;
 using System.Windows;
 using System.Windows.Media;
+using CsWpfBase.Ev.Objects;
 using CsWpfBase.Ev.Public.Extensions;
 using PlayerControls.Interfaces;
 using PlayerControls.Interfaces.FrameItems;
@@ -18,7 +19,7 @@ using PlayerControls.Interfaces.FrameItems;
 
 namespace PlayerControls._mocks
 {
-	internal class MockText : IFrameItemText
+	internal class MockText : Base, IFrameItemText
 	{
 		public static IFrameItem GetSampleLeftTop()
 		{
@@ -56,6 +57,19 @@ namespace PlayerControls._mocks
 			};
 		}
 
+		private Color _frameItemBackground;
+		private Color _frameItemBorderColor;
+		private Thickness _frameItemBorderThickness;
+		private Thickness _frameItemPadding;
+		private Thickness _frameItemRelativePosition;
+		private double _frameItemRotation;
+		private int _frameItemZIndex;
+		private string _frameItemText = "Text not set";
+		private Color _frameItemForeground = Colors.Black;
+		private string _frameItemFontFamily = "Arial";
+		private FontWeight _frameItemFontWeight = FontWeights.Normal;
+		private FontStyle _frameItemFontStyle = FontStyles.Normal;
+
 
 		#region Overrides/Interfaces
 		/// <summary>
@@ -70,27 +84,81 @@ namespace PlayerControls._mocks
 		///         </para>
 		///     </example>
 		/// </summary>
-		public Thickness FrameItemRelativePosition { get; set; } = new Thickness(0);
+		public Thickness FrameItemRelativePosition
+		{
+			get { return _frameItemRelativePosition; }
+			set { SetProperty(ref _frameItemRelativePosition, value); }
+		}
 		/// <summary>The color of the background of the element.</summary>
-		public Color FrameItemBackground { get; set; } = Colors.Transparent;
+		public Color FrameItemBackground
+		{
+			get { return _frameItemBackground; }
+			set { SetProperty(ref _frameItemBackground, value); }
+		}
 		/// <summary>The color of the border of the element.</summary>
-		public Color FrameItemBorderColor { get; set; } = Colors.Transparent;
+		public Color FrameItemBorderColor
+		{
+			get { return _frameItemBorderColor; }
+			set { SetProperty(ref _frameItemBorderColor, value); }
+		}
 		/// <summary>The thickness of the border.</summary>
-		public Thickness FrameItemBorderThickness { get; set; } = new Thickness(0);
+		public Thickness FrameItemBorderThickness
+		{
+			get { return _frameItemBorderThickness; }
+			set { SetProperty(ref _frameItemBorderThickness, value); }
+		}
+		/// <summary>The padding of the border.</summary>
+		public Thickness FrameItemPadding
+		{
+			get { return _frameItemPadding; }
+			set { SetProperty(ref _frameItemPadding, value); }
+		}
 		/// <summary>The rotation of the element.</summary>
-		public double FrameItemRotation { get; set; } = 0;
+		public double FrameItemRotation
+		{
+			get { return _frameItemRotation; }
+			set { SetProperty(ref _frameItemRotation, value); }
+		}
 		/// <summary>The z-index of the elemnt describes the layer on which this element sits.</summary>
-		public int FrameItemZIndex { get; set; } = 10;
+		public int FrameItemZIndex
+		{
+			get { return _frameItemZIndex; }
+			set { SetProperty(ref _frameItemZIndex, value); }
+		}
+
+
+
+
 		/// <summary>The text which should be displayed.</summary>
-		public string FrameItemText { get; set; } = "Text not set";
+		public string FrameItemText
+		{
+			get { return _frameItemText; }
+			set { SetProperty(ref _frameItemText, value); }
+		}
 		/// <summary>The <see cref="Color" /> of the <see cref="IFrameItemText.FrameItemText" />.</summary>
-		public Color FrameItemForeground { get; set; } = Colors.Black;
+		public Color FrameItemForeground
+		{
+			get { return _frameItemForeground; }
+			set { SetProperty(ref _frameItemForeground, value); }
+		}
 		/// <summary>The font family of the <see cref="IFrameItemText.FrameItemText" />.</summary>
-		public string FrameItemFontFamily { get; set; } = "Arial";
+		public string FrameItemFontFamily
+		{
+			get { return _frameItemFontFamily; }
+			set { SetProperty(ref _frameItemFontFamily, value); }
+		}
 		/// <summary>The <see cref="FontWeight" /> of the <see cref="IFrameItemText.FrameItemText" />.</summary>
-		public FontWeight FrameItemFontWeight { get; set; } = FontWeights.Normal;
+		public FontWeight FrameItemFontWeight
+		{
+			get { return _frameItemFontWeight; }
+			set { SetProperty(ref _frameItemFontWeight, value); }
+		}
 		/// <summary>The <see cref="FontStyle" /> of the <see cref="IFrameItemText.FrameItemText" />.</summary>
-		public FontStyle FrameItemFontStyle { get; set; } = FontStyles.Normal;
+		public FontStyle FrameItemFontStyle
+		{
+			get { return _frameItemFontStyle; }
+			set { SetProperty(ref _frameItemFontStyle, value); }
+		}
 		#endregion
 	}
 

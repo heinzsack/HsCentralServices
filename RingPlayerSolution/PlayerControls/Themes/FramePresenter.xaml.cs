@@ -2,22 +2,17 @@
 // <author>Christian Sack</author>
 // <email>christian@sack.at</email>
 // <website>christian.sack.at</website>
-// <date>2017-01-28</date>
+// <date>2017-02-05</date>
 
 using System;
-using System.Collections.Generic;
-using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using CsWpfBase.Ev.Public.Extensions;
-using JetBrains.Annotations;
 using PlayerControls.Controls;
 using PlayerControls.Interfaces;
 using PlayerControls.Interfaces.FrameItems;
+using PlayerControls.Themes._components;
 using PlayerControls._mocks;
 
 
@@ -63,35 +58,6 @@ namespace PlayerControls.Themes
 		{
 			return MockFrame.GetSample();
 		}
-
-
-		//private static List<T> RecursiveGetVisualChildByCondition<T>(List<T> list, DependencyObject container, Func<T, bool> condition) where T : FrameworkElement
-		//{
-		//	if (container == null) return null;
-		//	//Debug.WriteLine($"{container.GetType().Name} {typeof(T)}");
-		//	T foundElement = null;
-		//	if (container is FrameworkElement)
-		//		(container as FrameworkElement).ApplyTemplate();
-		//	if (container is ItemsControl)
-		//		((ItemsControl) container).UpdateLayout();
-		//	for (var i = 0; i < VisualTreeHelper.GetChildrenCount(container); i++)
-		//	{
-		//		var dpO = VisualTreeHelper.GetChild(container, i);
-
-		//		if (!(dpO is T))
-		//		{
-		//			RecursiveGetVisualChildByCondition(list, dpO, condition);
-		//			continue;
-		//		}
-
-		//		var element = (T) dpO;
-		//		if (!condition(element)) continue;
-
-		//		list.Add((T) element);
-		//	}
-
-		//	return list;
-		//}
 
 		private bool _animationsStarted;
 		private bool _videosStarted;
@@ -189,37 +155,4 @@ namespace PlayerControls.Themes
 
 
 
-
-	public class PercentToContainerMetricConverter : IMultiValueConverter
-	{
-		#region Overrides/Interfaces
-		public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
-		{
-			if (values.Length != 3)
-				return new Thickness(0);
-			if (!(values[0] is Thickness))
-				return new Thickness(0);
-			if (!(values[1] is double))
-				return new Thickness(0);
-			if (!(values[2] is double))
-				return new Thickness(0);
-
-			var percentageThickness = (Thickness) values[0];
-			var containerWidth = (double) values[1];
-			var containerHeight = (double) values[2];
-
-
-			var leftMargin = containerWidth * (percentageThickness.Left / 100);
-			var rightMargin = containerWidth * (percentageThickness.Right / 100);
-			var topMargin = containerHeight * (percentageThickness.Top / 100);
-			var bottomMargin = containerHeight * (percentageThickness.Bottom / 100);
-			return new Thickness(leftMargin, topMargin, rightMargin, bottomMargin);
-		}
-
-		public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
-		{
-			throw new NotImplementedException();
-		}
-		#endregion
-	}
 }

@@ -42,6 +42,8 @@ namespace PlayerControls.Interfaces
 		Color FrameItemBorderColor { get; set; }
 		/// <summary>The thickness of the border.</summary>
 		Thickness FrameItemBorderThickness { get; set; }
+		/// <summary>The padding of the border.</summary>
+		Thickness FrameItemPadding { get; set; }
 		/// <summary>The rotation of the element.</summary>
 		double FrameItemRotation { get; set; }
 		/// <summary>The z-index of the elemnt describes the layer on which this element sits.</summary>

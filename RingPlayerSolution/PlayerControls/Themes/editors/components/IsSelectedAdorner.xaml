@@ -1,0 +1,60 @@
+﻿<local:ControlAdorner x:ClassModifier="internal" x:Class="PlayerControls.Themes.editors.components.IsSelectedAdorner"
+					xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+					xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+					xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+					xmlns:local="clr-namespace:PlayerControls.Themes.editors.components"
+					mc:Ignorable="d"
+					d:DesignHeight="300" d:DesignWidth="300" Opacity="0" IsHitTestVisible="False">
+	<local:ControlAdorner.Triggers>
+		<EventTrigger RoutedEvent="FrameworkElement.Loaded">
+			<EventTrigger.Actions>
+				<BeginStoryboard>
+					<Storyboard RepeatBehavior="Forever">
+						<ColorAnimation Storyboard.TargetName="R1" Storyboard.TargetProperty="(Shape.Stroke).(SolidColorBrush.Color)" From="#0275D8" To="#100275D8" Duration="0:0:0.8" AutoReverse="True" RepeatBehavior="Forever">
+							<ColorAnimation.EasingFunction>
+								<ExponentialEase EasingMode="EaseInOut"/>
+							</ColorAnimation.EasingFunction>
+						</ColorAnimation>
+						<ColorAnimation Storyboard.TargetName="R2" Storyboard.TargetProperty="Color" From="#0275D8" To="#100275D8" Duration="0:0:0.8" AutoReverse="True" RepeatBehavior="Forever">
+							<ColorAnimation.EasingFunction>
+								<ExponentialEase EasingMode="EaseInOut"/>
+							</ColorAnimation.EasingFunction>
+						</ColorAnimation>
+						<ColorAnimation Storyboard.TargetName="R0" Storyboard.TargetProperty="Background.(SolidColorBrush.Color)" From="#12E5F3FF" To="Transparent" Duration="0:0:0.8" AutoReverse="True" RepeatBehavior="Forever">
+							<ColorAnimation.EasingFunction>
+								<ExponentialEase EasingMode="EaseInOut"/>
+							</ColorAnimation.EasingFunction>
+						</ColorAnimation>
+					</Storyboard>
+				</BeginStoryboard>
+			</EventTrigger.Actions>
+		</EventTrigger>
+	</local:ControlAdorner.Triggers>
+	<local:ControlAdorner.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="/CsWpfBase;component/Themes/Standard.xaml" />
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+	</local:ControlAdorner.Resources>
+	<Border Background="#12E5F3FF" BorderThickness="2" x:Name="R0">
+		<Border.BorderBrush>
+			<VisualBrush>
+				<VisualBrush.Visual>
+					<Rectangle x:Name="R1" StrokeDashArray="5 5"
+								StrokeThickness="2"
+								RadiusX="{Binding RelativeSource={RelativeSource AncestorType={x:Type Border}}, Path=CornerRadius.TopRight}"
+								RadiusY="{Binding RelativeSource={RelativeSource AncestorType={x:Type Border}}, Path=CornerRadius.BottomLeft}"
+								Width="{Binding RelativeSource={RelativeSource AncestorType={x:Type Border}}, Path=ActualWidth}"
+								Height="{Binding RelativeSource={RelativeSource AncestorType={x:Type Border}}, Path=ActualHeight}">
+						<Rectangle.Stroke>
+							<SolidColorBrush Color="#0275D8"/>
+						</Rectangle.Stroke>
+					</Rectangle>
+				</VisualBrush.Visual>
+			</VisualBrush>
+		</Border.BorderBrush>
+		<GlyphIcon x:Name="R2" Icon="G_Tick" Color="{StaticResource GColor-Blue}" Size="15" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5" />
+	</Border>
+</local:ControlAdorner>

@@ -54,9 +54,19 @@
     <Compile Include="Controls\windows\ScheduledFramesPresenterWindow.xaml.cs">
       <DependentUpon>ScheduledFramesPresenterWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Themes\editors\components\ControlAdorner.cs" />
+    <Compile Include="Themes\editors\components\IsMouseOverAdorner.xaml.cs">
+      <DependentUpon>IsMouseOverAdorner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Themes\editors\components\IsSelectedAdorner.xaml.cs">
+      <DependentUpon>IsSelectedAdorner.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Themes\editors\FrameEditor.xaml.cs">
       <DependentUpon>FrameEditor.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Themes\editors\components\FrameItemDragMoveResize.cs" />
+    <Compile Include="Themes\editors\components\RelativeMargin_To_RelativeLeftTopWidthHeight.cs" />
+    <Compile Include="Themes\editors\components\FrameItemsSortConverter.cs" />
     <Compile Include="Themes\FramePresenter.xaml.cs">
       <DependentUpon>FramePresenter.xaml</DependentUpon>
     </Compile>
@@ -96,8 +106,12 @@
     <Compile Include="Themes\DuratedFramePresenter.xaml.cs">
       <DependentUpon>DuratedFramePresenter.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Themes\_components\PercentToContainerMetricConverter.cs" />
     <Compile Include="Themes\ScheduledFramePresenter.xaml.cs">
       <DependentUpon>ScheduledFramePresenter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Themes\_components\FrameItemContainer.xaml.cs">
+      <DependentUpon>FrameItemContainer.xaml</DependentUpon>
     </Compile>
     <Compile Include="_mocks\MockDuratedFrame.cs" />
     <Compile Include="_mocks\MockFrame.cs" />
@@ -124,6 +138,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Themes\editors\components\IsMouseOverAdorner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\editors\components\IsSelectedAdorner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Themes\editors\FrameEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -147,6 +169,10 @@
     <Page Include="Themes\ScheduledFramePresenter.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\_components\FrameItemContainer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
