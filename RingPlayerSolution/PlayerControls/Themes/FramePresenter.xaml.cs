@@ -9,7 +9,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using CsWpfBase.Ev.Public.Extensions;
-using PlayerControls.Controls;
 using PlayerControls.Interfaces;
 using PlayerControls.Interfaces.FrameItems;
 using PlayerControls.Themes._components;
@@ -67,8 +66,7 @@ namespace PlayerControls.Themes
 		{
 			InitializeComponent();
 			var selector = (FrameItemTemplateSelector) Resources[typeof(FrameItemTemplateSelector)];
-			selector.DynamicRatioFrameTemplate = (DataTemplate) Resources[typeof(IFrame)];
-			selector.FixedRatioFrameTemplate = (DataTemplate) Resources[nameof(selector.FixedRatioFrameTemplate)];
+			selector.FrameTemplate = (DataTemplate) Resources[typeof(IFrame)];
 			selector.FrameItemVideoTemplate = (DataTemplate) Resources[typeof(IFrameItemVideo)];
 			selector.FrameItemTextTemplate = (DataTemplate) Resources[typeof(IFrameItemText)];
 			selector.FrameItemImageTemplate = (DataTemplate) Resources[typeof(IFrameItemImage)];
@@ -132,18 +130,17 @@ namespace PlayerControls.Themes
 
 		private MediaElement[] GetMediaElemente_FromPage()
 		{
-			var mediaElements = PagePresenter.GetVisualChildsByCondition<MediaElement>(cover => true);
+			var mediaElements = PagePresenter.VisualChilds_By_Condition<MediaElement>(cover => true);
 			if (mediaElements == null)
 				return new MediaElement[0];
 			return mediaElements.ToArray();
 		}
 
-		private TransitionCover[] GetTransistionCovers_FromPage()
+		private FrameItemContainer[] GetTransistionCovers_FromPage()
 		{
-
-			var animationCovers = PagePresenter.GetVisualChildsByCondition<TransitionCover>(cover => true);
+			var animationCovers = PagePresenter.VisualChilds_By_Condition<FrameItemContainer>(cover => cover.Transitions != null && cover.Transitions.Count != 0);
 			if (animationCovers == null)
-				return new TransitionCover[0];
+				return new FrameItemContainer[0];
 			return animationCovers.ToArray();
 		}
 

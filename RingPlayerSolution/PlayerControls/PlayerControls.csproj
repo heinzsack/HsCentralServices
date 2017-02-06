@@ -48,10 +48,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controls\TransitionCover.xaml.cs">
-      <DependentUpon>TransitionCover.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\windows\ScheduledFramesPresenterWindow.xaml.cs">
+    <Compile Include="Themes\windows\ScheduledFramesPresenterWindow.xaml.cs">
       <DependentUpon>ScheduledFramesPresenterWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Themes\editors\components\ControlAdorner.cs" />
@@ -65,19 +62,18 @@
       <DependentUpon>FrameEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="Themes\editors\components\FrameItemDragMoveResize.cs" />
-    <Compile Include="Themes\editors\components\RelativeMargin_To_RelativeLeftTopWidthHeight.cs" />
+    <Compile Include="Themes\_components\RelativeMargin_To_Relative_LeftTopWidthHeight.cs" />
     <Compile Include="Themes\editors\components\FrameItemsSortConverter.cs" />
     <Compile Include="Themes\FramePresenter.xaml.cs">
       <DependentUpon>FramePresenter.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\windows\DuratedFramesPresenterWindow.xaml.cs">
+    <Compile Include="Themes\windows\DuratedFramesPresenterWindow.xaml.cs">
       <DependentUpon>DuratedFramesPresenterWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\windows\FramePresenterWindow.xaml.cs">
+    <Compile Include="Themes\windows\FramePresenterWindow.xaml.cs">
       <DependentUpon>FramePresenterWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\FixedRatioBorder.cs" />
-    <Compile Include="Controls\FrameItemTemplateSelector.cs" />
+    <Compile Include="Themes\_components\FrameItemTemplateSelector.cs" />
     <Compile Include="Extensions\FrameExtensions.cs" />
     <Compile Include="Interfaces\IFrameItem.cs" />
     <Compile Include="Interfaces\IDuratedFrame.cs" />
@@ -106,7 +102,7 @@
     <Compile Include="Themes\DuratedFramePresenter.xaml.cs">
       <DependentUpon>DuratedFramePresenter.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Themes\_components\PercentToContainerMetricConverter.cs" />
+    <Compile Include="Themes\_components\RelativeMargin_To_AbsoluteMargin.cs" />
     <Compile Include="Themes\ScheduledFramePresenter.xaml.cs">
       <DependentUpon>ScheduledFramePresenter.xaml</DependentUpon>
     </Compile>
@@ -130,11 +126,7 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Controls\TransitionCover.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\windows\ScheduledFramesPresenterWindow.xaml">
+    <Page Include="Themes\windows\ScheduledFramesPresenterWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -154,11 +146,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Controls\windows\DuratedFramesPresenterWindow.xaml">
+    <Page Include="Themes\windows\DuratedFramesPresenterWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\windows\FramePresenterWindow.xaml">
+    <Page Include="Themes\windows\FramePresenterWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

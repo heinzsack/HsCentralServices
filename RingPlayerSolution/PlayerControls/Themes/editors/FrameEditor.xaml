@@ -6,8 +6,8 @@
 			xmlns:interfaces="clr-namespace:PlayerControls.Interfaces"
 			xmlns:frameItems="clr-namespace:PlayerControls.Interfaces.FrameItems"
 			xmlns:themes="clr-namespace:PlayerControls.Themes"
-			xmlns:controls="clr-namespace:PlayerControls.Controls"
 			xmlns:components="clr-namespace:PlayerControls.Themes.editors.components"
+			xmlns:components1="clr-namespace:PlayerControls.Themes._components"
 			mc:Ignorable="d"
 			d:DesignHeight="300" d:DesignWidth="300" x:Name="Uc">
 	<UserControl.Resources>
@@ -19,39 +19,59 @@
 			<Style x:Key="IconStyle" TargetType="GlyphIcon">
 				<Setter Property="Margin" Value="0,0,4,0" />
 			</Style>
-			<controls:FrameItemTemplateSelector x:Key="TreeViewSelector">
-				<controls:FrameItemTemplateSelector.FixedRatioFrameTemplate>
-					<HierarchicalDataTemplate DataType="{x:Type interfaces:IFrame}" ItemsSource="{Binding Path=FrameChildren, Converter={StaticResource Sorter}}">
-						<Grid>
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="Auto" />
-								<ColumnDefinition Width="Auto" />
-							</Grid.ColumnDefinitions>
-							<GlyphIcon Style="{StaticResource IconStyle}" Icon="G_Vector_Path_All" />
-							<TextBlock Grid.Column="1">
-								<TextBlock.Text>
-									<MultiBinding StringFormat="{}Fixed Container ({0}:{1})">
-										<Binding Path="FrameRatioX" />
-										<Binding Path="FrameRatioY" />
-									</MultiBinding>
-								</TextBlock.Text>
-							</TextBlock>
-						</Grid>
-					</HierarchicalDataTemplate>
-				</controls:FrameItemTemplateSelector.FixedRatioFrameTemplate>
-				<controls:FrameItemTemplateSelector.DynamicRatioFrameTemplate>
+			<components1:FrameItemTemplateSelector x:Key="TreeViewSelector">
+				<components1:FrameItemTemplateSelector.FrameTemplate>
 					<HierarchicalDataTemplate DataType="{x:Type interfaces:IFrame}" ItemsSource="{Binding Path=FrameChildren, Converter={StaticResource Sorter}}">
 						<Grid>
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition Width="Auto" />
 								<ColumnDefinition Width="*" />
 							</Grid.ColumnDefinitions>
-							<GlyphIcon Style="{StaticResource IconStyle}" Icon="G_Vector_Path_Square" />
-							<TextBlock Grid.Column="1" Text="Dynamic Container" />
+							<GlyphIcon >
+								<GlyphIcon.Style>
+									<Style TargetType="GlyphIcon" BasedOn="{StaticResource IconStyle}">
+										<Setter Property="Icon" Value="G_Vector_Path_Square"/>
+										<Style.Triggers>
+											<MultiDataTrigger >
+												<MultiDataTrigger.Conditions>
+													<Condition Binding="{Binding Path=FrameHasFixedRatio}" Value="True"/>
+													<Condition Binding="{Binding Path=FrameRatioX, Converter={StaticResource GConv-IsNullOrEmpty}}" Value="False"/>
+													<Condition Binding="{Binding Path=FrameRatioY, Converter={StaticResource GConv-IsNullOrEmpty}}" Value="False"/>
+												</MultiDataTrigger.Conditions>
+												<Setter Property="Icon" Value="G_Vector_Path_All"/>
+											</MultiDataTrigger>
+										</Style.Triggers>
+									</Style>
+								</GlyphIcon.Style>
+							</GlyphIcon>
+							<TextBlock Grid.Column="1" >
+								<TextBlock.Style>
+									<Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+										<Setter Property="Text" Value="Dynamic Container"/>
+										<Style.Triggers>
+											<MultiDataTrigger >
+												<MultiDataTrigger.Conditions>
+													<Condition Binding="{Binding Path=FrameHasFixedRatio}" Value="True"/>
+													<Condition Binding="{Binding Path=FrameRatioX, Converter={StaticResource GConv-IsNullOrEmpty}}" Value="False"/>
+													<Condition Binding="{Binding Path=FrameRatioY, Converter={StaticResource GConv-IsNullOrEmpty}}" Value="False"/>
+												</MultiDataTrigger.Conditions>
+												<Setter Property="Text">
+													<Setter.Value>
+														<MultiBinding StringFormat="{}Fixed Container ({0}:{1})">
+															<Binding Path="FrameRatioX" />
+															<Binding Path="FrameRatioY" />
+														</MultiBinding>
+													</Setter.Value>
+												</Setter>
+											</MultiDataTrigger>
+										</Style.Triggers>
+									</Style>
+								</TextBlock.Style>
+							</TextBlock>
 						</Grid>
 					</HierarchicalDataTemplate>
-				</controls:FrameItemTemplateSelector.DynamicRatioFrameTemplate>
-				<controls:FrameItemTemplateSelector.FrameItemVideoTemplate>
+				</components1:FrameItemTemplateSelector.FrameTemplate>
+				<components1:FrameItemTemplateSelector.FrameItemVideoTemplate>
 					<DataTemplate DataType="{x:Type frameItems:IFrameItemVideo}">
 						<Grid>
 							<Grid.ColumnDefinitions>
@@ -62,8 +82,8 @@
 							<TextBlock Grid.Column="1" Text="Text" />
 						</Grid>
 					</DataTemplate>
-				</controls:FrameItemTemplateSelector.FrameItemVideoTemplate>
-				<controls:FrameItemTemplateSelector.FrameItemImageTemplate>
+				</components1:FrameItemTemplateSelector.FrameItemVideoTemplate>
+				<components1:FrameItemTemplateSelector.FrameItemImageTemplate>
 					<DataTemplate DataType="{x:Type frameItems:IFrameItemImage}">
 						<Border Background="Transparent">
 							<Border.ToolTip>
@@ -87,9 +107,8 @@
 							</Grid>
 						</Border>
 					</DataTemplate>
-
-				</controls:FrameItemTemplateSelector.FrameItemImageTemplate>
-				<controls:FrameItemTemplateSelector.FrameItemTextTemplate>
+				</components1:FrameItemTemplateSelector.FrameItemImageTemplate>
+				<components1:FrameItemTemplateSelector.FrameItemTextTemplate>
 					<DataTemplate DataType="{x:Type frameItems:IFrameItemText}">
 						<Border Background="Transparent">
 							<Border.ToolTip>
@@ -106,42 +125,98 @@
 						</Border>
 					</DataTemplate>
 
-				</controls:FrameItemTemplateSelector.FrameItemTextTemplate>
-			</controls:FrameItemTemplateSelector>
+				</components1:FrameItemTemplateSelector.FrameItemTextTemplate>
+			</components1:FrameItemTemplateSelector>
 
-			<DataTemplate DataType="{x:Type interfaces:IFrame}" x:Key="IFrameEditor">
-				<EditorGroup Header="Container">
-					<BoolEditor Header="Fixed Ratio" Value="{Binding Path=FrameHasFixedRatio}"/>
-					<DoubleEditor Header="RatioX" Value="{Binding Path=FrameRatioX}"/>
-					<DoubleEditor Header="RatioY" Value="{Binding Path=FrameRatioY}"/>
-				</EditorGroup>
-			</DataTemplate>
 
-			<controls:FrameItemTemplateSelector x:Key="EditorSelector" FixedRatioFrameTemplate="{StaticResource IFrameEditor}" DynamicRatioFrameTemplate="{StaticResource IFrameEditor}">
-				<controls:FrameItemTemplateSelector.FrameItemVideoTemplate>
+			<components1:FrameItemTemplateSelector x:Key="EditorSelector">
+				<components1:FrameItemTemplateSelector.FrameTemplate>
+					<DataTemplate DataType="{x:Type interfaces:IFrame}" >
+						<EditorGroup Header="Container">
+							<Grid>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="*"/>
+									<ColumnDefinition Width="Auto"/>
+								</Grid.ColumnDefinitions>
+								<BoolEditor Header="Fixed Ratio" Value="{Binding Path=FrameHasFixedRatio}" />
+								<Grid Grid.Column="1" Margin="5,0,0,0" Visibility="{Binding Path=FrameHasFixedRatio, Converter={StaticResource GConv-BoolVisibility}}">
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="40"/>
+										<ColumnDefinition Width="10"/>
+										<ColumnDefinition Width="40"/>
+									</Grid.ColumnDefinitions>
+									<DoubleEditor Grid.Column="0" Value="{Binding Path=FrameRatioX}" />
+									<TextBlock Grid.Column="1" Text=":" HorizontalAlignment="Center" Margin="0" Padding="0" VerticalAlignment="Center"/>
+									<DoubleEditor Grid.Column="2" Value="{Binding Path=FrameRatioY}"/>
+								</Grid>
+							</Grid>
+							<Grid IsEnabled="{Binding ElementName=Uc, Path=IsLocked, Converter={StaticResource GConv-BoolInverter}}">
+								<Grid.Resources>
+									<Style TargetType="GlyphIconButton">
+										<Style.Triggers>
+											<Trigger Property="IsEnabled" Value="False">
+												<Setter Property="Background" Value="Transparent"/>
+											</Trigger>
+										</Style.Triggers>
+										<Setter Property="Background" Value="White"/>
+										<Setter Property="Padding" Value="8,1,8,1"/>
+										<Setter Property="BorderBrush" Value="DimGray"/>
+										<Setter Property="BorderThickness" Value="1"/>
+									</Style>
+								</Grid.Resources>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="Auto"/>
+									<ColumnDefinition Width="*"/>
+									<ColumnDefinition Width="*"/>
+									<ColumnDefinition Width="*"/>
+									<ColumnDefinition Width="*"/>
+								</Grid.ColumnDefinitions>
+								<TextBlock Text="Neues Element: " VerticalAlignment="Center"/>
+								<GlyphIconButton Grid.Column="1" Icon="H_Font" Click="FrameItem_AddText" ToolTip="Textbaustein"/>
+								<GlyphIconButton Grid.Column="2" Icon="E_Image" Click="FrameItem_AddImage" ToolTip="Bildbaustein"/>
+								<GlyphIconButton Grid.Column="3" Icon="E_Youtube" Click="FrameItem_AddVideo" ToolTip="Videobaustein"/>
+								<GlyphIconButton Grid.Column="4" Icon="G_Vector_Path_All" Click="FrameItem_AddFrame" ToolTip="Container"/>
+							</Grid>
+						</EditorGroup>
+					</DataTemplate>
+				</components1:FrameItemTemplateSelector.FrameTemplate>
+				<components1:FrameItemTemplateSelector.FrameItemVideoTemplate>
 					<DataTemplate DataType="{x:Type frameItems:IFrameItemVideo}">
 						<EditorGroup Header="Video">
 							<FPathEditor Header="Pfad" Value="{Binding Path=FrameItemVideoFilePath}"/>
 						</EditorGroup>
 					</DataTemplate>
-				</controls:FrameItemTemplateSelector.FrameItemVideoTemplate>
-				<controls:FrameItemTemplateSelector.FrameItemImageTemplate>
+				</components1:FrameItemTemplateSelector.FrameItemVideoTemplate>
+				<components1:FrameItemTemplateSelector.FrameItemImageTemplate>
 					<DataTemplate DataType="{x:Type frameItems:IFrameItemImage}">
 						<EditorGroup Header="Bild">
-							
+							<Border MaxHeight="200" Background="Transparent" Margin="0,0,0,10">
+								<Border.Effect>
+									<DropShadowEffect Direction="0" ShadowDepth="0" BlurRadius="15" Color="{Binding Path=ImageBitmapSource, Converter={StaticResource GConv-ImageToDominantColor}}" Opacity="0.5" />
+								</Border.Effect>
+								<Image Source="{Binding Path=ImageBitmapSource}" RenderOptions.BitmapScalingMode="HighQuality" />
+							</Border>
+							<Grid>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="*"/>
+									<ColumnDefinition Width="*"/>
+								</Grid.ColumnDefinitions>
+								<GlyphIconButton Icon="G_Floppy_Save" Content="Speichern" Click="FrameItem_StoreImage" Visibility="{Binding Path=ImageBitmapSource, Converter={StaticResource GConv-NullToVisibility}}"/>
+								<GlyphIconButton Grid.Column="1" Icon="G_Edit" Content="Edit" Click="FrameItem_ChangeImage" IsEnabled="{Binding ElementName=Uc, Path=IsLocked, Converter={StaticResource GConv-BoolInverter}}"/>
+							</Grid>
 						</EditorGroup>
 					</DataTemplate>
-				</controls:FrameItemTemplateSelector.FrameItemImageTemplate>
-				<controls:FrameItemTemplateSelector.FrameItemTextTemplate>
+				</components1:FrameItemTemplateSelector.FrameItemImageTemplate>
+				<components1:FrameItemTemplateSelector.FrameItemTextTemplate>
 					<DataTemplate DataType="{x:Type frameItems:IFrameItemText}">
 						<EditorGroup Header="Text">
 							<StringEditor Header="Content" Value="{Binding Path=FrameItemText}" TextWrapping="Wrap" AcceptsReturn="True" AcceptsTab="True" HeaderVerticalAlignment="Top"/>
 							<ColorEditor Header="Farbe" ValueColor="{Binding Path=FrameItemForeground}" />
-							<StringEditor Header="Family" Value="{Binding Path=FrameItemFontFamily}"/>
+							<FontFamilyEditor Header="Family" Value="{Binding Path=FrameItemFontFamily}"/>
 						</EditorGroup>
 					</DataTemplate>
-				</controls:FrameItemTemplateSelector.FrameItemTextTemplate>
-			</controls:FrameItemTemplateSelector>
+				</components1:FrameItemTemplateSelector.FrameItemTextTemplate>
+			</components1:FrameItemTemplateSelector>
 		</ResourceDictionary>
 	</UserControl.Resources>
 
@@ -157,11 +232,26 @@
 		<Border Padding="2" Margin="0,0,0,5" MinHeight="34" Background="#10000000" BorderThickness="1" BorderBrush="LightGray">
 			<Grid>
 				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="120"/>
+					<ColumnDefinition Width="120"/>
 					<ColumnDefinition Width="Auto"/>
 					<ColumnDefinition Width="Auto"/>
 				</Grid.ColumnDefinitions>
-				
-				<GlyphIconButton Icon="G_Undo" Content="Rückgängig" Visibility="{Binding Path=HistoryEntries.Count, Converter={StaticResource GConv-NullToVisibility}}" Click="UndoButtonClicked" Margin="0,0,5,0"/>
+				<BoolEditor Icon="E_Lock" Value="{Binding Path=IsLocked}" ValueTrueText="Gesperrt" ValueFalseText="Freigegeben">
+					<BoolEditor.Style>
+						<Style TargetType="BoolEditor">
+							<Setter Property="Background" Value="{StaticResource GBrush-Blue}" />
+							<Setter Property="Foreground" Value="White"/>
+							<Style.Triggers>
+								<DataTrigger Binding="{Binding Path=IsLocked}" Value="True">
+									<Setter Property="Background" Value="{StaticResource GBrush-Red}"/>
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</BoolEditor.Style>
+				</BoolEditor>
+				<GlyphIconButton Grid.Column="1" Icon="E_Image" Content="Bild speichern" Click="SaveFrameAsImageClicked" />
+				<GlyphIconButton Grid.Column="2" Icon="G_Undo" Content="Rückgängig" Visibility="{Binding Path=HistoryEntries.Count, Converter={StaticResource GConv-NullToVisibility}}" Click="UndoButtonClicked" />
 			</Grid>
 		</Border>
 		<Grid Grid.Row="1">
@@ -169,7 +259,7 @@
 				<ColumnDefinition Width="*" />
 				<ColumnDefinition Width="250" MinWidth="200" />
 			</Grid.ColumnDefinitions>
-			<EditorGroup Header="Vorschau" Margin="0,0,10,0" VerticalAlignment="Stretch">
+			<EditorGroup Header="Vorschau" Margin="0,0,10,0" VerticalAlignment="Stretch" Background="{StaticResource GBrush-ChessBrush}" Padding="0">
 				<themes:FramePresenter x:Name="Presenter" EditorGrid.HasStarRow="True" Item="{Binding Path=Item}" PreviewMouseLeftButtonDown="FramePreview_MouseLeftButtonDown"
 									MouseMove="FramePreview_MouseMove" MouseLeave="FramePreview_OnMouseLeave" ContextMenuOpening="FramePreview_OnContextMenuOpening">
 					<themes:FramePresenter.ContextMenu>
@@ -182,33 +272,45 @@
 				<Grid.RowDefinitions>
 					<RowDefinition Height="*" />
 					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
 				</Grid.RowDefinitions>
-				<EditorGroup Margin="0,0,0,10" Header="Aufbau">
-					<TreeView x:Name="TreeView" ItemTemplateSelector="{StaticResource TreeViewSelector}"
-						ItemsSource="{Binding Path=Item, Converter={StaticResource GConv-ItemToItemList}}" SelectedItemChanged="TreeView_OnSelectedItemChanged" />
+				<EditorGroup Margin="0,0,0,0" Header="Aufbau" VerticalAlignment="Stretch">
+					<TreeView EditorGrid.HasStarRow="True" x:Name="TreeView" ItemTemplateSelector="{StaticResource TreeViewSelector}"
+						ItemsSource="{Binding Path=Item, Converter={StaticResource GConv-ItemToItemList}}" SelectedItemChanged="TreeView_OnSelectedItemChanged" ScrollViewer.VerticalScrollBarVisibility="Auto" />
+					<GlyphIconButton Icon="E_Trash" Content="Löschen" Click="FrameItem_Remove" HighlightBrush="{StaticResource GBrush-Red}" IsHighlighted="True" Margin="0,5,0,0">
+						<GlyphIconButton.Style>
+							<Style TargetType="GlyphIconButton">
+								<Style.Triggers>
+									<DataTrigger Binding="{Binding Path=SelectedItemIsRoot}" Value="True">
+										<Setter Property="Visibility" Value="Collapsed" />
+									</DataTrigger>
+									<DataTrigger Binding="{Binding Path=SelectedItem}" Value="{x:Null}">
+										<Setter Property="Visibility" Value="Collapsed" />
+									</DataTrigger>
+									<DataTrigger Binding="{Binding Path=IsLocked}" Value="True">
+										<Setter Property="Visibility" Value="Collapsed" />
+									</DataTrigger>
+								</Style.Triggers>
+							</Style>
+						</GlyphIconButton.Style>
+					</GlyphIconButton>
 				</EditorGroup>
-				<EditorGrid Grid.Row="1" DataContext="{Binding ElementName=TreeView, Path=SelectedItem}" d:DataContext="{d:DesignInstance interfaces:IFrameItem}"
-						Visibility="{Binding Converter={StaticResource GConv-NullToVisibility}, Mode=OneWay}">
+				<EditorGrid Grid.Row="1" DataContext="{Binding ElementName=Uc, Path=SelectedItem}" d:DataContext="{d:DesignInstance interfaces:IFrameItem}"
+						Visibility="{Binding Converter={StaticResource GConv-NullToVisibility}, Mode=OneWay}" Editor.IsReadOnly="{Binding ElementName=Uc, Path=IsLocked}" Margin="0,10,0,0">
 
-					<ContentControl Content="{Binding}" ContentTemplateSelector="{StaticResource EditorSelector}">
-						
-					</ContentControl>
-					
-					<EditorGroup Margin="0,0,0,10" Header="Abstände / Größen">
+					<ContentControl Content="{Binding}" ContentTemplateSelector="{StaticResource EditorSelector}" />
+
+					<EditorGroup Margin="0,0,0,10" Header="Abstände / Größen" IsExpandedChangeable="True" IsExpanded="False">
 						<EditorGroup.Resources>
-							<components:RelativeMargin_To_RelativeLeftTopWidthHeight x:Key="Conv" />
+							<components1:RelativeMargin_To_Relative_LeftTopWidthHeight x:Key="Conv" />
 						</EditorGroup.Resources>
 						<ThicknessEditor Header="Position" Value="{Binding Path=FrameItemRelativePosition, Converter={StaticResource Conv}}"
-									RightIcon="G_Resize_Horizontal" BottomIcon="G_Resize_Vertical" />
+									RightIcon="G_Resize_Horizontal" BottomIcon="G_Resize_Vertical" Visibility="{Binding ElementName=Uc, Path=SelectedItemIsRoot, Converter={StaticResource GConv-InvBoolVisibility}}" />
 						<ThicknessEditor Header="Rahmen" Value="{Binding Path=FrameItemBorderThickness}" />
 						<ThicknessEditor Header="Padding" Value="{Binding Path=FrameItemPadding}" />
-						<DoubleEditor Header="Rotation" Value="{Binding Path=FrameItemRotation}" NullValue="0" />
+						<DoubleEditor Header="Rotation" Value="{Binding Path=FrameItemRotation}" NullValue="0" Visibility="{Binding ElementName=Uc, Path=SelectedItemIsRoot, Converter={StaticResource GConv-InvBoolVisibility}}" />
 					</EditorGroup>
 
-					<EditorGroup Margin="0" Header="Farben">
+					<EditorGroup Margin="0" Header="Farben" IsExpandedChangeable="True" IsExpanded="False">
 						<ColorEditor Header="Rahmen" ValueColor="{Binding Path=FrameItemBorderColor}" />
 						<ColorEditor Header="Hintergrund" ValueColor="{Binding Path=FrameItemBackground}" />
 					</EditorGroup>

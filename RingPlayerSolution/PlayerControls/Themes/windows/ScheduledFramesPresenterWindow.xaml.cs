@@ -16,7 +16,7 @@ using PlayerControls.Interfaces;
 
 
 
-namespace PlayerControls.Controls.windows
+namespace PlayerControls.Themes.windows
 {
 	/// <summary>Interaction logic for DuratedFramesPresenterWindow.xaml</summary>
 	internal partial class ScheduledFramesPresenterWindow : CsWindow

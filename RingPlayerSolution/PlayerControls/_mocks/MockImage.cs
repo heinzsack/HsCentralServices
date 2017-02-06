@@ -2,7 +2,7 @@
 // <author>Christian Sack</author>
 // <email>christian@sack.at</email>
 // <website>christian.sack.at</website>
-// <date>2017-02-05</date>
+// <date>2017-02-06</date>
 
 using System;
 using System.IO;
@@ -15,6 +15,7 @@ using CsWpfBase.Global;
 using CsWpfBase.Global.os.functions.knownfolders;
 using PlayerControls.Interfaces;
 using PlayerControls.Interfaces.FrameItems;
+using PlayerControls.Themes.editors;
 
 
 
@@ -27,7 +28,7 @@ namespace PlayerControls._mocks
 	{
 		private static readonly object ConcurrencyLock = new object();
 
-		public static IFrameItem GetSampleMiddle()
+		public static IFrameItemImage GetSampleMiddle()
 		{
 			return new MockImage
 			{
@@ -110,6 +111,15 @@ namespace PlayerControls._mocks
 					return img;
 				}
 			}
+		}
+
+		/// <summary>
+		///     Should open or change the image stored in <see cref="IFrameItemImage.ImageBitmapSource" />. This method will be used by the
+		///     <see cref="FrameEditor" />.
+		/// </summary>
+		public void EditorRequestedImageChange()
+		{
+			OnPropertyChanged(nameof(ImageBitmapSource));
 		}
 		#endregion
 	}

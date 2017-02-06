@@ -2,7 +2,7 @@
 // <author>Christian Sack</author>
 // <email>christian@sack.at</email>
 // <website>christian.sack.at</website>
-// <date>2017-01-28</date>
+// <date>2017-02-06</date>
 
 using System;
 using System.Windows;
@@ -16,10 +16,8 @@ using PlayerControls.Interfaces.FrameItems;
 
 namespace PlayerControls.Interfaces
 {
-	/// <summary>
-	///     Contains all the properties which can be used for presenting a specific type of thing like an
-	///     <see cref="IFrameItemImage" />.
-	/// </summary>
+	/// <summary>Contains all the properties which can be used for presenting a specific type of thing like an
+	///     <see cref="IFrameItemImage" />.</summary>
 	public interface IFrameItem
 	{
 		#region Abstract

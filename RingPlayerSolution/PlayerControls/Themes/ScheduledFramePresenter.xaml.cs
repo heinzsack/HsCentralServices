@@ -252,14 +252,14 @@ namespace PlayerControls.Themes
 		///     <see cref="BufferedFrames" />.</summary>
 		private FramePresenter Get_CurrentFramePresenter()
 		{
-			return ((ContentPresenter) BufferedItemsControl.ItemContainerGenerator.ContainerFromIndex(BufferedFrames.Count - 1)).GetVisualChildByCondition<FramePresenter>(a => true);
+			return ((ContentPresenter) BufferedItemsControl.ItemContainerGenerator.ContainerFromIndex(BufferedFrames.Count - 1)).VisualChild_By_Condition<FramePresenter>(a => true);
 		}
 
 		/// <summary>Returns the frame presenter for the next playing <see cref="IScheduledFrame" /> inside the <see cref="BufferedFrames" />
 		///     .</summary>
 		private FramePresenter Get_NextFramePresenter()
 		{
-			return ((ContentPresenter) BufferedItemsControl.ItemContainerGenerator.ContainerFromIndex(BufferedFrames.Count - 2)).GetVisualChildByCondition<FramePresenter>(a => true);
+			return ((ContentPresenter) BufferedItemsControl.ItemContainerGenerator.ContainerFromIndex(BufferedFrames.Count - 2)).VisualChild_By_Condition<FramePresenter>(a => true);
 		}
 
 		/// <summary>Returns a prefilled <see cref="IScheduledFrame" /> array.</summary>

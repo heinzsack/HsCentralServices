@@ -30,8 +30,10 @@ namespace PlayerControls.Themes.editors.components
 			IsSelectedAdorner control;
 			bool available = CurrentAdorners.TryGetValue(layer, out control);
 
-			if(available && Equals(control.AdornedElement, target))
+			if (available && Equals(control.AdornedElement, target))
+			{
 				return;
+			}
 
 			if(available)
 				CsGlobal.Wpf.Animation.Opacity(control, 0, new Duration(TimeSpan.FromMilliseconds(150)), null, () => control.OwningLayer.Remove(control));

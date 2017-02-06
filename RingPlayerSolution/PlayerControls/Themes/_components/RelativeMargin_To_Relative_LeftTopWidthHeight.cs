@@ -14,10 +14,10 @@ using System.Windows.Data;
 
 
 
-namespace PlayerControls.Themes.editors.components
+namespace PlayerControls.Themes._components
 {
 	// ReSharper disable once InconsistentNaming
-	internal class RelativeMargin_To_RelativeLeftTopWidthHeight : IValueConverter
+	internal class RelativeMargin_To_Relative_LeftTopWidthHeight : IValueConverter
 	{
 		#region Overrides/Interfaces
 		/// <summary>

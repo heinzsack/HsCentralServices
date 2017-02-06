@@ -20,11 +20,12 @@ namespace PlayerControls.Themes._components
 	///     Must be an <see cref="IMultiValueConverter" /> to ensure thaht automatic recalculations occure even if the window gets
 	///     resized. Transforms relative margins into absolute margins and vice versa.
 	/// </summary>
-	internal class PercentToContainerMetricConverter : DependencyObject, IMultiValueConverter
+	// ReSharper disable once InconsistentNaming
+	internal class RelativeMargin_To_AbsoluteMargin : DependencyObject, IMultiValueConverter
 	{
 		#region DP Keys
 		/// <summary>The <see cref="DependencyProperty" /> for the <see cref="Container" /> property.</summary>
-		public static readonly DependencyProperty ContainerProperty = DependencyProperty.Register("Container", typeof(FrameworkElement), typeof(PercentToContainerMetricConverter), new FrameworkPropertyMetadata
+		public static readonly DependencyProperty ContainerProperty = DependencyProperty.Register("Container", typeof(FrameworkElement), typeof(RelativeMargin_To_AbsoluteMargin), new FrameworkPropertyMetadata
 		{
 			//PropertyChangedCallback = (o, args) => ((PercentToContainerMetricConverter)o).ContainerDpChanged((FrameworkElement)args.OldValue, (FrameworkElement)args.NewValue),
 			DefaultValue = default(FrameworkElement),

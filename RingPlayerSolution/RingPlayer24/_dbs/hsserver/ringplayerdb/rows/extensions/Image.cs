@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using CsWpfBase.Global;
 using PlayerControls.Interfaces.FrameItems;
+using PlayerControls.Themes.editors;
 
 
 
@@ -98,6 +99,15 @@ namespace RingPlayer24._dbs.hsserver.ringplayerdb.rows
 		{
 			get { return Convert.Thickness.Getter(Padding); }
 			set { Convert.Thickness.Setter(s => Padding = s, value); }
+		}
+
+		/// <summary>
+		///     Should open or change the image stored in <see cref="IFrameItemImage.ImageBitmapSource" />. This method will be used by the
+		///     <see cref="FrameEditor" />.
+		/// </summary>
+		public void EditorRequestedImageChange()
+		{
+			throw new NotImplementedException();
 		}
 		#endregion
 	}

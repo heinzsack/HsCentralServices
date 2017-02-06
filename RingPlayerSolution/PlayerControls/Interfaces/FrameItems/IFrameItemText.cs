@@ -24,7 +24,7 @@ namespace PlayerControls.Interfaces.FrameItems
 		/// <summary>The <see cref="Color" /> of the <see cref="FrameItemText" />.</summary>
 		Color FrameItemForeground { get; set; }
 		/// <summary>The font family of the <see cref="FrameItemText" />.</summary>
-		string FrameItemFontFamily { get; set; }
+		FontFamily FrameItemFontFamily { get; set; }
 		/// <summary>The <see cref="FontWeight" /> of the <see cref="FrameItemText" />.</summary>
 		FontWeight FrameItemFontWeight { get; set; }
 		/// <summary>The <see cref="FontStyle" /> of the <see cref="FrameItemText" />.</summary>

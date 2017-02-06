@@ -9,7 +9,9 @@ using System.Windows;
 using System.Windows.Markup;
 using System.Windows.Media;
 using CsWpfBase.Global;
+using PlayerControls.Interfaces;
 using PlayerControls.Interfaces.FrameItems;
+using PlayerControls.Themes.editors;
 
 
 
@@ -73,6 +75,15 @@ namespace RingPlayer24._dbs.hsserver.ringplayerdb.rows
 
 		[DependsOn(nameof(VideoId))]
 		public string FrameItemVideoFilePath => CsGlobal.Remote.FileRepository.FindOrDownload(VideoId)?.LocalCachedFile?.FullName;
+
+		/// <summary>
+		///     Should open or change the video file path stored in <see cref="IFrameItemVideo.FrameItemVideoFilePath" />. This method will be used by the
+		///     <see cref="FrameEditor" />.
+		/// </summary>
+		public void EditorRequestedVideoChange()
+		{
+			throw new NotImplementedException();
+		}
 		#endregion
 	}
 }

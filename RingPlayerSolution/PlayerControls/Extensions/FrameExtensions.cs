@@ -12,10 +12,10 @@ using System.Windows.Data;
 using System.Windows.Media.Imaging;
 using CsWpfBase.Ev.Public.Extensions;
 using CsWpfBase.Utilitys;
-using PlayerControls.Controls.windows;
 using PlayerControls.Interfaces;
 using PlayerControls.Interfaces.FrameItems;
 using PlayerControls.Themes;
+using PlayerControls.Themes.windows;
 
 
 
@@ -56,7 +56,7 @@ namespace PlayerControls.Extensions
 				frameViewer.Arrange(new Rect(frameViewer.DesiredSize));
 				frameViewer.UpdateLayout();
 
-				var img = frameViewer.GetVisualChildsByCondition<Image>(i => true);
+				var img = frameViewer.VisualChilds_By_Condition<Image>(i => true);
 				//TODO frameViewer.MakeVideoVisible(TimeSpan.FromSeconds(5));
 				foreach (var image in img)
 				{

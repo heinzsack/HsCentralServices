@@ -88,10 +88,10 @@ namespace RingPlayer24._dbs.hsserver.ringplayerdb.rows
 		}
 
 		[DependsOn(nameof(FontFamily))]
-		public string FrameItemFontFamily
+		public FontFamily FrameItemFontFamily
 		{
-			get { return FontFamily.IsNullOrEmpty() ? "Arial" : FontFamily; }
-			set { FontFamily = value; }
+			get { return Convert.FontFamily.Getter(FontFamily); }
+			set { Convert.FontFamily.Setter(s => FontFamily = s, value); }
 		}
 
 		[DependsOn(nameof(FontWeight))]

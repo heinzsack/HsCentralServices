@@ -21,7 +21,7 @@ namespace PlayerControls._mocks
 {
 	internal class MockText : Base, IFrameItemText
 	{
-		public static IFrameItem GetSampleLeftTop()
+		public static IFrameItemText GetSampleLeftTop()
 		{
 			return new MockText
 			{
@@ -30,7 +30,7 @@ namespace PlayerControls._mocks
 			};
 		}
 
-		public static IFrameItem GetSampleLeftBottom()
+		public static IFrameItemText GetSampleLeftBottom()
 		{
 			return new MockText
 			{
@@ -39,7 +39,7 @@ namespace PlayerControls._mocks
 			};
 		}
 
-		public static IFrameItem GetSampleRightTop()
+		public static IFrameItemText GetSampleRightTop()
 		{
 			return new MockText
 			{
@@ -48,7 +48,7 @@ namespace PlayerControls._mocks
 			};
 		}
 
-		public static IFrameItem GetSampleRightBottom()
+		public static IFrameItemText GetSampleRightBottom()
 		{
 			return new MockText
 			{
@@ -66,7 +66,7 @@ namespace PlayerControls._mocks
 		private int _frameItemZIndex;
 		private string _frameItemText = "Text not set";
 		private Color _frameItemForeground = Colors.Black;
-		private string _frameItemFontFamily = "Arial";
+		private FontFamily _frameItemFontFamily = new FontFamily("Arial");
 		private FontWeight _frameItemFontWeight = FontWeights.Normal;
 		private FontStyle _frameItemFontStyle = FontStyles.Normal;
 
@@ -142,7 +142,7 @@ namespace PlayerControls._mocks
 			set { SetProperty(ref _frameItemForeground, value); }
 		}
 		/// <summary>The font family of the <see cref="IFrameItemText.FrameItemText" />.</summary>
-		public string FrameItemFontFamily
+		public FontFamily FrameItemFontFamily
 		{
 			get { return _frameItemFontFamily; }
 			set { SetProperty(ref _frameItemFontFamily, value); }

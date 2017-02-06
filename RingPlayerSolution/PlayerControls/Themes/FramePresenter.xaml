@@ -3,10 +3,8 @@
 			xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 			xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-			xmlns:controls="clr-namespace:PlayerControls.Controls"
 			xmlns:wpPlayer="clr-namespace:PlayerControls.Interfaces"
 			xmlns:frameItems="clr-namespace:PlayerControls.Interfaces.FrameItems"
-			xmlns:themes="clr-namespace:PlayerControls.Themes"
 			xmlns:components="clr-namespace:PlayerControls.Themes._components"
 			mc:Ignorable="d"
 			d:DesignHeight="300" d:DesignWidth="300" x:Name="Uc" ClipToBounds="True">
@@ -15,7 +13,7 @@
 			<ResourceDictionary.MergedDictionaries>
 				<ResourceDictionary Source="/CsWpfBase;component/Themes/Standard.xaml" />
 			</ResourceDictionary.MergedDictionaries>
-			<controls:FrameItemTemplateSelector x:Key="{x:Type controls:FrameItemTemplateSelector}" />
+			<components:FrameItemTemplateSelector x:Key="{x:Type components:FrameItemTemplateSelector}" />
 
 			<DataTemplate DataType="{x:Type frameItems:IFrameItemVideo}" x:Key="{x:Type frameItems:IFrameItemVideo}">
 				<components:FrameItemContainer>
@@ -37,8 +35,8 @@
 				</components:FrameItemContainer>
 			</DataTemplate>
 			<DataTemplate DataType="{x:Type wpPlayer:IFrame}" x:Key="{x:Type wpPlayer:IFrame}">
-				<components:FrameItemContainer>
-					<ItemsControl ItemsSource="{Binding Path=FrameChildren}" ItemTemplateSelector="{StaticResource {x:Type controls:FrameItemTemplateSelector}}">
+				<components:FrameItemContainer HasFixedRatio="{Binding Path=FrameHasFixedRatio}" RatioX="{Binding Path=FrameRatioX}" RatioY="{Binding Path=FrameRatioY}">
+					<ItemsControl ItemsSource="{Binding Path=FrameChildren}" ItemTemplateSelector="{StaticResource {x:Type components:FrameItemTemplateSelector}}">
 						<ItemsControl.ItemsPanel>
 							<ItemsPanelTemplate>
 								<Grid />
@@ -54,12 +52,23 @@
 
 			</DataTemplate>
 			<DataTemplate DataType="{x:Type wpPlayer:IFrame}" x:Key="FixedRatioFrameTemplate">
-				<controls:FixedRatioBorder RatioX="{Binding Path=FrameRatioX}" RatioY="{Binding Path=FrameRatioY}">
-					<ContentControl ClipToBounds="True" Content="{Binding}" ContentTemplate="{StaticResource {x:Type wpPlayer:IFrame}}" />
-				</controls:FixedRatioBorder>
+				<components:FrameItemContainer HasFixedRatio="{Binding Path=FrameHasFixedRatio}" RatioX="{Binding Path=FrameRatioX}" RatioY="{Binding Path=FrameRatioY}">
+					<ItemsControl ItemsSource="{Binding Path=FrameChildren}" ItemTemplateSelector="{StaticResource {x:Type components:FrameItemTemplateSelector}}">
+						<ItemsControl.ItemsPanel>
+							<ItemsPanelTemplate>
+								<Grid />
+							</ItemsPanelTemplate>
+						</ItemsControl.ItemsPanel>
+						<ItemsControl.ItemContainerStyle>
+							<Style TargetType="ContentPresenter">
+								<Setter Property="Panel.ZIndex" Value="{Binding Path=FrameItemZIndex}" />
+							</Style>
+						</ItemsControl.ItemContainerStyle>
+					</ItemsControl>
+				</components:FrameItemContainer>
 			</DataTemplate>
 		</ResourceDictionary>
 	</UserControl.Resources>
 	<ContentControl x:Name="PagePresenter" Content="{Binding ElementName=Uc, Path=Item}"
-					ContentTemplateSelector="{StaticResource {x:Type controls:FrameItemTemplateSelector}}" />
+					ContentTemplateSelector="{StaticResource {x:Type components:FrameItemTemplateSelector}}" />
 </UserControl>

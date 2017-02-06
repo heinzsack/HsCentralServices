@@ -11,6 +11,7 @@ using System.Windows;
 using System.Windows.Media;
 using CsWpfBase.Ev.Objects;
 using PlayerControls.Interfaces;
+using PlayerControls.Interfaces.FrameItems;
 using PlayerControls.Interfaces.Transistions;
 
 
@@ -139,10 +140,60 @@ namespace PlayerControls._mocks
 		{
 			_frameChildren.Add(child);
 		}
+		public void RemoveChild(IFrameItem child)
+		{
+			_frameChildren.Remove(child);
+		}
 
 		public void AddTransitions(ITransition transistion)
 		{
 			_frameTransitions.Add(transistion);
+		}
+
+		/// <summary>
+		///     Adds an <see cref="IFrameItemText" /> to the <see cref="IFrame.FrameChildren" /> collection and returns the added
+		///     <see cref="IFrameItemText" />.
+		/// </summary>
+		public IFrameItemText EditorRequestedNewText()
+		{
+			var item = MockText.GetSampleLeftTop();
+			AddChild(item);
+			return item;
+		}
+
+		/// <summary>
+		///     Adds an <see cref="IFrameItemImage" /> to the <see cref="IFrame.FrameChildren" /> collection and returns the added
+		///     <see cref="IFrameItemImage" />.
+		/// </summary>
+		public IFrameItemImage EditorRequestedNewImage()
+		{
+			var item = MockImage.GetSampleMiddle();
+			AddChild(item);
+			return item;
+		}
+
+		/// <summary>
+		///     Adds an <see cref="IFrameItemVideo" /> to the <see cref="IFrame.FrameChildren" /> collection and returns the added
+		///     <see cref="IFrameItemVideo" />.
+		/// </summary>
+		public IFrameItemVideo EditorRequestedNewVideo()
+		{
+			throw new NotImplementedException();
+		}
+
+		/// <summary>Adds an <see cref="IFrame" /> to the <see cref="IFrame.FrameChildren" /> collection and returns the added
+		///     <see cref="IFrame" />.</summary>
+		public IFrame EditorRequestedNewFrame()
+		{
+			var frame = new MockFrame { FrameItemBackground = Colors.White, FrameItemRelativePosition = new Thickness(25,25,25,25)};
+			AddChild(frame);
+			return frame;
+		}
+
+		/// <summary>Removes the <paramref name="child" /> from the <see cref="IFrame.FrameChildren" />.</summary>
+		public void EditorRequestedRemoveChild(IFrameItem child)
+		{
+			RemoveChild(child);
 		}
 	}
 }

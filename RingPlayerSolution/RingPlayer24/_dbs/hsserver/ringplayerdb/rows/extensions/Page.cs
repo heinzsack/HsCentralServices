@@ -2,7 +2,7 @@
 // <author>Christian Sack</author>
 // <email>christian@sack.at</email>
 // <website>christian.sack.at</website>
-// <date>2017-02-04</date>
+// <date>2017-02-06</date>
 
 using System;
 using System.Collections.Generic;
@@ -11,6 +11,7 @@ using System.Windows;
 using System.Windows.Markup;
 using System.Windows.Media;
 using PlayerControls.Interfaces;
+using PlayerControls.Interfaces.FrameItems;
 using PlayerControls.Interfaces.Transistions;
 
 
@@ -101,6 +102,40 @@ namespace RingPlayer24._dbs.hsserver.ringplayerdb.rows
 
 
 		public IEnumerable<ITransition> FrameTransitions => DoubleTransitions;
+
+		/// <summary>Adds an <see cref="IFrameItemText" /> to the <see cref="IFrame.FrameChildren" /> collection and returns the added
+		///     <see cref="IFrameItemText" />.</summary>
+		public IFrameItemText EditorRequestedNewText()
+		{
+			throw new NotImplementedException();
+		}
+
+		/// <summary>Adds an <see cref="IFrameItemImage" /> to the <see cref="IFrame.FrameChildren" /> collection and returns the added
+		///     <see cref="IFrameItemImage" />.</summary>
+		public IFrameItemImage EditorRequestedNewImage()
+		{
+			throw new NotImplementedException();
+		}
+
+		/// <summary>Adds an <see cref="IFrameItemVideo" /> to the <see cref="IFrame.FrameChildren" /> collection and returns the added
+		///     <see cref="IFrameItemVideo" />.</summary>
+		public IFrameItemVideo EditorRequestedNewVideo()
+		{
+			throw new NotImplementedException();
+		}
+
+		/// <summary>Removes the <paramref name="child" /> from the <see cref="IFrame.FrameChildren" />.</summary>
+		public void EditorRequestedRemoveChild(IFrameItem child)
+		{
+			throw new NotImplementedException();
+		}
+
+		/// <summary>Adds an <see cref="IFrame" /> to the <see cref="IFrame.FrameChildren" /> collection and returns the added
+		///     <see cref="IFrame" />.</summary>
+		public IFrame EditorRequestedNewFrame()
+		{
+			throw new NotImplementedException();
+		}
 		#endregion
 
 

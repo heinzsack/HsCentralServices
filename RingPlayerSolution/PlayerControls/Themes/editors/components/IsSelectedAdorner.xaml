@@ -11,17 +11,17 @@
 			<EventTrigger.Actions>
 				<BeginStoryboard>
 					<Storyboard RepeatBehavior="Forever">
+						<ColorAnimation Storyboard.TargetName="R0" Storyboard.TargetProperty="Background.(SolidColorBrush.Color)" From="#13000000" To="Transparent" Duration="0:0:0.8" AutoReverse="True" RepeatBehavior="Forever">
+							<ColorAnimation.EasingFunction>
+								<ExponentialEase EasingMode="EaseInOut"/>
+							</ColorAnimation.EasingFunction>
+						</ColorAnimation>
 						<ColorAnimation Storyboard.TargetName="R1" Storyboard.TargetProperty="(Shape.Stroke).(SolidColorBrush.Color)" From="#0275D8" To="#100275D8" Duration="0:0:0.8" AutoReverse="True" RepeatBehavior="Forever">
 							<ColorAnimation.EasingFunction>
 								<ExponentialEase EasingMode="EaseInOut"/>
 							</ColorAnimation.EasingFunction>
 						</ColorAnimation>
 						<ColorAnimation Storyboard.TargetName="R2" Storyboard.TargetProperty="Color" From="#0275D8" To="#100275D8" Duration="0:0:0.8" AutoReverse="True" RepeatBehavior="Forever">
-							<ColorAnimation.EasingFunction>
-								<ExponentialEase EasingMode="EaseInOut"/>
-							</ColorAnimation.EasingFunction>
-						</ColorAnimation>
-						<ColorAnimation Storyboard.TargetName="R0" Storyboard.TargetProperty="Background.(SolidColorBrush.Color)" From="#12E5F3FF" To="Transparent" Duration="0:0:0.8" AutoReverse="True" RepeatBehavior="Forever">
 							<ColorAnimation.EasingFunction>
 								<ExponentialEase EasingMode="EaseInOut"/>
 							</ColorAnimation.EasingFunction>

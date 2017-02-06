@@ -16,15 +16,15 @@ using PlayerControls.Interfaces;
 
 
 
-namespace PlayerControls.Controls.windows
+namespace PlayerControls.Themes.windows
 {
-	/// <summary>Interaction logic for FramePresenterWindow.xaml</summary>
-	internal partial class FramePresenterWindow : CsWindow
+	/// <summary>Interaction logic for DuratedFramesPresenterWindow.xaml</summary>
+	internal partial class DuratedFramesPresenterWindow : CsWindow
 	{
-		public FramePresenterWindow(string title, IFrame frame, bool isDiagnostic)
+		public DuratedFramesPresenterWindow(string title, IDuratedFrame[] itemsSource)
 		{
 			Owner = Application.Current.Windows.OfType<Window>().FirstOrDefault(x => !Equals(x, this) && x.IsFocused);
-			if (Owner != null)
+			if(Owner != null)
 			{
 				WindowStartupLocation = WindowStartupLocation.CenterOwner;
 				Width = Owner.Width * 0.95;
@@ -32,11 +32,9 @@ namespace PlayerControls.Controls.windows
 			}
 			InitializeComponent();
 			Title = title;
-			Presenter.Item = frame;
-			Presenter.IsDiagnostic = isDiagnostic;
+			Presenter.ItemsSource = itemsSource;
 
-			CsGlobal.Wpf.Storage.Window.Handle(this, $"{nameof(FramePresenterWindow)}");
-
+			CsGlobal.Wpf.Storage.Window.Handle(this, $"{nameof(DuratedFramesPresenterWindow)}");
 		}
 	}
 }

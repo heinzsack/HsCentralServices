@@ -16,9 +16,15 @@ namespace PlayerControls.Themes.editors.components
 	{
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			var collectionView = CollectionViewSource.GetDefaultView(value);
-			collectionView.SortDescriptions.Add(new SortDescription(nameof(IFrameItem.FrameItemZIndex), ListSortDirection.Ascending));
-			return collectionView;
+			var view = CollectionViewSource.GetDefaultView(value);
+			var liveShaping = (ICollectionViewLiveShaping)view;
+			if (liveShaping.CanChangeLiveSorting)
+			{
+				liveShaping.LiveSortingProperties.Add(nameof(IFrameItem.FrameItemZIndex));
+				liveShaping.IsLiveSorting = true;
+			}
+			view.SortDescriptions.Add(new SortDescription(nameof(IFrameItem.FrameItemZIndex), ListSortDirection.Ascending));
+			return view;
 		}
 
 		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

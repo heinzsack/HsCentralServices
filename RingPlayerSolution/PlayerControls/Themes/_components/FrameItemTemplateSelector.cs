@@ -15,7 +15,7 @@ using PlayerControls.Interfaces.FrameItems;
 
 
 
-namespace PlayerControls.Controls
+namespace PlayerControls.Themes._components
 {
 	internal class FrameItemTemplateSelector : DataTemplateSelector
 	{
@@ -26,11 +26,7 @@ namespace PlayerControls.Controls
 				return null;
 			var itemType = item.GetType();
 			if (typeof(IFrame).IsAssignableFrom(itemType))
-			{
-				if (((IFrame) item).FrameHasFixedRatio)
-					return FixedRatioFrameTemplate;
-				return DynamicRatioFrameTemplate;
-			}
+				return FrameTemplate;
 			if (typeof(IFrameItemText).IsAssignableFrom(itemType))
 				return FrameItemTextTemplate;
 			if (typeof(IFrameItemImage).IsAssignableFrom(itemType))
@@ -43,8 +39,7 @@ namespace PlayerControls.Controls
 		#endregion
 
 
-		public DataTemplate FixedRatioFrameTemplate { get; set; }
-		public DataTemplate DynamicRatioFrameTemplate { get; set; }
+		public DataTemplate FrameTemplate { get; set; }
 		public DataTemplate FrameItemTextTemplate { get; set; }
 		public DataTemplate FrameItemImageTemplate { get; set; }
 		public DataTemplate FrameItemVideoTemplate { get; set; }

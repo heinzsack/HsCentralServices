@@ -251,7 +251,7 @@ namespace PlayerControls.Themes
 		private FramePresenter Get_CurrentFramePresenter()
 		{
 			var container = (ContentPresenter) BufferedItemsControl.ItemContainerGenerator.ContainerFromIndex(BufferedFrames.Count - 1);
-			return container?.GetVisualChildByCondition<FramePresenter>(a => true);
+			return container?.VisualChild_By_Condition<FramePresenter>(a => true);
 		}
 
 		/// <summary>Returns the frame presenter for the next playing <see cref="IDuratedFrame" /> inside the <see cref="BufferedFrames" />.</summary>
@@ -259,7 +259,7 @@ namespace PlayerControls.Themes
 		{
 			var container = (ContentPresenter) BufferedItemsControl.ItemContainerGenerator
 																	.ContainerFromIndex(BufferedFrames.Count - 2);
-			return container?.GetVisualChildByCondition<FramePresenter>(a => true);
+			return container?.VisualChild_By_Condition<FramePresenter>(a => true);
 		}
 	}
 }

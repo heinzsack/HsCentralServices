@@ -2,18 +2,21 @@
 // <author>Christian Sack</author>
 // <email>christian@sack.at</email>
 // <website>christian.sack.at</website>
-// <date>2017-02-05</date>
+// <date>2017-02-06</date>
 
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using CsWpfBase.Ev.Objects;
 using CsWpfBase.Ev.Public.Extensions;
 using CsWpfBase.Themes.Controls.Containers;
+using PlayerControls.Extensions;
 using PlayerControls.Interfaces;
+using PlayerControls.Interfaces.FrameItems;
 using PlayerControls.Themes.editors.components;
 using PlayerControls.Themes._components;
 
@@ -27,6 +30,44 @@ namespace PlayerControls.Themes.editors
 	/// <summary>Interaction logic for FrameEditor.xaml</summary>
 	public partial class FrameEditor : ItemControl<IFrame>
 	{
+		#region DP Keys
+		/// <summary>The <see cref="DependencyProperty" /> for the <see cref="IsLocked" /> property.</summary>
+		public static readonly DependencyProperty IsLockedProperty = DependencyProperty.Register("IsLocked", typeof(bool), typeof(FrameEditor), new FrameworkPropertyMetadata
+		{
+			BindsTwoWayByDefault = true,
+			//PropertyChangedCallback = (o, args) => ((FrameEditor)o).IsLockedDpChanged((bool)args.OldValue, (bool)args.NewValue),
+			DefaultValue = true,
+			DefaultUpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
+		});
+		/// <summary>The <see cref="DependencyProperty" /> for the <see cref="SelectedItemContainer" /> property.</summary>
+		public static readonly DependencyProperty SelectedItemContainerProperty = DependencyProperty.Register("SelectedItemContainer", typeof(FrameItemContainer), typeof(FrameEditor), new FrameworkPropertyMetadata
+		{
+			BindsTwoWayByDefault = true,
+			//PropertyChangedCallback = (o, args) => ((FrameEditor)o).SelectedItemContainerDpChanged((FrameItemContainer)args.OldValue, (FrameItemContainer)args.NewValue),
+			DefaultValue = default(FrameItemContainer),
+			DefaultUpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
+		});
+
+		/// <summary>The <see cref="DependencyProperty" /> for the <see cref="SelectedItemIsRoot" /> property.</summary>
+		public static readonly DependencyProperty SelectedItemIsRootProperty = DependencyProperty.Register("SelectedItemIsRoot", typeof(bool), typeof(FrameEditor), new FrameworkPropertyMetadata
+		{
+			BindsTwoWayByDefault = true,
+			//PropertyChangedCallback = (o, args) => ((FrameEditor)o).SelectedItemIsRootDpChanged((bool)args.OldValue, (bool)args.NewValue),
+			DefaultValue = default(bool),
+			DefaultUpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
+		});
+		/// <summary>The <see cref="DependencyProperty" /> for the <see cref="SelectedItem" /> property.</summary>
+		public static readonly DependencyProperty SelectedItemProperty = DependencyProperty.Register("SelectedItem", typeof(IFrameItem), typeof(FrameEditor), new FrameworkPropertyMetadata
+		{
+			BindsTwoWayByDefault = true,
+			//PropertyChangedCallback = (o, args) => ((FrameEditor) o).SelectedItemDpChanged((IFrameItem) args.OldValue, (IFrameItem) args.NewValue),
+			DefaultValue = default(IFrameItem),
+			DefaultUpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
+		});
+		#endregion
+
+		
+
 
 		public FrameEditor()
 		{
@@ -34,35 +75,82 @@ namespace PlayerControls.Themes.editors
 			PreviewKeyDown += OnPreviewKeyDown;
 		}
 
+		/// <summary>The container of the selected item</summary>
+		public FrameItemContainer SelectedItemContainer
+		{
+			get { return (FrameItemContainer) GetValue(SelectedItemContainerProperty); }
+			set { SetValue(SelectedItemContainerProperty, value); }
+		}
+
+		/// <summary>If true the <see cref="SelectedItem" /> is the root frame.</summary>
+		public bool SelectedItemIsRoot
+		{
+			get { return (bool) GetValue(SelectedItemIsRootProperty); }
+			set { SetValue(SelectedItemIsRootProperty, value); }
+		}
+
+		/// <summary>The selected item inside the <see cref="System.Windows.Controls.TreeView" />.</summary>
+		public IFrameItem SelectedItem
+		{
+			get { return (IFrameItem) GetValue(SelectedItemProperty); }
+			set { SetValue(SelectedItemProperty, value); }
+		}
+
+		/// <summary>If true no changes are allowed.</summary>
+		public bool IsLocked
+		{
+			get { return (bool) GetValue(IsLockedProperty); }
+			set { SetValue(IsLockedProperty, value); }
+		}
+
 		public ObservableCollection<HistoryEntry> HistoryEntries { get; } = new ObservableCollection<HistoryEntry>();
+
+		private void TreeView_OnSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+		{
+			SetSelectedItem(e.NewValue as IFrameItem);
+		}
 
 		private void OnPreviewKeyDown(object sender, KeyEventArgs keyEventArgs)
 		{
 			if (Keyboard.Modifiers == ModifierKeys.Control && Keyboard.IsKeyDown(Key.Z))
 				UndoHistoryAction();
 			else if (Keyboard.IsKeyDown(Key.Escape))
-			{
-				IsSelectedAdorner.Clear(this);
-			}
+				SetSelectedItem(null as IFrameItem);
 		}
 
 
 
 		private void FramePreview_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
 		{
-			var container = GetFrameItemContainer_FromMousePosition();
+			var container =  GetFrameItemContainer_FromMousePosition();
 			if (container == null)
 				return;
-			var frameItem = (IFrameItem) container.DataContext;
 
-			TreeView.Select(frameItem);
-			IsSelectedAdorner.Apply(container);
+			var isSame = container == SelectedItemContainer;
+			if(!isSame)
+				SetSelectedItem(container);
 
-			FrameItemDragMoveResize.Do(container, (thickness, thickness1) =>DoHistoryAction("Move/Resize", () => frameItem.FrameItemRelativePosition = thickness1, () => frameItem.FrameItemRelativePosition = thickness, false)
-			);
+			if(!IsLocked && !SelectedItemIsRoot)
+				FrameItemDragMoveResize.Do(container, (thickness, thickness1) =>
+				{
+					if (Equals(thickness, thickness1))
+					{
+						if(isSame)
+							SetSelectedItem(null as IFrameItem);
+					}
+					else
+					{
+						DoHistoryAction("Move/Resize", () => SelectedItem.FrameItemRelativePosition = thickness1, () => SelectedItem.FrameItemRelativePosition = thickness, false);
+					}
+				});
+			else if (isSame)
+				SetSelectedItem(null as IFrameItem);
+
+
 
 			e.Handled = true;
 		}
+
 
 		private void FramePreview_MouseMove(object sender, MouseEventArgs mouseEventArgs)
 		{
@@ -73,15 +161,6 @@ namespace PlayerControls.Themes.editors
 				IsMouseOverAdorner.Clear(this);
 		}
 
-		private void TreeView_OnSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
-		{
-			var dataContext = e.NewValue as IFrameItem;
-			if (dataContext == null)
-				return;
-			var frameItemContainerByItem = GetFrameItemContainer_ByItem(dataContext);
-			IsSelectedAdorner.Apply(frameItemContainerByItem);
-		}
-
 		private void FramePreview_OnMouseLeave(object sender, MouseEventArgs e)
 		{
 			IsMouseOverAdorner.Clear(this);
@@ -89,6 +168,12 @@ namespace PlayerControls.Themes.editors
 
 		private void FramePreview_OnContextMenuOpening(object sender, ContextMenuEventArgs e)
 		{
+			if (IsLocked || SelectedItemIsRoot)
+			{
+				e.Handled = true;
+				return;
+			}
+
 			var container = GetFrameItemContainer_FromMousePosition();
 			if (container == null)
 			{
@@ -130,7 +215,7 @@ namespace PlayerControls.Themes.editors
 
 		private void SendToBack(FrameItemContainer cont)
 		{
-			var containingFrame = cont.GetVisualParentByCondition<FrameItemContainer>(t => t.DataContext is IFrame)?.DataContext as IFrame;
+			var containingFrame = cont.VisualParent_By_Condition<FrameItemContainer>(t => t.DataContext is IFrame)?.DataContext as IFrame;
 			if (containingFrame == null)
 				return;
 			var orderedElements = containingFrame.FrameChildren.OrderBy(x => x.FrameItemZIndex).ToArray();
@@ -152,7 +237,7 @@ namespace PlayerControls.Themes.editors
 
 		private void SendToFront(FrameItemContainer cont)
 		{
-			var containingFrame = cont.GetVisualParentByCondition<FrameItemContainer>(t => t.DataContext is IFrame)?.DataContext as IFrame;
+			var containingFrame = cont.VisualParent_By_Condition<FrameItemContainer>(t => t.DataContext is IFrame)?.DataContext as IFrame;
 			if (containingFrame == null)
 				return;
 			var orderedElements = containingFrame.FrameChildren.OrderBy(x => x.FrameItemZIndex).ToArray();
@@ -175,17 +260,109 @@ namespace PlayerControls.Themes.editors
 
 
 
-		private FrameItemContainer GetFrameItemContainer_FromMousePosition()
+
+		private void UndoButtonClicked(object sender, RoutedEventArgs e)
 		{
-			var mouseOverElement = InputHitTest(Mouse.GetPosition(this)) as FrameworkElement;
-			if (mouseOverElement is FrameItemContainer)
-				return (FrameItemContainer) mouseOverElement;
-			return mouseOverElement?.GetVisualParentByCondition<FrameItemContainer>(t => true);
+			UndoHistoryAction();
 		}
 
-		private FrameItemContainer GetFrameItemContainer_ByItem(IFrameItem item)
+		private void SaveFrameAsImageClicked(object sender, RoutedEventArgs e)
 		{
-			return Presenter.GetVisualChildByCondition<FrameItemContainer>(t => t.DataContext == item);
+			Item.ConvertTo_RenderedImage(Presenter.ActualWidth, Presenter.ActualHeight).Result.SaveAsFileDialog();
+		}
+
+
+		private void FrameItem_ChangeImage(object sender, RoutedEventArgs e)
+		{
+			var imageItem = (IFrameItemImage) ((FrameworkElement) sender).DataContext;
+			imageItem.EditorRequestedImageChange();
+		}
+
+		private void FrameItem_StoreImage(object sender, RoutedEventArgs e)
+		{
+			var imageItem = (IFrameItemImage) ((FrameworkElement) sender).DataContext;
+			imageItem.ImageBitmapSource.SaveAsFileDialog();
+		}
+
+		private void FrameItem_AddImage(object sender, RoutedEventArgs e)
+		{
+			var frame = (IFrame) ((FrameworkElement) sender).DataContext;
+			var element = frame.EditorRequestedNewImage();
+			element.FrameItemZIndex = frame.FrameChildren.Max(x => x.FrameItemZIndex) + 10;
+			SetSelectedItem(element);
+		}
+
+		private void FrameItem_AddText(object sender, RoutedEventArgs e)
+		{
+			var frame = (IFrame) ((FrameworkElement) sender).DataContext;
+			var element = frame.EditorRequestedNewText();
+			element.FrameItemZIndex = frame.FrameChildren.Max(x => x.FrameItemZIndex) + 10;
+			SetSelectedItem(element);
+		}
+
+		private void FrameItem_AddVideo(object sender, RoutedEventArgs e)
+		{
+			var frame = (IFrame) ((FrameworkElement) sender).DataContext;
+			var element = frame.EditorRequestedNewVideo();
+			element.FrameItemZIndex = frame.FrameChildren.Max(x => x.FrameItemZIndex) + 10;
+			SetSelectedItem(element);
+		}
+
+		private void FrameItem_AddFrame(object sender, RoutedEventArgs e)
+		{
+			var frame = (IFrame) ((FrameworkElement) sender).DataContext;
+			var element = frame.EditorRequestedNewFrame();
+			element.FrameItemZIndex = frame.FrameChildren.Max(x => x.FrameItemZIndex) + 10;
+			SetSelectedItem(element);
+		}
+
+		private void FrameItem_Remove(object sender, RoutedEventArgs e)
+		{
+			var container = SelectedItemContainer.VisualParent_By_Condition<FrameItemContainer>(c => true);
+			container.GetDataContext<IFrame>().EditorRequestedRemoveChild(SelectedItem);
+			SetSelectedItem(container);
+		}
+
+
+
+
+		private FrameItemContainer GetFrameItemContainer_FromMousePosition()
+		{
+			if (SelectedItemContainer != null)
+			{
+				if (SelectedItemContainer.IsMouseOver)
+					return SelectedItemContainer;
+				var position = Mouse.GetPosition(SelectedItemContainer);
+				if (position.X > 0 && position.Y > 0 && SelectedItemContainer.ActualWidth > position.X && SelectedItemContainer.ActualHeight > position.Y)
+					return SelectedItemContainer;
+			}
+
+			var mouseOverElement = InputHitTest(Mouse.GetPosition(this)) as FrameworkElement;
+			return mouseOverElement?.VisualParent_By_Condition<FrameItemContainer>(t => true, true);
+		}
+		private void SetSelectedItem(FrameItemContainer container)
+		{
+			SelectedItem = container?.DataContext as IFrameItem;
+			SelectedItemContainer = container;
+			SelectedItemIsRoot = SelectedItem == Item;
+			TreeView.Select(SelectedItem);
+
+			if(SelectedItemContainer == null)
+				IsSelectedAdorner.Clear(this);
+			else
+				IsSelectedAdorner.Apply(SelectedItemContainer);
+		}
+		private void SetSelectedItem(IFrameItem item)
+		{
+			SelectedItem = item;
+			SelectedItemContainer = item == null ? null : Presenter.VisualChild_By_Condition<FrameItemContainer>(t => t.DataContext == item);
+			SelectedItemIsRoot = SelectedItem == Item;
+			TreeView.Select(SelectedItem);
+
+			if(SelectedItemContainer == null)
+				IsSelectedAdorner.Clear(this);
+			else
+				IsSelectedAdorner.Apply(SelectedItemContainer);
 		}
 
 
@@ -207,11 +384,6 @@ namespace PlayerControls.Themes.editors
 		}
 
 
-
-		private void UndoButtonClicked(object sender, RoutedEventArgs e)
-		{
-			UndoHistoryAction();
-		}
 
 
 

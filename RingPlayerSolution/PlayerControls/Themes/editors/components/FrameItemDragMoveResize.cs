@@ -92,8 +92,7 @@ namespace PlayerControls.Themes.editors.components
 			Target.ReleaseMouseCapture();
 			var frameItemRelativePosition = ((IFrameItem)Target.DataContext).FrameItemRelativePosition;
 
-			if(!RelativeStartMargin.Equals(frameItemRelativePosition))
-				_callback?.Invoke(RelativeStartMargin, frameItemRelativePosition);
+			_callback?.Invoke(RelativeStartMargin, frameItemRelativePosition);
 			e.Handled = true;
 		}
 

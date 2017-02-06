@@ -24,7 +24,7 @@
 	<Border.Margin>
 		<MultiBinding Mode="TwoWay">
 			<MultiBinding.Converter>
-				<local:PercentToContainerMetricConverter />
+				<local:RelativeMargin_To_AbsoluteMargin />
 			</MultiBinding.Converter>
 			<Binding Path="FrameItemRelativePosition" Mode="TwoWay" />
 			<Binding RelativeSource="{RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type FrameworkElement}}" Path="ActualWidth" />

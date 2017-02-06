@@ -6,8 +6,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Documents;
+using System.Windows.Input;
 using CsWpfBase.Global;
 using CsWpfBase.Themes.Controls.glyphicon;
 using JetBrains.Annotations;
