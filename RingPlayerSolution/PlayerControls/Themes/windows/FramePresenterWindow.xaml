@@ -16,12 +16,7 @@
 			</DrawingBrush.Drawing>
 		</DrawingBrush>
 	</CsWindow.Background>
-	<Border Background="Transparent" AWindowDragMove.IsActive="True" >
-		<Grid>
-			<themes:FramePresenter x:Name="Presenter"  />
-			<Border Background="#93000000" BorderBrush="Black" BorderThickness="2,2,0,0" Padding="5,2,5,2" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-				<TextBlock Text="{Binding ElementName=Wind, Path=Title}"/>
-			</Border>
-		</Grid>
-	</Border>
+    <Border Background="Transparent" AWindowDragMove.IsActive="True" >
+        <themes:FramePresenter x:Name="Presenter"  />
+    </Border>
 </CsWindow>

@@ -7,6 +7,7 @@
 using System;
 using System.IO;
 using System.Windows;
+using System.Windows.Data;
 using CsWpfBase.Ev.Public.Extensions;
 using CsWpfBase.Global;
 using CsWpfBase.Themes.Controls.Containers;
@@ -37,9 +38,9 @@ namespace TestApplication
 			IdSelector.Value = "0A2D546F-B976-4566-8BAD-E910B3DF96E3";
 
 			var frame = FramePresenter.GetMock();
-			new FrameEditor { Item = frame}.ShowDialog("Frame Edit");
+			new FrameEditor { Item = frame }.ShowDialog("Frame Edit");
 
-			
+
 			CsGlobal.App.Exit();
 
 

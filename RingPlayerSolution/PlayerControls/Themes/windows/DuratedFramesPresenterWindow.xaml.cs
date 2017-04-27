@@ -10,6 +10,7 @@ using System.Windows;
 using CsWpfBase.Global;
 using CsWpfBase.Themes.Controls.Containers;
 using PlayerControls.Interfaces;
+using PlayerControls.Interfaces.presentation;
 
 
 

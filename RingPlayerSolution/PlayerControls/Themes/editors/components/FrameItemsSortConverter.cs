@@ -1,9 +1,10 @@
 using System;
-using System.Collections;
 using System.ComponentModel;
 using System.Globalization;
 using System.Windows.Data;
 using PlayerControls.Interfaces;
+using PlayerControls.Interfaces.presentation;
+using PlayerControls.Interfaces.presentation._base;
 
 
 
@@ -17,13 +18,17 @@ namespace PlayerControls.Themes.editors.components
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
 			var view = CollectionViewSource.GetDefaultView(value);
-			var liveShaping = (ICollectionViewLiveShaping)view;
-			if (liveShaping.CanChangeLiveSorting)
+
+			if (view is ICollectionViewLiveShaping)
 			{
-				liveShaping.LiveSortingProperties.Add(nameof(IFrameItem.FrameItemZIndex));
-				liveShaping.IsLiveSorting = true;
+				var liveShaping = (ICollectionViewLiveShaping)view;
+				if (liveShaping.CanChangeLiveSorting)
+				{
+					liveShaping.LiveSortingProperties.Add(nameof(IFrameItem.FrameItemZIndex));
+					liveShaping.IsLiveSorting = true;
+				}
+				view.SortDescriptions.Add(new SortDescription(nameof(IFrameItem.FrameItemZIndex), ListSortDirection.Ascending));
 			}
-			view.SortDescriptions.Add(new SortDescription(nameof(IFrameItem.FrameItemZIndex), ListSortDirection.Ascending));
 			return view;
 		}
 

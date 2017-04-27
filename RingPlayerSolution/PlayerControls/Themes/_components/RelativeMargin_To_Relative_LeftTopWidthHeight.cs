@@ -1,8 +1,9 @@
-// Copyright (c) 2016 All rights reserved Christian Sack
+// Copyright (c) 2015-2017 All rights reserved Christian Sack
 // <author>Christian Sack</author>
 // <email>christian@sack.at</email>
 // <website>christian.sack.at</website>
-// <date>2017-02-05</date>
+// <created>2017-02-06</creation-date>
+// <modified>2017-04-26 20:43</modify-date>
 
 using System;
 using System.Globalization;
@@ -19,6 +20,8 @@ namespace PlayerControls.Themes._components
 	// ReSharper disable once InconsistentNaming
 	internal class RelativeMargin_To_Relative_LeftTopWidthHeight : IValueConverter
 	{
+
+
 		#region Overrides/Interfaces
 		/// <summary>
 		///     Converts a relative margin in percentage into a <see cref="Thickness" /> wit Left, Top, Width, Height. Sample: [30, 20,
@@ -40,5 +43,7 @@ namespace PlayerControls.Themes._components
 			return new Thickness(thickness.Left, thickness.Top, 100 - (thickness.Right + thickness.Left), 100 - (thickness.Top + thickness.Bottom));
 		}
 		#endregion
+
+
 	}
 }

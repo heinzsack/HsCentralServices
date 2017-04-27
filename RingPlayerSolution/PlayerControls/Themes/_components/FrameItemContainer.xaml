@@ -5,7 +5,9 @@
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 		xmlns:local="clr-namespace:PlayerControls.Themes._components"
 		xmlns:interfaces="clr-namespace:PlayerControls.Interfaces"
-		mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance interfaces:IFrameItem}"
+		xmlns:presentation="clr-namespace:PlayerControls.Interfaces.presentation"
+		xmlns:base="clr-namespace:PlayerControls.Interfaces.presentation._base"
+		mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance base:IFrameItem}"
 		RenderTransformOrigin="0.5 0.5" Loaded="SetConverterContainer"
 		BorderThickness="{Binding Path=FrameItemBorderThickness}"
 		Padding="{Binding Path=FrameItemPadding}" IsHitTestVisible="True">

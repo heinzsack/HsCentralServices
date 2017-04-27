@@ -1,8 +1,9 @@
-﻿// Copyright (c) 2016 All rights reserved Christian Sack
+﻿// Copyright (c) 2015-2017 All rights reserved Christian Sack
 // <author>Christian Sack</author>
 // <email>christian@sack.at</email>
 // <website>christian.sack.at</website>
-// <date>2017-01-30</date>
+// <created>2017-01-26</creation-date>
+// <modified>2017-04-26 22:04</modify-date>
 
 using System;
 using System.Collections.ObjectModel;
@@ -13,7 +14,9 @@ using System.Windows.Data;
 using System.Windows.Threading;
 using CsWpfBase.Ev.Public.Extensions;
 using PlayerControls.Interfaces;
-using PlayerControls._mocks;
+using PlayerControls.Interfaces.presentation;
+using PlayerControls._sys.pocos;
+using PlayerControls._sys.pocos.presentation;
 
 
 
@@ -25,33 +28,35 @@ namespace PlayerControls.Themes
 	/// <summary>Interaction logic for RingPlayer.xaml</summary>
 	public partial class DuratedFramePresenter : UserControl, IDisposable
 	{
+
+
 		#region DP Keys
 		/// <summary>The <see cref="DependencyProperty" /> for the <see cref="BufferedFrames" /> property.</summary>
 		public static readonly DependencyProperty BufferedFramesProperty = DependencyProperty.Register("BufferedFrames", typeof(ObservableCollection<IDuratedFrame>), typeof(DuratedFramePresenter), new FrameworkPropertyMetadata
-		{
-			BindsTwoWayByDefault = true,
-			//PropertyChangedCallback = (o, args) => ((DuratedFramesPresenter)o).BufferedFramesDpChanged((ObservableCollection<IDuratedFrame>)args.OldValue, (ObservableCollection<IDuratedFrame>)args.NewValue),
-			DefaultValue = default(ObservableCollection<IDuratedFrame>),
-			DefaultUpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
-		});
+																																																	{
+																																																		BindsTwoWayByDefault = true,
+																																																		//PropertyChangedCallback = (o, args) => ((DuratedFramesPresenter)o).BufferedFramesDpChanged((ObservableCollection<IDuratedFrame>)args.OldValue, (ObservableCollection<IDuratedFrame>)args.NewValue),
+																																																		DefaultValue = default(ObservableCollection<IDuratedFrame>),
+																																																		DefaultUpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
+																																																	});
 
 		/// <summary>The <see cref="DependencyProperty" /> for the <see cref="IsRunning" /> property.</summary>
 		public static readonly DependencyProperty IsRunningProperty = DependencyProperty.Register("IsRunning", typeof(bool), typeof(DuratedFramePresenter), new FrameworkPropertyMetadata
-		{
-			BindsTwoWayByDefault = true,
-			PropertyChangedCallback = (o, args) => ((DuratedFramePresenter) o).IsRunningDpChanged((bool) args.OldValue, (bool) args.NewValue),
-			DefaultValue = true,
-			DefaultUpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
-		});
+																																							{
+																																								BindsTwoWayByDefault = true,
+																																								PropertyChangedCallback = (o, args) => ((DuratedFramePresenter) o).IsRunningDpChanged((bool) args.OldValue, (bool) args.NewValue),
+																																								DefaultValue = true,
+																																								DefaultUpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
+																																							});
 
 		/// <summary>The <see cref="DependencyProperty" /> for the <see cref="ItemsSource" /> property.</summary>
 		public static readonly DependencyProperty ItemsSourceProperty = DependencyProperty.Register("ItemsSource", typeof(IDuratedFrame[]), typeof(DuratedFramePresenter), new FrameworkPropertyMetadata
-		{
-			BindsTwoWayByDefault = true,
-			PropertyChangedCallback = (o, args) => ((DuratedFramePresenter) o).ItemsSourceDpChanged((IDuratedFrame[]) args.OldValue, (IDuratedFrame[]) args.NewValue),
-			DefaultValue = default(IDuratedFrame[]),
-			DefaultUpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
-		});
+																																											{
+																																												BindsTwoWayByDefault = true,
+																																												PropertyChangedCallback = (o, args) => ((DuratedFramePresenter) o).ItemsSourceDpChanged((IDuratedFrame[]) args.OldValue, (IDuratedFrame[]) args.NewValue),
+																																												DefaultValue = default(IDuratedFrame[]),
+																																												DefaultUpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
+																																											});
 		#endregion
 
 
@@ -86,7 +91,9 @@ namespace PlayerControls.Themes
 		{
 			var newVal = args.NewValue as bool?;
 			if (newVal == true && _activeBeforeInvisible != null)
+			{
 				IsRunning = _activeBeforeInvisible.Value;
+			}
 			else if (newVal == false)
 			{
 				_activeBeforeInvisible = IsRunning;
@@ -103,7 +110,7 @@ namespace PlayerControls.Themes
 		/// <summary>Returns a prefilled <see cref="IDuratedFrame" /> array.</summary>
 		public static IDuratedFrame[] GetMock()
 		{
-			return MockDuratedFrame.GetSamples();
+			return PocoDuratedFrame.Mock.Get();
 		}
 
 		private bool? _activeBeforeInvisible;
@@ -150,22 +157,22 @@ namespace PlayerControls.Themes
 		/// <summary>If true the <see cref="DuratedFramePresenter" /> is running.</summary>
 		public bool IsRunning
 		{
-			get { return (bool) GetValue(IsRunningProperty); }
-			set { SetValue(IsRunningProperty, value); }
+			get => (bool) GetValue(IsRunningProperty);
+			set => SetValue(IsRunningProperty, value);
 		}
 
 		/// <summary>The <see cref="IDuratedFrame" />s which are currently loaded into the UI.</summary>
 		public ObservableCollection<IDuratedFrame> BufferedFrames
 		{
-			get { return (ObservableCollection<IDuratedFrame>) GetValue(BufferedFramesProperty); }
-			set { SetValue(BufferedFramesProperty, value); }
+			get => (ObservableCollection<IDuratedFrame>) GetValue(BufferedFramesProperty);
+			set => SetValue(BufferedFramesProperty, value);
 		}
 
 		/// <summary>A list of <see cref="IDuratedFrame" />s which will be played endless inside a loop.</summary>
 		public IDuratedFrame[] ItemsSource
 		{
-			get { return (IDuratedFrame[]) GetValue(ItemsSourceProperty); }
-			set { SetValue(ItemsSourceProperty, value); }
+			get => (IDuratedFrame[]) GetValue(ItemsSourceProperty);
+			set => SetValue(ItemsSourceProperty, value);
 		}
 
 		/// <summary>Starts the presenter by <see cref="BeginFrame" /> in a safe manner.</summary>

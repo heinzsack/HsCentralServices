@@ -1,13 +1,14 @@
-﻿<ItemControl x:TypeArguments="interfaces:IFrame" x:Class="PlayerControls.Themes.editors.FrameEditor"
+﻿<ItemControl x:TypeArguments="frameItems:IFrame" x:Class="PlayerControls.Themes.editors.FrameEditor"
 			xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 			xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 			xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-			xmlns:interfaces="clr-namespace:PlayerControls.Interfaces"
-			xmlns:frameItems="clr-namespace:PlayerControls.Interfaces.FrameItems"
-			xmlns:themes="clr-namespace:PlayerControls.Themes"
+             xmlns:themes="clr-namespace:PlayerControls.Themes"
 			xmlns:components="clr-namespace:PlayerControls.Themes.editors.components"
 			xmlns:components1="clr-namespace:PlayerControls.Themes._components"
+			xmlns:frameItems="clr-namespace:PlayerControls.Interfaces.presentation.FrameItems"
+			xmlns:presentation="clr-namespace:PlayerControls.Interfaces.presentation"
+			xmlns:base="clr-namespace:PlayerControls.Interfaces.presentation._base"
 			mc:Ignorable="d"
 			d:DesignHeight="300" d:DesignWidth="300" x:Name="Uc">
 	<UserControl.Resources>
@@ -21,7 +22,7 @@
 			</Style>
 			<components1:FrameItemTemplateSelector x:Key="TreeViewSelector">
 				<components1:FrameItemTemplateSelector.FrameTemplate>
-					<HierarchicalDataTemplate DataType="{x:Type interfaces:IFrame}" ItemsSource="{Binding Path=FrameChildren, Converter={StaticResource Sorter}}">
+					<HierarchicalDataTemplate DataType="{x:Type frameItems:IFrame}" ItemsSource="{Binding Path=FrameChildren, Converter={StaticResource Sorter}}">
 						<Grid>
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition Width="Auto" />
@@ -72,7 +73,7 @@
 					</HierarchicalDataTemplate>
 				</components1:FrameItemTemplateSelector.FrameTemplate>
 				<components1:FrameItemTemplateSelector.FrameItemVideoTemplate>
-					<DataTemplate DataType="{x:Type frameItems:IFrameItemVideo}">
+					<DataTemplate DataType="{x:Type frameItems:IFrameVideo}">
 						<Grid>
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition Width="Auto" />
@@ -84,7 +85,7 @@
 					</DataTemplate>
 				</components1:FrameItemTemplateSelector.FrameItemVideoTemplate>
 				<components1:FrameItemTemplateSelector.FrameItemImageTemplate>
-					<DataTemplate DataType="{x:Type frameItems:IFrameItemImage}">
+					<DataTemplate DataType="{x:Type frameItems:IFrameImage}">
 						<Border Background="Transparent">
 							<Border.ToolTip>
 								<EditorGrid Editor.IsReadOnly="True">
@@ -109,7 +110,7 @@
 					</DataTemplate>
 				</components1:FrameItemTemplateSelector.FrameItemImageTemplate>
 				<components1:FrameItemTemplateSelector.FrameItemTextTemplate>
-					<DataTemplate DataType="{x:Type frameItems:IFrameItemText}">
+					<DataTemplate DataType="{x:Type frameItems:IFrameText}">
 						<Border Background="Transparent">
 							<Border.ToolTip>
 								<TextBlock Text="{Binding Path=FrameItemText, Mode=OneWay}" />
@@ -131,7 +132,7 @@
 
 			<components1:FrameItemTemplateSelector x:Key="EditorSelector">
 				<components1:FrameItemTemplateSelector.FrameTemplate>
-					<DataTemplate DataType="{x:Type interfaces:IFrame}" >
+					<DataTemplate DataType="{x:Type frameItems:IFrame}" >
 						<EditorGroup Header="Container">
 							<Grid>
 								<Grid.ColumnDefinitions>
@@ -181,14 +182,14 @@
 					</DataTemplate>
 				</components1:FrameItemTemplateSelector.FrameTemplate>
 				<components1:FrameItemTemplateSelector.FrameItemVideoTemplate>
-					<DataTemplate DataType="{x:Type frameItems:IFrameItemVideo}">
+					<DataTemplate DataType="{x:Type frameItems:IFrameVideo}">
 						<EditorGroup Header="Video">
 							<FPathEditor Header="Pfad" Value="{Binding Path=FrameItemVideoFilePath}"/>
 						</EditorGroup>
 					</DataTemplate>
 				</components1:FrameItemTemplateSelector.FrameItemVideoTemplate>
 				<components1:FrameItemTemplateSelector.FrameItemImageTemplate>
-					<DataTemplate DataType="{x:Type frameItems:IFrameItemImage}">
+					<DataTemplate DataType="{x:Type frameItems:IFrameImage}">
 						<EditorGroup Header="Bild">
 							<Border MaxHeight="200" Background="Transparent" Margin="0,0,0,10">
 								<Border.Effect>
@@ -208,7 +209,7 @@
 					</DataTemplate>
 				</components1:FrameItemTemplateSelector.FrameItemImageTemplate>
 				<components1:FrameItemTemplateSelector.FrameItemTextTemplate>
-					<DataTemplate DataType="{x:Type frameItems:IFrameItemText}">
+					<DataTemplate DataType="{x:Type frameItems:IFrameText}">
 						<EditorGroup Header="Text">
 							<StringEditor Header="Content" Value="{Binding Path=FrameItemText}" TextWrapping="Wrap" AcceptsReturn="True" AcceptsTab="True" HeaderVerticalAlignment="Top"/>
 							<ColorEditor Header="Farbe" ValueColor="{Binding Path=FrameItemForeground}" />
@@ -294,7 +295,7 @@
 						</GlyphIconButton.Style>
 					</GlyphIconButton>
 				</EditorGroup>
-				<EditorGrid Grid.Row="1" DataContext="{Binding ElementName=Uc, Path=SelectedItem}" d:DataContext="{d:DesignInstance interfaces:IFrameItem}"
+				<EditorGrid Grid.Row="1" DataContext="{Binding ElementName=Uc, Path=SelectedItem}" d:DataContext="{d:DesignInstance base:IFrameItem}"
 						Visibility="{Binding Converter={StaticResource GConv-NullToVisibility}, Mode=OneWay}" Editor.IsReadOnly="{Binding ElementName=Uc, Path=IsLocked}" Margin="0,10,0,0">
 
 					<ContentControl Content="{Binding}" ContentTemplateSelector="{StaticResource EditorSelector}" />

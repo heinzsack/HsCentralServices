@@ -1,14 +1,15 @@
-// Copyright (c) 2016 All rights reserved Christian Sack
+// Copyright (c) 2015-2017 All rights reserved Christian Sack
 // <author>Christian Sack</author>
 // <email>christian@sack.at</email>
 // <website>christian.sack.at</website>
-// <date>2017-01-28</date>
+// <created>2017-02-06</creation-date>
+// <modified>2017-04-26 20:42</modify-date>
 
 using System;
 using System.Windows;
 using System.Windows.Controls;
 using PlayerControls.Interfaces;
-using PlayerControls.Interfaces.FrameItems;
+using PlayerControls.Interfaces.presentation.FrameItems;
 
 
 
@@ -19,6 +20,8 @@ namespace PlayerControls.Themes._components
 {
 	internal class FrameItemTemplateSelector : DataTemplateSelector
 	{
+
+
 		#region Overrides/Interfaces
 		public override DataTemplate SelectTemplate(object item, DependencyObject container)
 		{
@@ -27,11 +30,11 @@ namespace PlayerControls.Themes._components
 			var itemType = item.GetType();
 			if (typeof(IFrame).IsAssignableFrom(itemType))
 				return FrameTemplate;
-			if (typeof(IFrameItemText).IsAssignableFrom(itemType))
+			if (typeof(IFrameText).IsAssignableFrom(itemType))
 				return FrameItemTextTemplate;
-			if (typeof(IFrameItemImage).IsAssignableFrom(itemType))
+			if (typeof(IFrameImage).IsAssignableFrom(itemType))
 				return FrameItemImageTemplate;
-			if (typeof(IFrameItemVideo).IsAssignableFrom(itemType))
+			if (typeof(IFrameVideo).IsAssignableFrom(itemType))
 				return FrameItemVideoTemplate;
 
 			return base.SelectTemplate(item, container);

@@ -1,8 +1,9 @@
-﻿// Copyright (c) 2016 All rights reserved Christian Sack
+﻿// Copyright (c) 2015-2017 All rights reserved Christian Sack
 // <author>Christian Sack</author>
 // <email>christian@sack.at</email>
 // <website>christian.sack.at</website>
-// <date>2017-02-06</date>
+// <created>2017-02-05</creation-date>
+// <modified>2017-04-26 20:42</modify-date>
 
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,9 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media.Animation;
 using CsWpfBase.Ev.Public.Extensions;
-using PlayerControls.Interfaces.Transistions;
+using PlayerControls.Interfaces.presentation.Transistions;
+using PlayerControls.Interfaces.presentation._base;
+using PlayerControls._sys.extensions;
 
 
 
@@ -23,45 +26,47 @@ namespace PlayerControls.Themes._components
 	/// <summary>Interaction logic for IFrameItemContainer.xaml</summary>
 	public partial class FrameItemContainer : Border
 	{
+
+
 		#region DP Keys
 		/// <summary>The <see cref="DependencyProperty" /> for the <see cref="HasFixedRatio" /> property.</summary>
 		public static readonly DependencyProperty HasFixedRatioProperty = DependencyProperty.Register("HasFixedRatio", typeof(bool), typeof(FrameItemContainer), new FrameworkPropertyMetadata
-		{
-			//PropertyChangedCallback = (o, args) => ((FrameItemContainer)o).HasFixedRatioDpChanged((bool)args.OldValue, (bool)args.NewValue),
-			DefaultValue = default(bool),
-			DefaultUpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
-			AffectsRender = true,
-			AffectsMeasure = true,
-			AffectsArrange = true,
-		});
+																																								{
+																																									//PropertyChangedCallback = (o, args) => ((FrameItemContainer)o).HasFixedRatioDpChanged((bool)args.OldValue, (bool)args.NewValue),
+																																									DefaultValue = default(bool),
+																																									DefaultUpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
+																																									AffectsRender = true,
+																																									AffectsMeasure = true,
+																																									AffectsArrange = true,
+																																								});
 		/// <summary>The <see cref="DependencyProperty" /> for the <see cref="RatioX" /> property.</summary>
 		public static readonly DependencyProperty RatioXProperty = DependencyProperty.Register("RatioX", typeof(double), typeof(FrameItemContainer), new FrameworkPropertyMetadata
-		{
-			//PropertyChangedCallback = (o, args) => ((FrameItemContainer)o).RatioXDpChanged((double)args.OldValue, (double)args.NewValue),
-			DefaultValue = default(double),
-			DefaultUpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
-			AffectsRender = true,
-			AffectsMeasure = true,
-			AffectsArrange = true,
-		});
+																																					{
+																																						//PropertyChangedCallback = (o, args) => ((FrameItemContainer)o).RatioXDpChanged((double)args.OldValue, (double)args.NewValue),
+																																						DefaultValue = default(double),
+																																						DefaultUpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
+																																						AffectsRender = true,
+																																						AffectsMeasure = true,
+																																						AffectsArrange = true,
+																																					});
 		/// <summary>The <see cref="DependencyProperty" /> for the <see cref="RatioY" /> property.</summary>
 		public static readonly DependencyProperty RatioYProperty = DependencyProperty.Register("RatioY", typeof(double), typeof(FrameItemContainer), new FrameworkPropertyMetadata
-		{
-			//PropertyChangedCallback = (o, args) => ((FrameItemContainer)o).RatioYDpChanged((double)args.OldValue, (double)args.NewValue),
-			DefaultValue = default(double),
-			DefaultUpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
-			AffectsRender = true,
-			AffectsMeasure = true,
-			AffectsArrange = true,
-		});
+																																					{
+																																						//PropertyChangedCallback = (o, args) => ((FrameItemContainer)o).RatioYDpChanged((double)args.OldValue, (double)args.NewValue),
+																																						DefaultValue = default(double),
+																																						DefaultUpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
+																																						AffectsRender = true,
+																																						AffectsMeasure = true,
+																																						AffectsArrange = true,
+																																					});
 		/// <summary>The <see cref="DependencyProperty" /> for the <see cref="Transitions" /> property.</summary>
 		public static readonly DependencyProperty TransitionsProperty = DependencyProperty.Register("Transitions", typeof(IList<ITransition>), typeof(FrameItemContainer), new FrameworkPropertyMetadata
-		{
-			BindsTwoWayByDefault = true,
-			//PropertyChangedCallback = (o, args) => ((FrameItemContainer)o).TransitionsDpChanged((IList<ITransition>)args.OldValue, (IList<ITransition>)args.NewValue),
-			DefaultValue = default(IList<ITransition>),
-			DefaultUpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
-		});
+																																											{
+																																												BindsTwoWayByDefault = true,
+																																												//PropertyChangedCallback = (o, args) => ((FrameItemContainer)o).TransitionsDpChanged((IList<ITransition>)args.OldValue, (IList<ITransition>)args.NewValue),
+																																												DefaultValue = default(IList<ITransition>),
+																																												DefaultUpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
+																																											});
 		#endregion
 
 
@@ -82,7 +87,7 @@ namespace PlayerControls.Themes._components
 		#region Overrides/Interfaces
 		protected override Size MeasureOverride(Size constraint)
 		{
-			if (!HasFixedRatio || RatioX == 0 || RatioY == 0)
+			if (!HasFixedRatio || RatioX <= 0 || RatioY <= 0)
 				return base.MeasureOverride(constraint);
 
 
@@ -103,7 +108,7 @@ namespace PlayerControls.Themes._components
 
 		protected override Size ArrangeOverride(Size finalSize)
 		{
-			if(!HasFixedRatio || RatioX == 0 || RatioY == 0)
+			if (!HasFixedRatio || RatioX <= 0 || RatioY <= 0)
 				return base.ArrangeOverride(finalSize);
 
 
@@ -127,29 +132,29 @@ namespace PlayerControls.Themes._components
 		/// <summary>If true the border will preserve the ratio</summary>
 		public bool HasFixedRatio
 		{
-			get { return (bool) GetValue(HasFixedRatioProperty); }
-			set { SetValue(HasFixedRatioProperty, value); }
+			get => (bool) GetValue(HasFixedRatioProperty);
+			set => SetValue(HasFixedRatioProperty, value);
 		}
 
 		/// <summary>The ratio in x direction</summary>
 		public double RatioX
 		{
-			get { return (double) GetValue(RatioXProperty); }
-			set { SetValue(RatioXProperty, value); }
+			get => (double) GetValue(RatioXProperty);
+			set => SetValue(RatioXProperty, value);
 		}
 
 		/// <summary>The ratio in y direction</summary>
 		public double RatioY
 		{
-			get { return (double) GetValue(RatioYProperty); }
-			set { SetValue(RatioYProperty, value); }
+			get => (double) GetValue(RatioYProperty);
+			set => SetValue(RatioYProperty, value);
 		}
 
 		/// <summary>Transitions which needs to be applied to the border.</summary>
 		public IList<ITransition> Transitions
 		{
-			get { return (IList<ITransition>) GetValue(TransitionsProperty); }
-			set { SetValue(TransitionsProperty, value); }
+			get => (IList<ITransition>) GetValue(TransitionsProperty);
+			set => SetValue(TransitionsProperty, value);
 		}
 
 		/// <summary>Loads the transitions</summary>

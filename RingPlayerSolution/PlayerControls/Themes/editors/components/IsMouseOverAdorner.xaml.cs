@@ -14,7 +14,7 @@ using CsWpfBase.Global;
 using CsWpfBase.Themes.Controls.glyphicon;
 using JetBrains.Annotations;
 using PlayerControls.Interfaces;
-using PlayerControls.Interfaces.FrameItems;
+using PlayerControls.Interfaces.presentation.FrameItems;
 
 
 
@@ -69,11 +69,11 @@ namespace PlayerControls.Themes.editors.components
 
 			if (adornedElement.DataContext is IFrame)
 				GlyphIcon.Icon = ((IFrame) adornedElement.DataContext).FrameHasFixedRatio ? GlyphIcons.G_Vector_Path_All : GlyphIcons.G_Vector_Path_Square;
-			else if (adornedElement.DataContext is IFrameItemText)
+			else if (adornedElement.DataContext is IFrameText)
 				GlyphIcon.Icon = GlyphIcons.H_Font;
-			else if (adornedElement.DataContext is IFrameItemImage)
+			else if (adornedElement.DataContext is IFrameImage)
 				GlyphIcon.Icon = GlyphIcons.E_Image;
-			else if (adornedElement.DataContext is IFrameItemVideo)
+			else if (adornedElement.DataContext is IFrameVideo)
 				GlyphIcon.Icon = GlyphIcons.E_Youtube;
 
 			CsGlobal.Wpf.Animation.Opacity(this, 1, new Duration(TimeSpan.FromMilliseconds(150)));

@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -48,8 +51,9 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Themes\windows\ScheduledFramesPresenterWindow.xaml.cs">
-      <DependentUpon>ScheduledFramesPresenterWindow.xaml</DependentUpon>
+    <Compile Include="Interfaces\audio\IAudioEntry.cs" />
+    <Compile Include="Themes\windows\RingFramePresenterWindow.xaml.cs">
+      <DependentUpon>RingFramePresenterWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Themes\editors\components\ControlAdorner.cs" />
     <Compile Include="Themes\editors\components\IsMouseOverAdorner.xaml.cs">
@@ -74,18 +78,27 @@
       <DependentUpon>FramePresenterWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Themes\_components\FrameItemTemplateSelector.cs" />
-    <Compile Include="Extensions\FrameExtensions.cs" />
-    <Compile Include="Interfaces\IFrameItem.cs" />
-    <Compile Include="Interfaces\IDuratedFrame.cs" />
-    <Compile Include="Interfaces\FrameItems\IFrameItemImage.cs" />
-    <Compile Include="Interfaces\IFrame.cs" />
-    <Compile Include="Interfaces\IScheduledFrame.cs" />
-    <Compile Include="Interfaces\FrameItems\IFrameItemText.cs" />
-    <Compile Include="Interfaces\FrameItems\IFrameItemVideo.cs" />
-    <Compile Include="Interfaces\Transistions\IDoubleTransition.cs" />
-    <Compile Include="Interfaces\Transistions\ITransition.cs" />
-    <Compile Include="Interfaces\Transistions\TransitionExtensions.cs" />
-    <Compile Include="Interfaces\Transistions\TransitionTypes.cs" />
+    <Compile Include="Interfaces\ringEngine\IRing.cs" />
+    <Compile Include="Interfaces\ringEngine\IRingEntry.cs" />
+    <Compile Include="_sys\engines\AudioRingPlayer.cs" />
+    <Compile Include="_sys\engines\RingEngine.cs" />
+    <Compile Include="_sys\exceptions\PlayerControlsException.cs" />
+    <Compile Include="_sys\exceptions\RingEngineException.cs" />
+    <Compile Include="_sys\exceptions\RingEngineException_InvalidArgument.cs" />
+    <Compile Include="_sys\exceptions\RingEngineException_InvalidRing.cs" />
+    <Compile Include="_sys\extensions\AudioExtensions.cs" />
+    <Compile Include="_sys\extensions\FrameExtensions.cs" />
+    <Compile Include="Interfaces\presentation\_base\IFrameItem.cs" />
+    <Compile Include="Interfaces\presentation\IDuratedFrame.cs" />
+    <Compile Include="Interfaces\presentation\FrameItems\IFrameImage.cs" />
+    <Compile Include="Interfaces\presentation\FrameItems\IFrame.cs" />
+    <Compile Include="Interfaces\presentation\IFrameRingEntry.cs" />
+    <Compile Include="Interfaces\presentation\FrameItems\IFrameText.cs" />
+    <Compile Include="Interfaces\presentation\FrameItems\IFrameVideo.cs" />
+    <Compile Include="Interfaces\presentation\Transistions\IDoubleTransition.cs" />
+    <Compile Include="Interfaces\presentation\_base\ITransition.cs" />
+    <Compile Include="_sys\extensions\TransitionExtensions.cs" />
+    <Compile Include="Interfaces\presentation\Transistions\TransitionTypes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -103,22 +116,34 @@
       <DependentUpon>DuratedFramePresenter.xaml</DependentUpon>
     </Compile>
     <Compile Include="Themes\_components\RelativeMargin_To_AbsoluteMargin.cs" />
-    <Compile Include="Themes\ScheduledFramePresenter.xaml.cs">
-      <DependentUpon>ScheduledFramePresenter.xaml</DependentUpon>
+    <Compile Include="Themes\FrameRingPresenter.xaml.cs">
+      <DependentUpon>FrameRingPresenter.xaml</DependentUpon>
     </Compile>
     <Compile Include="Themes\_components\FrameItemContainer.xaml.cs">
       <DependentUpon>FrameItemContainer.xaml</DependentUpon>
     </Compile>
-    <Compile Include="_mocks\MockDuratedFrame.cs" />
-    <Compile Include="_mocks\MockFrame.cs" />
-    <Compile Include="_mocks\MockImage.cs" />
-    <Compile Include="_mocks\MockScheduledFrame.cs" />
-    <Compile Include="_mocks\MockText.cs" />
+    <Compile Include="_sys\extensions\RingEntrySpecification.cs" />
+    <Compile Include="_sys\extensions\RingExtensions.cs" />
+    <Compile Include="_sys\pocos\audio\PocoAudioRing.cs" />
+    <Compile Include="_sys\pocos\audio\PocoAudioRingEntry.cs" />
+    <Compile Include="_sys\pocos\presentation\PocoDuratedFrame.cs" />
+    <Compile Include="_sys\pocos\presentation\PocoFrame.cs" />
+    <Compile Include="_sys\pocos\presentation\PocoFrameImage.cs" />
+    <Compile Include="_sys\pocos\presentation\PocoFrameItem.cs" />
+    <Compile Include="_sys\pocos\presentation\PocoFrameText.cs" />
+    <Compile Include="_sys\pocos\presentation\PocoFrameVideo.cs" />
+    <Compile Include="_sys\pocos\presentation\PocoFrameRing.cs" />
+    <Compile Include="_sys\pocos\presentation\PocoFrameRingEntry.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <AdditionalFiles Include="..\Diagrams\DependencyValidation1.layerdiagram">
+      <Link>DependencyValidation1.layerdiagram</Link>
+      <Visible>False</Visible>
+    </AdditionalFiles>
     <None Include="app.config" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -126,7 +151,7 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Themes\windows\ScheduledFramesPresenterWindow.xaml">
+    <Page Include="Themes\windows\RingFramePresenterWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -158,7 +183,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Themes\ScheduledFramePresenter.xaml">
+    <Page Include="Themes\FrameRingPresenter.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -173,7 +198,6 @@
       <Name>_CsWpfBase</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

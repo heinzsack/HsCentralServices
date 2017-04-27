@@ -1,15 +1,15 @@
-﻿// Copyright (c) 2016 All rights reserved Christian Sack
+﻿// Copyright (c) 2015-2017 All rights reserved Christian Sack
 // <author>Christian Sack</author>
 // <email>christian@sack.at</email>
 // <website>christian.sack.at</website>
-// <date>2017-01-28</date>
+// <created>2017-02-06</creation-date>
+// <modified>2017-04-27 18:26</modify-date>
 
 using System;
 using System.Linq;
 using System.Windows;
 using CsWpfBase.Global;
-using CsWpfBase.Themes.Controls.Containers;
-using PlayerControls.Interfaces;
+using PlayerControls.Interfaces.presentation.FrameItems;
 
 
 
@@ -19,7 +19,7 @@ using PlayerControls.Interfaces;
 namespace PlayerControls.Themes.windows
 {
 	/// <summary>Interaction logic for FramePresenterWindow.xaml</summary>
-	internal partial class FramePresenterWindow : CsWindow
+	internal partial class FramePresenterWindow
 	{
 		public FramePresenterWindow(string title, IFrame frame, bool isDiagnostic)
 		{

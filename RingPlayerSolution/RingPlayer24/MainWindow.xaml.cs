@@ -5,8 +5,13 @@
 // <date>2017-01-14</date>
 
 using System;
+using System.IO;
 using System.Windows;
+using CsWpfBase.Ev.Public.Extensions;
 using CsWpfBase.Global;
+using PlayerControls.Themes;
+using PlayerControls._sys.extensions;
+using PlayerControls._sys.pocos.audio;
 
 
 
@@ -20,9 +25,15 @@ namespace RingPlayer24
 	{
 		public MainWindow()
 		{
-			CsGlobal.Install(GlobalFunctions.Storage | GlobalFunctions.AppData);
-			CsGlobal.InstallRemote("service.wpmedia.at", "<RSAKeyValue><Modulus>7bTXJULjf3ELHOv/57LyGUTBpgQ7CucbdSXusgy+270FPbK0Iboqkqrhs4rbeKkH6AWA6BwXGqUqAwwVNKHPEtXTpLe9GKM41eZOJyhU7QCw0X8BAQXLbTQbc+QGFn/J/t6wlh7cgrYgqe/3Q9u7yW9+j16Q8Uj4OG4N20fsqX0=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue>"); //TODO
-			CsGlobal.Remote.EventHub.Connect();
+			CsGlobal.Install(GlobalFunctions.Storage);
+			PocoAudioRing.Mock.Get(new DateTime(2017, 1, 1, 0, 0, 0, 0), TimeSpan.FromMinutes(1)).Play();
+			FrameRingPresenter.GetMock(new DateTime(2017, 1,1,0,0,0,0), TimeSpan.FromMinutes(1) ).ShowDialog();
+			Application.Current.Shutdown();
+
+
+			var frame = FramePresenter.GetMock();
+			frame.ConvertTo_Json().SaveAs_Utf8String(new FileInfo("Test.json").In_Desktop_Directory());
+			frame.ShowEditorDialog();
 
 			InitializeComponent();
 		}

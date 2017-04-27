@@ -1,74 +1,81 @@
 ﻿<UserControl x:Class="PlayerControls.Themes.FramePresenter"
-			xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-			xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-			xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-			xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-			xmlns:wpPlayer="clr-namespace:PlayerControls.Interfaces"
-			xmlns:frameItems="clr-namespace:PlayerControls.Interfaces.FrameItems"
-			xmlns:components="clr-namespace:PlayerControls.Themes._components"
-			mc:Ignorable="d"
-			d:DesignHeight="300" d:DesignWidth="300" x:Name="Uc" ClipToBounds="True">
-	<UserControl.Resources>
-		<ResourceDictionary>
-			<ResourceDictionary.MergedDictionaries>
-				<ResourceDictionary Source="/CsWpfBase;component/Themes/Standard.xaml" />
-			</ResourceDictionary.MergedDictionaries>
-			<components:FrameItemTemplateSelector x:Key="{x:Type components:FrameItemTemplateSelector}" />
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:components="clr-namespace:PlayerControls.Themes._components"
+             xmlns:frameItems="clr-namespace:PlayerControls.Interfaces.presentation.FrameItems"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="300" x:Name="Uc" ClipToBounds="True">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/CsWpfBase;component/Themes/Standard.xaml" />
+            </ResourceDictionary.MergedDictionaries>
 
-			<DataTemplate DataType="{x:Type frameItems:IFrameItemVideo}" x:Key="{x:Type frameItems:IFrameItemVideo}">
-				<components:FrameItemContainer>
-					<MediaElement Source="{Binding Path=FrameItemVideoFilePath}" LoadedBehavior="Manual" MediaFailed="MediaElement_OnMediaFailed" />
-				</components:FrameItemContainer>
-			</DataTemplate>
-			<DataTemplate DataType="{x:Type frameItems:IFrameItemImage}" x:Key="{x:Type frameItems:IFrameItemImage}">
-				<components:FrameItemContainer>
-					<Image Source="{Binding Path=ImageBitmapSource, IsAsync=True}" />
-				</components:FrameItemContainer>
-			</DataTemplate>
-			<DataTemplate DataType="{x:Type frameItems:IFrameItemText}" x:Key="{x:Type frameItems:IFrameItemText}">
-				<components:FrameItemContainer>
-					<Viewbox>
-						<TextBlock Text="{Binding Path=FrameItemText}" FontFamily="{Binding Path=FrameItemFontFamily}"
-									FontWeight="{Binding Path=FrameItemFontWeight}" FontStyle="{Binding Path=FrameItemFontStyle}"
-									Foreground="{Binding Path=FrameItemForeground, Converter={StaticResource GConv-ColorToSolidColorBrush}}" />
-					</Viewbox>
-				</components:FrameItemContainer>
-			</DataTemplate>
-			<DataTemplate DataType="{x:Type wpPlayer:IFrame}" x:Key="{x:Type wpPlayer:IFrame}">
-				<components:FrameItemContainer HasFixedRatio="{Binding Path=FrameHasFixedRatio}" RatioX="{Binding Path=FrameRatioX}" RatioY="{Binding Path=FrameRatioY}">
-					<ItemsControl ItemsSource="{Binding Path=FrameChildren}" ItemTemplateSelector="{StaticResource {x:Type components:FrameItemTemplateSelector}}">
-						<ItemsControl.ItemsPanel>
-							<ItemsPanelTemplate>
-								<Grid />
-							</ItemsPanelTemplate>
-						</ItemsControl.ItemsPanel>
-						<ItemsControl.ItemContainerStyle>
-							<Style TargetType="ContentPresenter">
-								<Setter Property="Panel.ZIndex" Value="{Binding Path=FrameItemZIndex}" />
-							</Style>
-						</ItemsControl.ItemContainerStyle>
-					</ItemsControl>
-				</components:FrameItemContainer>
+            <FontFamily x:Key="DefaultFont">Yu Gothic UI Light</FontFamily>
 
-			</DataTemplate>
-			<DataTemplate DataType="{x:Type wpPlayer:IFrame}" x:Key="FixedRatioFrameTemplate">
-				<components:FrameItemContainer HasFixedRatio="{Binding Path=FrameHasFixedRatio}" RatioX="{Binding Path=FrameRatioX}" RatioY="{Binding Path=FrameRatioY}">
-					<ItemsControl ItemsSource="{Binding Path=FrameChildren}" ItemTemplateSelector="{StaticResource {x:Type components:FrameItemTemplateSelector}}">
-						<ItemsControl.ItemsPanel>
-							<ItemsPanelTemplate>
-								<Grid />
-							</ItemsPanelTemplate>
-						</ItemsControl.ItemsPanel>
-						<ItemsControl.ItemContainerStyle>
-							<Style TargetType="ContentPresenter">
-								<Setter Property="Panel.ZIndex" Value="{Binding Path=FrameItemZIndex}" />
-							</Style>
-						</ItemsControl.ItemContainerStyle>
-					</ItemsControl>
-				</components:FrameItemContainer>
-			</DataTemplate>
-		</ResourceDictionary>
-	</UserControl.Resources>
-	<ContentControl x:Name="PagePresenter" Content="{Binding ElementName=Uc, Path=Item}"
-					ContentTemplateSelector="{StaticResource {x:Type components:FrameItemTemplateSelector}}" />
+            <components:FrameItemTemplateSelector x:Key="{x:Type components:FrameItemTemplateSelector}" />
+
+            <DataTemplate DataType="{x:Type frameItems:IFrameVideo}" x:Key="{x:Type frameItems:IFrameVideo}">
+                <components:FrameItemContainer>
+                    <MediaElement Source="{Binding Path=FrameItemVideoFilePath}" LoadedBehavior="Manual" MediaFailed="MediaElement_OnMediaFailed" />
+                </components:FrameItemContainer>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type frameItems:IFrameImage}" x:Key="{x:Type frameItems:IFrameImage}">
+                <components:FrameItemContainer>
+                    <Image Source="{Binding Path=ImageBitmapSource, IsAsync=True}" />
+                </components:FrameItemContainer>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type frameItems:IFrameText}" x:Key="{x:Type frameItems:IFrameText}">
+                <components:FrameItemContainer>
+                    <Viewbox>
+                        <TextBlock Text="{Binding Path=FrameItemText}"
+                                   FontWeight="{Binding Path=FrameItemFontWeight}" FontStyle="{Binding Path=FrameItemFontStyle}"
+                                   Foreground="{Binding Path=FrameItemForeground, Converter={StaticResource GConv-ColorToSolidColorBrush}}"
+                                   FontFamily="{Binding Path=FrameItemFontFamily, TargetNullValue={StaticResource DefaultFont}, Mode=OneWay}" />
+                    </Viewbox>
+                </components:FrameItemContainer>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type frameItems:IFrame}" x:Key="{x:Type frameItems:IFrame}">
+                <components:FrameItemContainer HasFixedRatio="{Binding Path=FrameHasFixedRatio}" RatioX="{Binding Path=FrameRatioX}"
+                                               RatioY="{Binding Path=FrameRatioY}">
+                    <ItemsControl ItemsSource="{Binding Path=FrameChildren}"
+                                  ItemTemplateSelector="{StaticResource {x:Type components:FrameItemTemplateSelector}}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <Grid />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemContainerStyle>
+                            <Style TargetType="ContentPresenter">
+                                <Setter Property="Panel.ZIndex" Value="{Binding Path=FrameItemZIndex}" />
+                            </Style>
+                        </ItemsControl.ItemContainerStyle>
+                    </ItemsControl>
+                </components:FrameItemContainer>
+
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type frameItems:IFrame}" x:Key="FixedRatioFrameTemplate">
+                <components:FrameItemContainer HasFixedRatio="{Binding Path=FrameHasFixedRatio}" RatioX="{Binding Path=FrameRatioX}"
+                                               RatioY="{Binding Path=FrameRatioY}">
+                    <ItemsControl ItemsSource="{Binding Path=FrameChildren}"
+                                  ItemTemplateSelector="{StaticResource {x:Type components:FrameItemTemplateSelector}}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <Grid />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemContainerStyle>
+                            <Style TargetType="ContentPresenter">
+                                <Setter Property="Panel.ZIndex" Value="{Binding Path=FrameItemZIndex}" />
+                            </Style>
+                        </ItemsControl.ItemContainerStyle>
+                    </ItemsControl>
+                </components:FrameItemContainer>
+            </DataTemplate>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <ContentControl x:Name="PagePresenter" Content="{Binding ElementName=Uc, Path=Item}"
+                    ContentTemplateSelector="{StaticResource {x:Type components:FrameItemTemplateSelector}}" />
 </UserControl>

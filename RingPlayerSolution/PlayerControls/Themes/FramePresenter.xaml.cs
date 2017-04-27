@@ -1,18 +1,21 @@
-﻿// Copyright (c) 2016 All rights reserved Christian Sack
+﻿// Copyright (c) 2015-2017 All rights reserved Christian Sack
 // <author>Christian Sack</author>
 // <email>christian@sack.at</email>
 // <website>christian.sack.at</website>
-// <date>2017-02-05</date>
+// <created>2017-01-28</creation-date>
+// <modified>2017-04-26 21:40</modify-date>
 
 using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Media;
 using CsWpfBase.Ev.Public.Extensions;
 using PlayerControls.Interfaces;
-using PlayerControls.Interfaces.FrameItems;
+using PlayerControls.Interfaces.presentation.FrameItems;
 using PlayerControls.Themes._components;
-using PlayerControls._mocks;
+using PlayerControls._sys.pocos;
+using PlayerControls._sys.pocos.presentation;
 
 
 
@@ -24,22 +27,24 @@ namespace PlayerControls.Themes
 	/// <summary>Interaction logic for PageViewer.xaml</summary>
 	public partial class FramePresenter : UserControl
 	{
+
+
 		#region DP Keys
 		/// <summary>The <see cref="DependencyProperty" /> for the <see cref="IsDiagnostic" /> property.</summary>
 		public static readonly DependencyProperty IsDiagnosticProperty = DependencyProperty.Register("IsDiagnostic", typeof(bool), typeof(FramePresenter), new FrameworkPropertyMetadata
-		{
-			BindsTwoWayByDefault = true,
-			//PropertyChangedCallback = (o, args) => ((FramePresenter)o).IsDiagnosticDpChanged((bool)args.OldValue, (bool)args.NewValue),
-			DefaultValue = default(bool),
-			DefaultUpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
-		});
+																																							{
+																																								BindsTwoWayByDefault = true,
+																																								//PropertyChangedCallback = (o, args) => ((FramePresenter)o).IsDiagnosticDpChanged((bool)args.OldValue, (bool)args.NewValue),
+																																								DefaultValue = default(bool),
+																																								DefaultUpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
+																																							});
 		/// <summary>The <see cref="DependencyProperty" /> for the <see cref="Item" /> property.</summary>
 		public static readonly DependencyProperty ItemProperty = DependencyProperty.Register("Item", typeof(IFrame), typeof(FramePresenter), new FrameworkPropertyMetadata
-		{
-			PropertyChangedCallback = (o, args) => ((FramePresenter) o).ItemDpChanged((IFrame) args.OldValue, (IFrame) args.NewValue),
-			DefaultValue = default(IFrame),
-			DefaultUpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
-		});
+																																			{
+																																				PropertyChangedCallback = (o, args) => ((FramePresenter) o).ItemDpChanged((IFrame) args.OldValue, (IFrame) args.NewValue),
+																																				DefaultValue = default(IFrame),
+																																				DefaultUpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
+																																			});
 		#endregion
 
 
@@ -55,7 +60,7 @@ namespace PlayerControls.Themes
 		/// <summary>Returns a prefilled IFrame.</summary>
 		public static IFrame GetMock()
 		{
-			return MockFrame.GetSample();
+			return PocoFrame.Mock.FullScreenPrefilled();
 		}
 
 		private bool _animationsStarted;
@@ -67,24 +72,24 @@ namespace PlayerControls.Themes
 			InitializeComponent();
 			var selector = (FrameItemTemplateSelector) Resources[typeof(FrameItemTemplateSelector)];
 			selector.FrameTemplate = (DataTemplate) Resources[typeof(IFrame)];
-			selector.FrameItemVideoTemplate = (DataTemplate) Resources[typeof(IFrameItemVideo)];
-			selector.FrameItemTextTemplate = (DataTemplate) Resources[typeof(IFrameItemText)];
-			selector.FrameItemImageTemplate = (DataTemplate) Resources[typeof(IFrameItemImage)];
+			selector.FrameItemVideoTemplate = (DataTemplate) Resources[typeof(IFrameVideo)];
+			selector.FrameItemTextTemplate = (DataTemplate) Resources[typeof(IFrameText)];
+			selector.FrameItemImageTemplate = (DataTemplate) Resources[typeof(IFrameImage)];
 		}
 
 
 		/// <summary>The <see cref="IFrame" /> which should be displayed by the <see cref="FramePresenter" />.</summary>
 		public IFrame Item
 		{
-			get { return (IFrame) GetValue(ItemProperty); }
-			set { SetValue(ItemProperty, value); }
+			get => (IFrame) GetValue(ItemProperty);
+			set => SetValue(ItemProperty, value);
 		}
 
 		/// <summary>If true a special diagnostic representation of the single elements will be applied.</summary>
 		public bool IsDiagnostic
 		{
-			get { return (bool) GetValue(IsDiagnosticProperty); }
-			set { SetValue(IsDiagnosticProperty, value); }
+			get => (bool) GetValue(IsDiagnosticProperty);
+			set => SetValue(IsDiagnosticProperty, value);
 		}
 
 
@@ -103,9 +108,7 @@ namespace PlayerControls.Themes
 			foreach (var mediaElement in GetMediaElemente_FromPage())
 			{
 				if (position != null && position.Value > TimeSpan.FromMilliseconds(100))
-				{
 					mediaElement.MediaOpened += (sender, args) => { mediaElement.Position = position.Value.Add(DateTime.Now - start); };
-				}
 				mediaElement.Play();
 			}
 		}
@@ -122,9 +125,7 @@ namespace PlayerControls.Themes
 			_animationsStarted = true;
 
 			foreach (var animationCover in GetTransistionCovers_FromPage())
-			{
 				animationCover.Start(position ?? TimeSpan.Zero);
-			}
 		}
 
 
@@ -149,7 +150,4 @@ namespace PlayerControls.Themes
 			// throw new NotImplementedException();
 		}
 	}
-
-
-
 }

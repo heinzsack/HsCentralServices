@@ -1,8 +1,9 @@
-// Copyright (c) 2016 All rights reserved Christian Sack
+// Copyright (c) 2015-2017 All rights reserved Christian Sack
 // <author>Christian Sack</author>
 // <email>christian@sack.at</email>
 // <website>christian.sack.at</website>
-// <date>2017-02-05</date>
+// <created>2017-02-05</creation-date>
+// <modified>2017-04-26 20:43</modify-date>
 
 using System;
 using System.Globalization;
@@ -23,14 +24,16 @@ namespace PlayerControls.Themes._components
 	// ReSharper disable once InconsistentNaming
 	internal class RelativeMargin_To_AbsoluteMargin : DependencyObject, IMultiValueConverter
 	{
+
+
 		#region DP Keys
 		/// <summary>The <see cref="DependencyProperty" /> for the <see cref="Container" /> property.</summary>
 		public static readonly DependencyProperty ContainerProperty = DependencyProperty.Register("Container", typeof(FrameworkElement), typeof(RelativeMargin_To_AbsoluteMargin), new FrameworkPropertyMetadata
-		{
-			//PropertyChangedCallback = (o, args) => ((PercentToContainerMetricConverter)o).ContainerDpChanged((FrameworkElement)args.OldValue, (FrameworkElement)args.NewValue),
-			DefaultValue = default(FrameworkElement),
-			DefaultUpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
-		});
+																																													{
+																																														//PropertyChangedCallback = (o, args) => ((PercentToContainerMetricConverter)o).ContainerDpChanged((FrameworkElement)args.OldValue, (FrameworkElement)args.NewValue),
+																																														DefaultValue = default(FrameworkElement),
+																																														DefaultUpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
+																																													});
 		#endregion
 
 
@@ -63,8 +66,8 @@ namespace PlayerControls.Themes._components
 		/// <summary>Represents the Visual parent of the grid. This is needed for the realtive margins</summary>
 		public FrameworkElement Container
 		{
-			get { return (FrameworkElement) GetValue(ContainerProperty); }
-			set { SetValue(ContainerProperty, value); }
+			get => (FrameworkElement) GetValue(ContainerProperty);
+			set => SetValue(ContainerProperty, value);
 		}
 	}
 }
