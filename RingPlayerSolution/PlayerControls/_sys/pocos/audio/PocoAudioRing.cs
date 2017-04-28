@@ -3,13 +3,13 @@
 // <email>christian@sack.at</email>
 // <website>christian.sack.at</website>
 // <created>2017-04-27</creation-date>
-// <modified>2017-04-27 19:43</modify-date>
+// <modified>2017-04-28 14:50</modify-date>
 
 using System;
+using System.Collections.Generic;
 using CsWpfBase.Ev.Objects;
 using Newtonsoft.Json;
 using PlayerControls.Interfaces.audio;
-using PlayerControls.Interfaces.ringEngine;
 
 
 
@@ -20,12 +20,11 @@ namespace PlayerControls._sys.pocos.audio
 {
 	[JsonObject(MemberSerialization.OptIn)]
 	[Serializable]
-	public class PocoAudioRing : Base, IRing<IAudioRingEntry>
+	public class PocoAudioRing : Base, IAudioRing
 	{
+		private List<PocoAudioRingEntry> _pocoRingItems;
 		/// <inheritdoc />
 		private int _ringBufferSize;
-		/// <inheritdoc />
-		private IAudioRingEntry[] _ringItems;
 		/// <inheritdoc />
 		private TimeSpan _ringPeriod;
 		/// <inheritdoc />
@@ -55,13 +54,23 @@ namespace PlayerControls._sys.pocos.audio
 			set => SetProperty(ref _ringBufferSize, value);
 		}
 		/// <inheritdoc />
-		[JsonProperty("Items")]
-		public IAudioRingEntry[] RingItems
-		{
-			get => _ringItems;
-			set => SetProperty(ref _ringItems, value);
-		}
+		[JsonIgnore]
+		public IEnumerable<IAudioRingEntry> RingItems => PocoRingItems;
 		#endregion
+
+
+		///<summary>Contains the list which is returned when accessing the <see cref="RingItems"/> property.</summary>
+		[JsonProperty("Items")]
+		public List<PocoAudioRingEntry> PocoRingItems
+		{
+			get => _pocoRingItems ?? (_pocoRingItems = new List<PocoAudioRingEntry>());
+			set => SetProperty(ref _pocoRingItems, value);
+		}
+
+		public bool ShouldSerializePocoRingItems()
+		{
+			return _pocoRingItems != null && _pocoRingItems.Count != 0;
+		}
 
 
 
@@ -74,7 +83,7 @@ namespace PlayerControls._sys.pocos.audio
 									RingPeriod = duration,
 									RingStartTime = startTime,
 									RingBufferSize = 2,
-									RingItems = PocoAudioRingEntry.Mock.Get(duration)
+									PocoRingItems = PocoAudioRingEntry.Mock.Get(duration)
 								};
 				return pocoFrame;
 			}

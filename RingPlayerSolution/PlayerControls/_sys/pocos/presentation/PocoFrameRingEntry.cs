@@ -3,9 +3,10 @@
 // <email>christian@sack.at</email>
 // <website>christian.sack.at</website>
 // <created>2017-04-27</creation-date>
-// <modified>2017-04-27 19:05</modify-date>
+// <modified>2017-04-28 14:57</modify-date>
 
 using System;
+using System.Collections.Generic;
 using CsWpfBase.Ev.Objects;
 using Newtonsoft.Json;
 using PlayerControls.Interfaces.presentation;
@@ -61,18 +62,18 @@ namespace PlayerControls._sys.pocos.presentation
 
 		public static class Mock
 		{
-			public static IFrameRingEntry[] Get(TimeSpan duration)
+			public static List<PocoFrameRingEntry> Get(TimeSpan duration)
 			{
 				var framesPerMinute = 60;
 				var secondsPerFrame = 60 / framesPerMinute;
 
-				var entries = new IFrameRingEntry[duration.Minutes * framesPerMinute];
-				for (var i = 0; i < entries.Length; i++)
-					entries[i] = new PocoFrameRingEntry
-										{
-											RingEntryStartTime = TimeSpan.FromSeconds(i * secondsPerFrame),
-											Frame = PocoFrame.Mock.FullScreenPrefilled(i.ToString()),
-										};
+				var entries = new List<PocoFrameRingEntry>();
+				for (var i = 0; i < duration.Minutes * framesPerMinute; i++)
+					entries.Add(new PocoFrameRingEntry
+								{
+									RingEntryStartTime = TimeSpan.FromSeconds(i * secondsPerFrame),
+									Frame = PocoFrame.Mock.FullScreenPrefilled(i.ToString()),
+								});
 				return entries;
 			}
 		}

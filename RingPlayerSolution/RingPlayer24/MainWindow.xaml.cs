@@ -12,6 +12,7 @@ using CsWpfBase.Global;
 using PlayerControls.Themes;
 using PlayerControls._sys.extensions;
 using PlayerControls._sys.pocos.audio;
+using PlayerControls._sys.pocos.presentation;
 
 
 
@@ -26,8 +27,10 @@ namespace RingPlayer24
 		public MainWindow()
 		{
 			CsGlobal.Install(GlobalFunctions.Storage);
-			PocoAudioRing.Mock.Get(new DateTime(2017, 1, 1, 0, 0, 0, 0), TimeSpan.FromMinutes(1)).Play();
-			FrameRingPresenter.GetMock(new DateTime(2017, 1,1,0,0,0,0), TimeSpan.FromMinutes(1) ).ShowDialog();
+			PocoAudioRing.Mock.Get(new DateTime(2017, 1, 1, 0, 0, 0, 0), TimeSpan.FromMinutes(1)).ConvertTo_Json().ConvertFrom_Json<PocoAudioRing>().Play();
+			var json = FrameRingPresenter.GetMock(new DateTime(2017, 1,1,0,0,0,0), TimeSpan.FromMinutes(1) ).ConvertTo_Json();
+			json.SaveAs_Utf8String(new FileInfo("Sample").In_Desktop_Directory());
+			json.ConvertFrom_Json<PocoFrameRing>().ShowDialog();
 			Application.Current.Shutdown();
 
 

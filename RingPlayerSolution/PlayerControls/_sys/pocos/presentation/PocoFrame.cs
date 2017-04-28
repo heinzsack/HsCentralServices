@@ -2,8 +2,8 @@
 // <author>Christian Sack</author>
 // <email>christian@sack.at</email>
 // <website>christian.sack.at</website>
-// <created>2017-04-26</creation-date>
-// <modified>2017-04-26 22:24</modify-date>
+// <created>2017-04-27</creation-date>
+// <modified>2017-04-28 11:57</modify-date>
 
 using System;
 using System.Collections;
@@ -11,7 +11,6 @@ using System.Collections.ObjectModel;
 using System.Windows.Data;
 using CsWpfBase.Ev.Public.Extensions;
 using Newtonsoft.Json;
-using PlayerControls.Interfaces.presentation;
 using PlayerControls.Interfaces.presentation.FrameItems;
 using PlayerControls.Interfaces.presentation._base;
 using PlayerControls._sys.extensions;
@@ -28,9 +27,9 @@ namespace PlayerControls._sys.pocos.presentation
 	public class PocoFrame : PocoFrameItem, IFrame
 	{
 		[field: NonSerialized] [JsonIgnore] private IEnumerable _frameChildren;
-		private bool _frameHasFixedRatio = false;
-		private double _frameRatioX = 0;
-		private double _frameRatioY = 0;
+		private bool _frameHasFixedRatio;
+		private double _frameRatioX;
+		private double _frameRatioY;
 		private ObservableCollection<PocoFrame> _frames;
 		[field: NonSerialized] [JsonIgnore] private IEnumerable _frameTransitions;
 		private ObservableCollection<PocoFrameImage> _images;
@@ -151,13 +150,13 @@ namespace PlayerControls._sys.pocos.presentation
 		public void AddChild(IFrameItem item)
 		{
 			if (item is IFrameText)
-				Texts.Add(item as PocoFrameText ?? ((IFrameText) item).ToPoco());
+				Texts.Add(item as PocoFrameText ?? ((IFrameText)item).ToPoco());
 			else if (item is IFrameImage)
-				Images.Add(item as PocoFrameImage ?? ((IFrameImage) item).ToPoco());
+				Images.Add(item as PocoFrameImage ?? ((IFrameImage)item).ToPoco());
 			else if (item is IFrameVideo)
-				Videos.Add(item as PocoFrameVideo ?? ((IFrameVideo) item).ToPoco());
+				Videos.Add(item as PocoFrameVideo ?? ((IFrameVideo)item).ToPoco());
 			else if (item is IFrame)
-				Frames.Add(item as PocoFrame ?? ((IFrame) item).ToPoco());
+				Frames.Add(item as PocoFrame ?? ((IFrame)item).ToPoco());
 		}
 
 		public bool ShouldSerializeImages()
@@ -196,7 +195,7 @@ namespace PlayerControls._sys.pocos.presentation
 
 			public static PocoFrame FullScreen()
 			{
-				return Mocking.SetRandomBackground(new PocoFrame(){FrameHasFixedRatio = true, FrameRatioX = ((byte)10).Random(12, 16), FrameRatioY = 9});
+				return Mocking.SetRandomBackground(new PocoFrame() {FrameHasFixedRatio = true, FrameRatioX = ((byte) 10).Random(12, 16), FrameRatioY = 9});
 			}
 
 			public static PocoFrame LeftTop()
@@ -219,6 +218,7 @@ namespace PlayerControls._sys.pocos.presentation
 				return Mocking.SetRandomBackground(Mocking.SetRightBottom(new PocoFrame()));
 			}
 		}
+
 	}
 
 

@@ -30,15 +30,15 @@ namespace PlayerControls._sys.pocos.presentation
 		/// <inheritdoc />
 		private Color _frameItemBorderColor = Colors.Transparent;
 		/// <inheritdoc />
-		private Thickness _frameItemBorderThickness = new Thickness(0);
+		private Thickness _frameItemBorderThickness;
 		/// <inheritdoc />
-		private Thickness _frameItemPadding = new Thickness(0);
+		private Thickness _frameItemPadding;
 		/// <inheritdoc />
-		private Thickness _frameItemRelativePosition = new Thickness(0);
+		private Thickness _frameItemRelativePosition;
 		/// <inheritdoc />
-		private double _frameItemRotation = 0;
+		private double _frameItemRotation;
 		/// <inheritdoc />
-		private int _frameItemZIndex = 0;
+		private int _frameItemZIndex ;
 
 
 		#region Overrides/Interfaces
@@ -50,14 +50,14 @@ namespace PlayerControls._sys.pocos.presentation
 			set => SetProperty(ref _frameItemRelativePosition, value);
 		}
 		/// <inheritdoc />
-		[JsonProperty("Background")]
+		[JsonProperty("Background", DefaultValueHandling = DefaultValueHandling.Ignore)]
 		public Color FrameItemBackground
 		{
 			get => _frameItemBackground;
 			set => SetProperty(ref _frameItemBackground, value);
 		}
 		/// <inheritdoc />
-		[JsonProperty("BorderColor")]
+		[JsonProperty("BorderColor",DefaultValueHandling = DefaultValueHandling.Ignore)]
 		public Color FrameItemBorderColor
 		{
 			get => _frameItemBorderColor;
@@ -93,6 +93,15 @@ namespace PlayerControls._sys.pocos.presentation
 		}
 		#endregion
 
+
+		public bool ShouldSerializeFrameItemBackground()
+		{
+			return _frameItemBackground != Colors.Transparent;
+		}
+		public bool ShouldSerializeFrameItemBorderColor()
+		{
+			return _frameItemBorderColor != Colors.Transparent;
+		}
 
 
 		public static class Mocking

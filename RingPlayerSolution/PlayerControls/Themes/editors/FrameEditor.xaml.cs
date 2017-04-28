@@ -280,7 +280,7 @@ namespace PlayerControls.Themes.editors
 		private void FrameItem_StoreImage(object sender, RoutedEventArgs e)
 		{
 			var imageItem = (IFrameImage) ((FrameworkElement) sender).DataContext;
-			imageItem.ImageBitmapSource.SaveAsFileDialog();
+			imageItem.FrameItemImage.SaveAsFileDialog();
 		}
 
 		private void FrameItem_AddImage(object sender, RoutedEventArgs e)

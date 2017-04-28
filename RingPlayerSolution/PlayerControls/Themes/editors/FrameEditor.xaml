@@ -89,7 +89,7 @@
 						<Border Background="Transparent">
 							<Border.ToolTip>
 								<EditorGrid Editor.IsReadOnly="True">
-									<Image Source="{Binding Path=ImageBitmapSource}" MaxWidth="400" MaxHeight="400" />
+									<Image Source="{Binding Path=FrameItemImage}" MaxWidth="400" MaxHeight="400" />
 								</EditorGrid>
 							</Border.ToolTip>
 							<Grid>
@@ -102,7 +102,7 @@
 								<TextBlock Grid.Column="1" Text="Bildfarbe:" />
 								<Border Grid.Column="2" x:Name="Vor" Width="{Binding ElementName=Vor, Path=ActualHeight}" Margin="5,1,0,1" HorizontalAlignment="Left">
 									<Border.Background>
-										<SolidColorBrush Color="{Binding Path=ImageBitmapSource, Converter={StaticResource GConv-ImageToDominantColor}}" />
+										<SolidColorBrush Color="{Binding Path=FrameItemImage, Converter={StaticResource GConv-ImageToDominantColor}}" />
 									</Border.Background>
 								</Border>
 							</Grid>
@@ -193,16 +193,16 @@
 						<EditorGroup Header="Bild">
 							<Border MaxHeight="200" Background="Transparent" Margin="0,0,0,10">
 								<Border.Effect>
-									<DropShadowEffect Direction="0" ShadowDepth="0" BlurRadius="15" Color="{Binding Path=ImageBitmapSource, Converter={StaticResource GConv-ImageToDominantColor}}" Opacity="0.5" />
+									<DropShadowEffect Direction="0" ShadowDepth="0" BlurRadius="15" Color="{Binding Path=FrameItemImage, Converter={StaticResource GConv-ImageToDominantColor}}" Opacity="0.5" />
 								</Border.Effect>
-								<Image Source="{Binding Path=ImageBitmapSource}" RenderOptions.BitmapScalingMode="HighQuality" />
+								<Image Source="{Binding Path=FrameItemImage}" RenderOptions.BitmapScalingMode="HighQuality" />
 							</Border>
 							<Grid>
 								<Grid.ColumnDefinitions>
 									<ColumnDefinition Width="*"/>
 									<ColumnDefinition Width="*"/>
 								</Grid.ColumnDefinitions>
-								<GlyphIconButton Icon="G_Floppy_Save" Content="Speichern" Click="FrameItem_StoreImage" Visibility="{Binding Path=ImageBitmapSource, Converter={StaticResource GConv-NullToVisibility}}"/>
+								<GlyphIconButton Icon="G_Floppy_Save" Content="Speichern" Click="FrameItem_StoreImage" Visibility="{Binding Path=FrameItemImage, Converter={StaticResource GConv-NullToVisibility}}"/>
 								<GlyphIconButton Grid.Column="1" Icon="G_Edit" Content="Edit" Click="FrameItem_ChangeImage" IsEnabled="{Binding ElementName=Uc, Path=IsLocked, Converter={StaticResource GConv-BoolInverter}}"/>
 							</Grid>
 						</EditorGroup>

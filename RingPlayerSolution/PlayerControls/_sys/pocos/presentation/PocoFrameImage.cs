@@ -2,8 +2,8 @@
 // <author>Christian Sack</author>
 // <email>christian@sack.at</email>
 // <website>christian.sack.at</website>
-// <created>2017-04-26</creation-date>
-// <modified>2017-04-27 09:48</modify-date>
+// <created>2017-04-27</creation-date>
+// <modified>2017-04-28 16:12</modify-date>
 
 using System;
 using System.Windows;
@@ -25,20 +25,61 @@ namespace PlayerControls._sys.pocos.presentation
 	[Serializable]
 	public class PocoFrameImage : PocoFrameItem, IFrameImage
 	{
-		/// <inheritdoc />
-		private BitmapSource _imageBitmapSource;
+		private Guid? _frameItemImageId;
+
+
+		#region EVENTS
+		/// <summary>Occurs whenever a image is requested through the <see cref="PocoFrameImage" />.</summary>
+		public static event Delegate0 ImageRequested;
+		#endregion
 
 
 		#region Overrides/Interfaces
-		/// <inheritdoc />
-		public BitmapSource ImageBitmapSource => _imageBitmapSource;
-
 		/// <inheritdoc />
 		public void EditorRequestedImageChange()
 		{
 			throw new NotImplementedException();
 		}
+
+
+		///<summary>The identifier can be used for identifing the <see cref="FrameItemImage"/> inside the <see cref="ImageRequested"/> event.</summary>
+		[JsonProperty("Id")]
+		public Guid? FrameItemImageId
+		{
+			get => _frameItemImageId;
+			set => SetProperty(ref _frameItemImageId, value);
+		}
+
+
+		/// <inheritdoc />
+		[JsonIgnore]
+		public BitmapSource FrameItemImage
+		{
+			get
+			{
+				var args = new ImageRequestedArgs(this);
+				ImageRequested?.Invoke(args);
+				return args.Result;
+			}
+		}
 		#endregion
+
+
+
+		public delegate void Delegate0(ImageRequestedArgs image);
+
+
+
+		public class ImageRequestedArgs
+		{
+			public ImageRequestedArgs(PocoFrameImage pocoImage)
+			{
+				PocoImage = pocoImage;
+			}
+
+			public PocoFrameImage PocoImage { get; }
+			public BitmapSource Result { get; set; }
+		}
 
 
 
@@ -48,34 +89,22 @@ namespace PlayerControls._sys.pocos.presentation
 
 			public static PocoFrameImage LeftTop()
 			{
-				return Mocking.SetLeftTop(new PocoFrameImage
-										{
-											_imageBitmapSource = SampleImage()
-										});
+				return Mocking.SetLeftTop(new PocoFrameImage {FrameItemImageId = Guid.Empty});
 			}
 
 			public static PocoFrameImage LeftBottom()
 			{
-				return Mocking.SetLeftBottom(new PocoFrameImage
-											{
-												_imageBitmapSource = SampleImage()
-											});
+				return Mocking.SetLeftBottom(new PocoFrameImage {FrameItemImageId = Guid.Empty});
 			}
 
 			public static PocoFrameImage RightTop()
 			{
-				return Mocking.SetRightTop(new PocoFrameImage
-											{
-												_imageBitmapSource = SampleImage()
-											});
+				return Mocking.SetRightTop(new PocoFrameImage {FrameItemImageId = Guid.Empty});
 			}
 
 			public static PocoFrameImage RightBottom()
 			{
-				return Mocking.SetRightBottom(new PocoFrameImage
-											{
-												_imageBitmapSource = SampleImage()
-											});
+				return Mocking.SetRightBottom(new PocoFrameImage {FrameItemImageId = Guid.Empty});
 			}
 
 			private static BitmapSource SampleImage()
@@ -93,6 +122,16 @@ namespace PlayerControls._sys.pocos.presentation
 								}.ConvertTo_Image();
 				_sampleImage.Freeze();
 				return _sampleImage;
+			}
+
+			static Mocks()
+			{
+				SampleImage();
+				ImageRequested += args =>
+				{
+					if (args.PocoImage.FrameItemImageId == Guid.Empty)
+						args.Result = SampleImage();
+				};
 			}
 		}
 	}

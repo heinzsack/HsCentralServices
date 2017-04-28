@@ -3,7 +3,7 @@
 // <email>christian@sack.at</email>
 // <website>christian.sack.at</website>
 // <created>2017-04-27</creation-date>
-// <modified>2017-04-27 18:30</modify-date>
+// <modified>2017-04-28 16:07</modify-date>
 
 using System;
 using System.Threading.Tasks;
@@ -15,12 +15,10 @@ using CsWpfBase.Ev.Public.Extensions;
 using CsWpfBase.Utilitys;
 using PlayerControls.Interfaces.presentation;
 using PlayerControls.Interfaces.presentation.FrameItems;
-using PlayerControls.Interfaces.presentation._base;
 using PlayerControls.Interfaces.ringEngine;
 using PlayerControls.Themes;
 using PlayerControls.Themes.editors;
 using PlayerControls.Themes.windows;
-using PlayerControls._sys.pocos.presentation;
 
 
 
@@ -64,7 +62,7 @@ namespace PlayerControls._sys.extensions
 				foreach (var image in img)
 				{
 					BindingOperations.ClearBinding(image, Image.SourceProperty);
-					image.Source = ((IFrameImage) image.DataContext).ImageBitmapSource;
+					image.Source = ((IFrameImage) image.DataContext).FrameItemImage;
 				}
 
 				var bitmapSource = frameViewer.ConvertTo_Image();
@@ -104,64 +102,8 @@ namespace PlayerControls._sys.extensions
 		{
 			new RingFramePresenterWindow(title.IsNullOrEmpty() ? "Page View" : title, scheduledFrames).ShowDialog();
 		}
-
-
-
-
-		/// <summary>Converts the frame into a poco frame which is serializeable to json or binary.</summary>
-		/// <param name="source">The <see cref="IFrame" /> to convert.</param>
-		public static PocoFrame ToPoco(this IFrame source)
-		{
-			if (source is PocoFrame)
-				return (PocoFrame) source;
-
-			var pocoFrame = new PocoFrame();
-			source.CopyTo(pocoFrame, nameof(IFrame.FrameChildren), nameof(IFrame.FrameTransitions));
-			foreach (IFrameItem child in source.FrameChildren)
-				pocoFrame.AddChild(child);
-			return pocoFrame;
-		}
-
-		/// <summary>
-		///     Converts the <see cref="IFrameText" /> into a new instance of <see cref="PocoFrameText" /> which is serializeable to
-		///     json or binary.
-		/// </summary>
-		public static PocoFrameText ToPoco(this IFrameText source)
-		{
-			if (source is PocoFrameText)
-				return (PocoFrameText) source;
-
-			var target = new PocoFrameText();
-			source.CopyTo(target);
-			return target;
-		}
-
-		/// <summary>
-		///     Converts the <see cref="IFrameImage" /> into a new instance of <see cref="PocoFrameImage" /> which is serializeable to
-		///     json or binary.
-		/// </summary>
-		public static PocoFrameImage ToPoco(this IFrameImage source)
-		{
-			if (source is PocoFrameImage)
-				return (PocoFrameImage) source;
-
-			var target = new PocoFrameImage();
-			source.CopyTo(target);
-			return target;
-		}
-
-		/// <summary>
-		///     Converts the <see cref="IFrameVideo" /> into a new instance of <see cref="PocoFrameVideo" /> which is serializeable to
-		///     json or binary.
-		/// </summary>
-		public static PocoFrameVideo ToPoco(this IFrameVideo source)
-		{
-			if (source is PocoFrameVideo)
-				return (PocoFrameVideo) source;
-
-			var target = new PocoFrameVideo();
-			source.CopyTo(target);
-			return target;
-		}
 	}
+
+
+
 }

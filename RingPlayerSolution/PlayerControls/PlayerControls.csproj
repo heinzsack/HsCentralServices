@@ -51,7 +51,9 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Interfaces\audio\IAudioEntry.cs" />
+    <Compile Include="Interfaces\audio\IAudioRing.cs" />
+    <Compile Include="Interfaces\audio\IAudioRingEntry.cs" />
+    <Compile Include="Interfaces\presentation\IFrameRing.cs" />
     <Compile Include="Themes\windows\RingFramePresenterWindow.xaml.cs">
       <DependentUpon>RingFramePresenterWindow.xaml</DependentUpon>
     </Compile>
@@ -97,6 +99,7 @@
     <Compile Include="Interfaces\presentation\FrameItems\IFrameVideo.cs" />
     <Compile Include="Interfaces\presentation\Transistions\IDoubleTransition.cs" />
     <Compile Include="Interfaces\presentation\_base\ITransition.cs" />
+    <Compile Include="_sys\extensions\PocoExtensions.cs" />
     <Compile Include="_sys\extensions\TransitionExtensions.cs" />
     <Compile Include="Interfaces\presentation\Transistions\TransitionTypes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

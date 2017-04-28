@@ -40,11 +40,12 @@ namespace PlayerControls._sys.extensions
 
 		/// <summary>Finds the index of the <see cref="IRingEntry" /> which should be played at the specified <paramref name="time" />.</summary>
 		/// <param name="ring">The target <see cref="IRing" /></param>
+		/// <param name="ringItems">The sorted array of the ring items.</param>
 		/// <param name="time">
 		///     The time where you want to gather the playing <see cref="IRingEntry" />. If <paramref name="time" /> equals null
 		///     <see cref="DateTime.Now" /> will be used.
 		/// </param>
-		public static RingEntrySpecification<TItem> Find_Item_At_Time<TItem>(this IRing<TItem> ring, DateTime? time = null) where TItem : IRingEntry
+		public static RingEntrySpecification<TItem> Find_Item_At_Time<TItem>(this IRing<TItem> ring, TItem[] ringItems, DateTime? time = null) where TItem : IRingEntry
 		{
 			if (ring == null)
 				throw RingEngineException_InvalidArgument.NullOrEmpty(nameof(ring));
@@ -59,21 +60,21 @@ namespace PlayerControls._sys.extensions
 			// The current position in the ring in ticks
 			var searchedTickInRing = (time.Value - ringStart).Ticks;
 
-			for (var i = 0; i < ring.RingItems.Length; i++)
+			for (var i = 0; i < ringItems.Length; i++)
 			{
-				var item = ring.RingItems[i];
+				var item = ringItems[i];
 				if (item.RingEntryStartTime.Ticks < searchedTickInRing)
 					continue;
 
 				int itemIndex;
 				if (i == 0)
-					itemIndex = ring.RingItems.Length - 1;
+					itemIndex = ringItems.Length - 1;
 				else
 					itemIndex = i - 1;
 
-				return new RingEntrySpecification<TItem>(ringStart, ring.RingItems[itemIndex], itemIndex);
+				return new RingEntrySpecification<TItem>(ringStart, ringItems[itemIndex], itemIndex);
 			}
-			return new RingEntrySpecification<TItem>(ringStart, ring.RingItems[0], 0);
+			return new RingEntrySpecification<TItem>(ringStart, ringItems[0], 0);
 		}
 
 		/// <summary>
@@ -81,16 +82,17 @@ namespace PlayerControls._sys.extensions
 		///     the speciefied <paramref name="time" />.
 		/// </summary>
 		/// <param name="ring">The ring</param>
+		/// <param name="ringItems">The sorted array of the ring items.</param>
 		/// <param name="index">The index of the <see cref="IRingEntry" /> inside the <paramref name="ring" />.</param>
 		/// <param name="time">The time after which the time is searched.</param>
-		public static DateTime Find_Time_At_NextPlay<TItem>(this IRing<TItem> ring, int index, DateTime? time = null) where TItem : IRingEntry
+		public static DateTime Find_Time_At_NextPlay<TItem>(this IRing<TItem> ring, TItem[] ringItems, int index, DateTime? time = null) where TItem : IRingEntry
 		{
 			if (ring == null)
 				throw RingEngineException_InvalidArgument.NullOrEmpty(nameof(ring));
 			if (index < 0)
 				throw RingEngineException_InvalidArgument.SmallerThenZero(nameof(index), index);
-			if (index >= ring.RingItems.Length)
-				throw RingEngineException_InvalidArgument.OutOfRange(nameof(index), index, ring.RingItems.Length - 1);
+			if (index >= ringItems.Length)
+				throw RingEngineException_InvalidArgument.OutOfRange(nameof(index), index, ringItems.Length - 1);
 
 			RingEngineException_InvalidRing.ThrowIfInvalid(ring);
 
@@ -98,7 +100,7 @@ namespace PlayerControls._sys.extensions
 				time = DateTime.Now;
 
 			var ringStart = ring.Find_LastRingStart(time);
-			var item = ring.RingItems[index];
+			var item = ringItems[index];
 
 
 
@@ -113,7 +115,7 @@ namespace PlayerControls._sys.extensions
 
 
 		/// <summary>Decrease the specified <paramref name="index" /> by the <paramref name="value" /> keeping <see cref="IRing" /> metrics.</summary>
-		internal static int DecreaseIndexBy<TItem>(this IRing<TItem> ring, int index, int value) where TItem : IRingEntry
+		internal static int DecreaseIndexBy<TItem>(this IRing<TItem> ring, TItem[] ringItems, int index, int value) where TItem : IRingEntry
 		{
 			if (value < 0)
 				throw RingEngineException_InvalidArgument.SmallerThenZero(nameof(value), value);
@@ -121,25 +123,25 @@ namespace PlayerControls._sys.extensions
 				throw RingEngineException_InvalidArgument.SmallerThenZero(nameof(index), index);
 			if (ring == null)
 				throw RingEngineException_InvalidArgument.NullOrEmpty(nameof(ring));
-			if (index >= ring.RingItems.Length)
-				throw RingEngineException_InvalidArgument.OutOfRange(nameof(index), index, ring.RingItems.Length - 1);
+			if (index >= ringItems.Length)
+				throw RingEngineException_InvalidArgument.OutOfRange(nameof(index), index, ringItems.Length - 1);
 
 			if (value == 0)
 				return index;
 
-			value = value % ring.RingItems.Length; // if the number is greater then the ring itself.
+			value = value % ringItems.Length; // if the number is greater then the ring itself.
 
 			var result = index - value;
 			if (result >= 0)
 				return result;
 
 			//result is smaller then 0
-			result = ring.RingItems.Length + result; // if it is minus 1 take the last element and so on.
+			result = ringItems.Length + result; // if it is minus 1 take the last element and so on.
 			return result;
 		}
 
 		/// <summary>Increases the specified <paramref name="index" /> by the <paramref name="value" /> keeping <see cref="IRing" /> metrics.</summary>
-		internal static int IncreaseIndexBy<TItem>(this IRing<TItem> ring, int index, int value) where TItem : IRingEntry
+		internal static int IncreaseIndexBy<TItem>(this IRing<TItem> ring, TItem[] ringItems, int index, int value) where TItem : IRingEntry
 		{
 			if (value < 0)
 				throw RingEngineException_InvalidArgument.SmallerThenZero(nameof(value), value);
@@ -147,22 +149,22 @@ namespace PlayerControls._sys.extensions
 				throw RingEngineException_InvalidArgument.SmallerThenZero(nameof(index), index);
 			if (ring == null)
 				throw RingEngineException_InvalidArgument.NullOrEmpty(nameof(ring));
-			if (index >= ring.RingItems.Length)
-				throw RingEngineException_InvalidArgument.OutOfRange(nameof(index), index, ring.RingItems.Length - 1);
+			if (index >= ringItems.Length)
+				throw RingEngineException_InvalidArgument.OutOfRange(nameof(index), index, ringItems.Length - 1);
 
 			RingEngineException_InvalidRing.ThrowIfInvalid(ring);
 
 			if (value == 0)
 				return index;
 
-			value = value % ring.RingItems.Length; // if the number is greater then the ring itself.
+			value = value % ringItems.Length; // if the number is greater then the ring itself.
 
 			var result = index + value;
-			if (result < ring.RingItems.Length)
+			if (result < ringItems.Length)
 				return result;
 
 			//result is greather then the ring length
-			result = result - ring.RingItems.Length; // if it is exactly the length take the first element and so on.
+			result = result - ringItems.Length; // if it is exactly the length take the first element and so on.
 			return result;
 		}
 	}

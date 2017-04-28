@@ -3,11 +3,11 @@
 // <email>christian@sack.at</email>
 // <website>christian.sack.at</website>
 // <created>2017-04-27</creation-date>
-// <modified>2017-04-27 17:35</modify-date>
+// <modified>2017-04-28 15:03</modify-date>
 
 using System;
 using System.Collections.ObjectModel;
-using System.Windows;
+using System.Linq;
 using System.Windows.Threading;
 using CsWpfBase.Ev.Objects;
 using PlayerControls.Interfaces.ringEngine;
@@ -31,12 +31,19 @@ namespace PlayerControls._sys.engines
 		private bool _isRunning;
 		private IRing<TItem> _ring;
 		private int _ringIndex;
+		private TItem[] _ringItems;
 
 		/// <summary>Contains the <see cref="DateTime.Now" /> value for all subsequent calculation. This avoids millisecond problems.</summary>
 		private DateTime DateTimeNow { get; set; }
 
 		/// <summary>The timer which switches the active <see cref="IRingEntry" /> with a bufferd <see cref="IRingEntry" />.</summary>
 		private DispatcherTimer SwitchTimer { get; }
+		///<summary>The ring items loaded as array.</summary>
+		private TItem[] RingItems
+		{
+			get => _ringItems;
+			set => SetProperty(ref _ringItems, value);
+		}
 
 
 		#region EVENTS
@@ -49,7 +56,8 @@ namespace PlayerControls._sys.engines
 
 		public RingEngine()
 		{
-			SwitchTimer = new DispatcherTimer(TimeSpan.FromSeconds(1), DispatcherPriority.Normal, SwitchTimerTicked, Application.Current.Dispatcher);
+			SwitchTimer = new DispatcherTimer();
+			SwitchTimer.Tick += SwitchTimerTicked;
 		}
 
 		/// <summary>The <see cref="IRing" /> which is meant to be played. This <see cref="IRing" /> can be changed at any time.</summary>
@@ -61,6 +69,7 @@ namespace PlayerControls._sys.engines
 				var before = _ring;
 				if (!SetProperty(ref _ring, value))
 					return;
+				RingItems = value?.RingItems.OrderBy(x=>x.RingEntryStartTime).ToArray();
 				OnRingChanged(before, _ring);
 			}
 		}
@@ -130,7 +139,7 @@ namespace PlayerControls._sys.engines
 
 			SetDateTimeNow();
 
-			var ringEntrySpecification = newRing.Find_Item_At_Time(DateTimeNow);
+			var ringEntrySpecification = newRing.Find_Item_At_Time(RingItems, DateTimeNow);
 			RingIndex = ringEntrySpecification.Index;
 
 			BufferAdd(newRing, RingIndex);
@@ -155,12 +164,12 @@ namespace PlayerControls._sys.engines
 
 
 			// Gets the index of the next item which should play after the current has finished.
-			var nextBufferEntryIndex = Ring.IncreaseIndexBy(RingIndex, Ring.RingBufferSize+1);
+			var nextBufferEntryIndex = Ring.IncreaseIndexBy(RingItems, RingIndex, Ring.RingBufferSize + 1);
 
 			BufferPush(nextBufferEntryIndex);
 			BufferPop();
 
-			RingIndex = Ring.IncreaseIndexBy(RingIndex, 1);
+			RingIndex = Ring.IncreaseIndexBy(RingItems, RingIndex, 1);
 			Start_SwitchTimer_At_RingIndex();
 		}
 
@@ -173,7 +182,7 @@ namespace PlayerControls._sys.engines
 		/// <summary>Adds an element to the last position in the buffer. (This element will be played at the latest time possible).</summary>
 		private void BufferPush(int index)
 		{
-			var ringItem = Ring.RingItems[index];
+			var ringItem = RingItems[index];
 			Buffer.Insert(0, ringItem);
 			BufferedEntryAdded?.Invoke(new NewBufferedElementArgs(ringItem));
 		}
@@ -189,8 +198,8 @@ namespace PlayerControls._sys.engines
 		///     <see cref="Ring" />. </summary>
 		private void Start_SwitchTimer_At_RingIndex()
 		{
-			var nextEntryIndex = Ring.IncreaseIndexBy(RingIndex, 1);
-			var nextEntryTime = Ring.Find_Time_At_NextPlay(nextEntryIndex, DateTimeNow);
+			var nextEntryIndex = Ring.IncreaseIndexBy(RingItems, RingIndex, 1);
+			var nextEntryTime = Ring.Find_Time_At_NextPlay(RingItems, nextEntryIndex, DateTimeNow);
 
 			var switchIntervall = nextEntryTime - DateTimeNow;
 
@@ -199,7 +208,7 @@ namespace PlayerControls._sys.engines
 
 			SwitchTimer.Interval = switchIntervall;
 			SwitchTimer.Start();
-			CurrentEntryChanged?.Invoke(new CurrentEntryChangedArgs(Ring.RingItems[RingIndex], Ring.Find_LastRingStart(DateTimeNow).Add(Ring.RingItems[RingIndex].RingEntryStartTime), Ring.RingItems[nextEntryIndex], switchIntervall));
+			CurrentEntryChanged?.Invoke(new CurrentEntryChangedArgs(RingItems[RingIndex], Ring.Find_LastRingStart(DateTimeNow).Add(RingItems[RingIndex].RingEntryStartTime), RingItems[nextEntryIndex], switchIntervall));
 		}
 
 
@@ -225,7 +234,7 @@ namespace PlayerControls._sys.engines
 
 			for (var i = 0; i <= ring.RingBufferSize; i++)
 			{
-				var increaseIndexBy = ring.IncreaseIndexBy(currentIndex, i);
+				var increaseIndexBy = ring.IncreaseIndexBy(RingItems, currentIndex, i);
 				BufferPush(increaseIndexBy);
 			}
 		}

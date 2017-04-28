@@ -24,7 +24,7 @@
             </DataTemplate>
             <DataTemplate DataType="{x:Type frameItems:IFrameImage}" x:Key="{x:Type frameItems:IFrameImage}">
                 <components:FrameItemContainer>
-                    <Image Source="{Binding Path=ImageBitmapSource, IsAsync=True}" />
+                    <Image Source="{Binding Path=FrameItemImage, IsAsync=True}" />
                 </components:FrameItemContainer>
             </DataTemplate>
             <DataTemplate DataType="{x:Type frameItems:IFrameText}" x:Key="{x:Type frameItems:IFrameText}">

@@ -3,10 +3,10 @@
 // <email>christian@sack.at</email>
 // <website>christian.sack.at</website>
 // <created>2017-04-27</creation-date>
-// <modified>2017-04-27 19:03</modify-date>
+// <modified>2017-04-28 14:45</modify-date>
 
 using System;
-using System.IO;
+using System.Collections.Generic;
 using PlayerControls.Interfaces.ringEngine;
 
 
@@ -23,7 +23,7 @@ namespace PlayerControls.Interfaces.audio
 
 		#region Abstract
 		/// <summary>The audio files which are meant to be played.</summary>
-		string[] AudioFiles { get; }
+		IEnumerable<string> AudioFiles { get; }
 		/// <summary>If true the audio files will be randomized.</summary>
 		bool AudioRandomize { get; }
 		#endregion

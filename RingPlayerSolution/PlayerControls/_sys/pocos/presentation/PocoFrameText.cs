@@ -2,10 +2,11 @@
 // <author>Christian Sack</author>
 // <email>christian@sack.at</email>
 // <website>christian.sack.at</website>
-// <created>2017-04-26</creation-date>
-// <modified>2017-04-26 22:21</modify-date>
+// <created>2017-04-27</creation-date>
+// <modified>2017-04-28 15:35</modify-date>
 
 using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 using CsWpfBase.Ev.Public.Extensions;
@@ -30,9 +31,11 @@ namespace PlayerControls._sys.pocos.presentation
 		/// <inheritdoc />
 		private FontWeight _frameItemFontWeight;
 		/// <inheritdoc />
-		private Color _frameItemForeground;
+		private Color _frameItemForeground = Colors.Black;
 		/// <inheritdoc />
 		private string _frameItemText;
+		/// <inheritdoc />
+		[JsonProperty("FontFamily")] private string _serializedFontFamily;
 
 
 		#region Overrides/Interfaces
@@ -44,18 +47,22 @@ namespace PlayerControls._sys.pocos.presentation
 			set => SetProperty(ref _frameItemText, value);
 		}
 		/// <inheritdoc />
-		[JsonProperty("Foreground")]
+		[JsonProperty("Foreground", DefaultValueHandling = DefaultValueHandling.Ignore)]
 		public Color FrameItemForeground
 		{
 			get => _frameItemForeground;
 			set => SetProperty(ref _frameItemForeground, value);
 		}
 		/// <inheritdoc />
-		[JsonProperty("FontFamily")]
+		[JsonIgnore]
 		public FontFamily FrameItemFontFamily
 		{
-			get => _frameItemFontFamily;
-			set => SetProperty(ref _frameItemFontFamily, value);
+			get => _frameItemFontFamily ?? (_frameItemFontFamily = _serializedFontFamily.IsNullOrEmpty() ? null : new FontFamily(_serializedFontFamily));
+			set
+			{
+				if (!SetProperty(ref _frameItemFontFamily, value)) return;
+				_serializedFontFamily = value?.FamilyNames.First().Value;
+			}
 		}
 		/// <inheritdoc />
 		[JsonProperty("FontWeight")]
@@ -72,6 +79,12 @@ namespace PlayerControls._sys.pocos.presentation
 			set => SetProperty(ref _frameItemFontStyle, value);
 		}
 		#endregion
+
+
+		public bool ShouldSerializeFrameItemForeground()
+		{
+			return _frameItemForeground != Colors.Black;
+		}
 
 
 
@@ -100,7 +113,7 @@ namespace PlayerControls._sys.pocos.presentation
 				return Mocking.SetRightTop(new PocoFrameText
 											{
 												FrameItemForeground = Colors.Black,
-												FrameItemText = text??"RECHTS OBEN".AppendRandomText()
+												FrameItemText = text ?? "RECHTS OBEN".AppendRandomText()
 											});
 			}
 

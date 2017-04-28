@@ -3,9 +3,10 @@
 // <email>christian@sack.at</email>
 // <website>christian.sack.at</website>
 // <created>2017-04-27</creation-date>
-// <modified>2017-04-27 19:43</modify-date>
+// <modified>2017-04-28 14:50</modify-date>
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using CsWpfBase.Ev.Objects;
@@ -26,7 +27,7 @@ namespace PlayerControls._sys.pocos.audio
 	[Serializable]
 	public class PocoAudioRingEntry : Base, IAudioRingEntry
 	{
-		private string[] _audioFiles;
+		private List<string> _audioFilesList;
 		private bool _audioRandomize;
 		private TimeSpan _ringEntryStartTime;
 
@@ -40,12 +41,8 @@ namespace PlayerControls._sys.pocos.audio
 			set => SetProperty(ref _ringEntryStartTime, value);
 		}
 		/// <inheritdoc />
-		[JsonProperty("Files")]
-		public string[] AudioFiles
-		{
-			get => _audioFiles;
-			set => SetProperty(ref _audioFiles, value);
-		}
+		[JsonIgnore]
+		public IEnumerable<string> AudioFiles => _audioFilesList;
 		/// <inheritdoc />
 		[JsonProperty("Randomize")]
 		public bool AudioRandomize
@@ -56,21 +53,35 @@ namespace PlayerControls._sys.pocos.audio
 		#endregion
 
 
+		///<summary>Contains the list which is returned when accessing the <see cref="AudioFiles"/> property.</summary>
+		[JsonProperty("Files")]
+		public List<string> AudioFilesList
+		{
+			get => _audioFilesList ?? (_audioFilesList = new List<string>());
+			set => SetProperty(ref _audioFilesList, value);
+		}
+
+		public bool ShouldSerializeAudioFilesList()
+		{
+			return _audioFilesList != null && _audioFilesList.Count != 0;
+		}
+
+
 
 		public static class Mock
 		{
-			public static IAudioRingEntry[] Get(TimeSpan duration)
+			public static List<PocoAudioRingEntry> Get(TimeSpan duration)
 			{
 				var framesPerMinute = 6;
 				var secondsPerFrame = 60 / framesPerMinute;
 
-				var entries = new IAudioRingEntry[duration.Minutes * framesPerMinute];
-				for (var i = 0; i < entries.Length; i++)
-					entries[i] = new PocoAudioRingEntry
+				var entries = new List<PocoAudioRingEntry>();
+				for (var i = 0; i < duration.Minutes * framesPerMinute; i++)
+					entries.Add(new PocoAudioRingEntry
 								{
 									RingEntryStartTime = TimeSpan.FromSeconds(i * secondsPerFrame),
-									AudioFiles = new DirectoryInfo(@"\\sack\_Musik\Musik von Chris\YouTube Music").GetFiles().Select(x => x.FullName).ToArray(),
-								};
+									AudioFilesList = new DirectoryInfo(@"\\sack\_Musik\Musik von Chris\YouTube Music").GetFiles().Select(x => x.FullName).ToList(),
+								});
 				return entries;
 			}
 		}

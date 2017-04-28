@@ -3,9 +3,10 @@
 // <email>christian@sack.at</email>
 // <website>christian.sack.at</website>
 // <created>2017-04-27</creation-date>
-// <modified>2017-04-27 15:44</modify-date>
+// <modified>2017-04-28 14:44</modify-date>
 
 using System;
+using System.Collections.Generic;
 using PlayerControls._sys.engines;
 
 
@@ -51,7 +52,7 @@ namespace PlayerControls.Interfaces.ringEngine
 
 		#region Abstract
 		/// <summary>The <see cref="RingItems" /> inside the ring which are meant to be played.</summary>
-		TItem[] RingItems { get; }
+		IEnumerable<TItem> RingItems { get; }
 		#endregion
 
 
