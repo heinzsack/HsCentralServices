@@ -6,6 +6,7 @@
 // <modified>2017-04-28 16:07</modify-date>
 
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -19,6 +20,7 @@ using PlayerControls.Interfaces.ringEngine;
 using PlayerControls.Themes;
 using PlayerControls.Themes.editors;
 using PlayerControls.Themes.windows;
+using PlayerControls._sys.extensions.tools;
 
 
 
@@ -90,17 +92,17 @@ namespace PlayerControls._sys.extensions
 		/// <summary>Shows the <paramref name="duratedFrames" /> in a new <see cref="Window" /> (ShowDialog blocks further program code).</summary>
 		/// <param name="duratedFrames">The durated frames.</param>
 		/// <param name="title">The title of the <see cref="Window" />.</param>
-		public static void ShowDialog(this IDuratedFrame[] duratedFrames, string title = null)
+		public static void ShowDialog(this IEnumerable<IDuratedFrame> duratedFrames, string title = null)
 		{
-			new DuratedFramesPresenterWindow(title.IsNullOrEmpty() ? "Page View" : title, duratedFrames).ShowDialog();
+			new RingFramePresenterWindow(title.IsNullOrEmpty() ? "Page View" : title, duratedFrames.ToRing(DateTime.Now)).ShowDialog();
 		}
 
-		/// <summary>Shows the <paramref name="scheduledFrames" /> in a new <see cref="Window" /> (ShowDialog blocks further program code).</summary>
-		/// <param name="scheduledFrames">The scheduled frames.</param>
+		/// <summary>Shows the <paramref name="ring" /> in a new <see cref="Window" /> (ShowDialog blocks further program code).</summary>
+		/// <param name="ring">The <see cref="IFrameRing"/>.</param>
 		/// <param name="title">The title of the <see cref="Window" />.</param>
-		public static void ShowDialog(this IRing<IFrameRingEntry> scheduledFrames, string title = null)
+		public static void ShowDialog(this IFrameRing ring, string title = null)
 		{
-			new RingFramePresenterWindow(title.IsNullOrEmpty() ? "Page View" : title, scheduledFrames).ShowDialog();
+			new RingFramePresenterWindow(title.IsNullOrEmpty() ? "Page View" : title, ring).ShowDialog();
 		}
 
 

@@ -73,9 +73,6 @@
     <Compile Include="Themes\FramePresenter.xaml.cs">
       <DependentUpon>FramePresenter.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Themes\windows\DuratedFramesPresenterWindow.xaml.cs">
-      <DependentUpon>DuratedFramesPresenterWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Themes\windows\FramePresenterWindow.xaml.cs">
       <DependentUpon>FramePresenterWindow.xaml</DependentUpon>
     </Compile>
@@ -116,9 +113,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <Compile Include="Themes\DuratedFramePresenter.xaml.cs">
-      <DependentUpon>DuratedFramePresenter.xaml</DependentUpon>
     </Compile>
     <Compile Include="Themes\_components\RelativeMargin_To_AbsoluteMargin.cs" />
     <Compile Include="Themes\FrameRingPresenter.xaml.cs">
@@ -176,17 +170,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Themes\windows\DuratedFramesPresenterWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Themes\windows\FramePresenterWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Themes\DuratedFramePresenter.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Themes\FrameRingPresenter.xaml">
       <Generator>MSBuild:Compile</Generator>
