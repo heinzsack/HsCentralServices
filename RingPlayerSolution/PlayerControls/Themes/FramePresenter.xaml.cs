@@ -3,18 +3,15 @@
 // <email>christian@sack.at</email>
 // <website>christian.sack.at</website>
 // <created>2017-01-28</creation-date>
-// <modified>2017-04-26 21:40</modify-date>
+// <modified>2017-04-29 11:20</modify-date>
 
 using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Media;
 using CsWpfBase.Ev.Public.Extensions;
-using PlayerControls.Interfaces;
 using PlayerControls.Interfaces.presentation.FrameItems;
 using PlayerControls.Themes._components;
-using PlayerControls._sys.pocos;
 using PlayerControls._sys.pocos.presentation;
 
 
@@ -45,15 +42,6 @@ namespace PlayerControls.Themes
 																																				DefaultValue = default(IFrame),
 																																				DefaultUpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
 																																			});
-		#endregion
-
-
-		#region DP Changed
-		private void ItemDpChanged(IFrame oldValue, IFrame newValue)
-		{
-			_videosStarted = false;
-			_animationsStarted = false;
-		}
 		#endregion
 
 
@@ -91,6 +79,15 @@ namespace PlayerControls.Themes
 			get => (bool) GetValue(IsDiagnosticProperty);
 			set => SetValue(IsDiagnosticProperty, value);
 		}
+
+
+		#region DP Changed
+		private void ItemDpChanged(IFrame oldValue, IFrame newValue)
+		{
+			_videosStarted = false;
+			_animationsStarted = false;
+		}
+		#endregion
 
 
 		/// <summary>

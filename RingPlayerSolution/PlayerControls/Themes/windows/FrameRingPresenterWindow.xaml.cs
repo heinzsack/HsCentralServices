@@ -20,9 +20,9 @@ using PlayerControls.Interfaces.ringEngine;
 namespace PlayerControls.Themes.windows
 {
 	/// <summary>Interaction logic for DuratedFramesPresenterWindow.xaml</summary>
-	internal partial class RingFramePresenterWindow
+	internal partial class FrameRingPresenterWindow
 	{
-		public RingFramePresenterWindow(string title, IRing<IFrameRingEntry> itemsSource)
+		public FrameRingPresenterWindow(string title, IRing<IFrameRingEntry> itemsSource)
 		{
 			Owner = Application.Current.Windows.OfType<Window>().FirstOrDefault(x => !Equals(x, this) && x.IsFocused);
 			if (Owner != null)
@@ -35,7 +35,7 @@ namespace PlayerControls.Themes.windows
 			Title = title;
 			Presenter.Ring = itemsSource;
 
-			CsGlobal.Wpf.Storage.Window.Handle(this, $"{nameof(RingFramePresenterWindow)}");
+			CsGlobal.Wpf.Storage.Window.Handle(this, $"{nameof(FrameRingPresenterWindow)}");
 		}
 	}
 }

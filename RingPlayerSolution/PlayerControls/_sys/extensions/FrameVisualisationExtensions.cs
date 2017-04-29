@@ -94,7 +94,7 @@ namespace PlayerControls._sys.extensions
 		/// <param name="title">The title of the <see cref="Window" />.</param>
 		public static void ShowDialog(this IEnumerable<IDuratedFrame> duratedFrames, string title = null)
 		{
-			new RingFramePresenterWindow(title.IsNullOrEmpty() ? "Page View" : title, duratedFrames.ToRing(DateTime.Now)).ShowDialog();
+			new FrameRingPresenterWindow(title.IsNullOrEmpty() ? "Page View" : title, duratedFrames.ToRing(DateTime.Now)).ShowDialog();
 		}
 
 		/// <summary>Shows the <paramref name="ring" /> in a new <see cref="Window" /> (ShowDialog blocks further program code).</summary>
@@ -102,7 +102,7 @@ namespace PlayerControls._sys.extensions
 		/// <param name="title">The title of the <see cref="Window" />.</param>
 		public static void ShowDialog(this IFrameRing ring, string title = null)
 		{
-			new RingFramePresenterWindow(title.IsNullOrEmpty() ? "Page View" : title, ring).ShowDialog();
+			new FrameRingPresenterWindow(title.IsNullOrEmpty() ? "Page View" : title, ring).ShowDialog();
 		}
 
 

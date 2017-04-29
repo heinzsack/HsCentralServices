@@ -54,8 +54,8 @@
     <Compile Include="Interfaces\audio\IAudioRing.cs" />
     <Compile Include="Interfaces\audio\IAudioRingEntry.cs" />
     <Compile Include="Interfaces\presentation\IFrameRing.cs" />
-    <Compile Include="Themes\windows\RingFramePresenterWindow.xaml.cs">
-      <DependentUpon>RingFramePresenterWindow.xaml</DependentUpon>
+    <Compile Include="Themes\windows\FrameRingPresenterWindow.xaml.cs">
+      <DependentUpon>FrameRingPresenterWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Themes\editors\components\ControlAdorner.cs" />
     <Compile Include="Themes\editors\components\IsMouseOverAdorner.xaml.cs">
@@ -150,7 +150,7 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Themes\windows\RingFramePresenterWindow.xaml">
+    <Page Include="Themes\windows\FrameRingPresenterWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
