@@ -13,7 +13,7 @@ using PlayerControls.Interfaces.ringEngine;
 
 
 
-namespace PlayerControls._sys.extensions
+namespace PlayerControls._sys.extensions.ring
 {
 	/// <summary>Contains ring specifications.</summary>
 	public class RingEntrySpecification<TItem> where TItem : IRingEntry

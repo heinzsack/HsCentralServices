@@ -16,7 +16,6 @@ using PlayerControls.Interfaces.presentation.FrameItems;
 namespace PlayerControls.Interfaces.presentation
 {
 	/// <summary>Used when <see cref="IFrame" />s need to be presented in a circular way with relative timings.</summary>
-	[Obsolete("Das interface IDuratedFrame ist obsolet. Stattdessen sollten nur noch Ringe verwendet werden.")]
 	public interface IDuratedFrame
 	{
 		#region Abstract

@@ -2,8 +2,8 @@
 // <author>Christian Sack</author>
 // <email>christian@sack.at</email>
 // <website>christian.sack.at</website>
-// <created>2017-04-28</creation-date>
-// <modified>2017-04-29 09:40</modify-date>
+// <created>2017-04-29</creation-date>
+// <modified>2017-04-29 11:10</modify-date>
 
 using System;
 using System.Collections.Generic;
@@ -12,6 +12,8 @@ using CsWpfBase.Ev.Public.Extensions;
 using PlayerControls.Interfaces.presentation;
 using PlayerControls.Interfaces.presentation.FrameItems;
 using PlayerControls.Interfaces.presentation._base;
+using PlayerControls.Interfaces.ringEngine;
+using PlayerControls._sys.extensions.tools;
 using PlayerControls._sys.pocos.presentation;
 
 
@@ -19,10 +21,29 @@ using PlayerControls._sys.pocos.presentation;
 
 
 
-namespace PlayerControls._sys.extensions
+namespace PlayerControls._sys.extensions.poco
 {
-	public static class PocoExtensions
+	// ReSharper disable once InconsistentNaming
+	public static class PresentationExtensions
 	{
+
+
+		/// <summary>
+		///     Converts the <see cref="IEnumerable{IDuratedFrame}" /> into a <see cref="PocoFrameRing" /> which is serializeable to
+		///     json or binary.
+		/// </summary>
+		/// <param name="source">The <see cref="IEnumerable{IDuratedFrame}" /> to convert.</param>
+		/// <param name="startTime">
+		///     The time where the <see cref="IFrameRingEntry.RingEntryStartTime" /> of value '
+		///     <see cref="TimeSpan.Zero" />' is located at. If you have a <paramref name="startTime" /> at one o clock, the
+		///     <see cref="IFrameRingEntry" /> with the <see cref="IFrameRingEntry.RingEntryStartTime" /> of <see cref="TimeSpan.Zero" />
+		///     will begin at one o clock.
+		/// </param>
+		public static PocoFrameRing ToPoco(this IEnumerable<IDuratedFrame> source, DateTime startTime)
+		{
+			return source.ToRing(startTime).ToPoco(new Context());
+		}
+
 		/// <summary>Converts the <see cref="IFrameRing" /> into a <see cref="PocoFrameRing" /> which is serializeable to json or binary.</summary>
 		/// <param name="source">The <see cref="IFrameRing" /> to convert.</param>
 		public static PocoFrameRing ToPoco(this IFrameRing source)
@@ -37,9 +58,11 @@ namespace PlayerControls._sys.extensions
 		/// <param name="source">The <see cref="IEnumerable{IFrameRingEntry}" /> to convert.</param>
 		/// <param name="startTime">
 		///     The time where the <see cref="IFrameRingEntry.RingEntryStartTime" /> of value '
-		///     <see cref="TimeSpan.Zero" />' is started at.
+		///     <see cref="TimeSpan.Zero" />' is located at. If you have a <paramref name="startTime" /> at one o clock, the
+		///     <see cref="IFrameRingEntry" /> with the <see cref="IRingEntry.RingEntryStartTime" /> of <see cref="TimeSpan.Zero" /> will
+		///     begin at one o clock.
 		/// </param>
-		/// <param name="duration">The total length of the ring.</param>
+		/// <param name="duration">The total length of the <see cref="IFrameRing" />.</param>
 		public static PocoFrameRing ToPoco(this IEnumerable<IFrameRingEntry> source, DateTime startTime, TimeSpan duration)
 		{
 			return source.ToPoco(startTime, duration, new Context());
@@ -88,6 +111,7 @@ namespace PlayerControls._sys.extensions
 		{
 			return source.ToPoco(new Context());
 		}
+
 
 
 		private static PocoFrameRing ToPoco(this IFrameRing source, Context context)

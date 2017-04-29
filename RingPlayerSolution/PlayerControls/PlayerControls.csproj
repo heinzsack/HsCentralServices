@@ -89,7 +89,8 @@
     <Compile Include="_sys\exceptions\RingEngineException_InvalidArgument.cs" />
     <Compile Include="_sys\exceptions\RingEngineException_InvalidRing.cs" />
     <Compile Include="_sys\extensions\AudioExtensions.cs" />
-    <Compile Include="_sys\extensions\FrameExtensions.cs" />
+    <Compile Include="_sys\extensions\poco\AudioExtensions.cs" />
+    <Compile Include="_sys\extensions\FrameVisualisationExtensions.cs" />
     <Compile Include="Interfaces\presentation\_base\IFrameItem.cs" />
     <Compile Include="Interfaces\presentation\IDuratedFrame.cs" />
     <Compile Include="Interfaces\presentation\FrameItems\IFrameImage.cs" />
@@ -99,7 +100,8 @@
     <Compile Include="Interfaces\presentation\FrameItems\IFrameVideo.cs" />
     <Compile Include="Interfaces\presentation\Transistions\IDoubleTransition.cs" />
     <Compile Include="Interfaces\presentation\_base\ITransition.cs" />
-    <Compile Include="_sys\extensions\PocoExtensions.cs" />
+    <Compile Include="_sys\extensions\poco\PresentationExtensions.cs" />
+    <Compile Include="_sys\extensions\tools\UsefulFrameExtensions.cs" />
     <Compile Include="_sys\extensions\TransitionExtensions.cs" />
     <Compile Include="Interfaces\presentation\Transistions\TransitionTypes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -125,8 +127,8 @@
     <Compile Include="Themes\_components\FrameItemContainer.xaml.cs">
       <DependentUpon>FrameItemContainer.xaml</DependentUpon>
     </Compile>
-    <Compile Include="_sys\extensions\RingEntrySpecification.cs" />
-    <Compile Include="_sys\extensions\RingExtensions.cs" />
+    <Compile Include="_sys\extensions\ring\RingEntrySpecification.cs" />
+    <Compile Include="_sys\extensions\ring\RingExtensions.cs" />
     <Compile Include="_sys\pocos\audio\PocoAudioRing.cs" />
     <Compile Include="_sys\pocos\audio\PocoAudioRingEntry.cs" />
     <Compile Include="_sys\pocos\presentation\PocoDuratedFrame.cs" />

@@ -14,7 +14,7 @@ using PlayerControls._sys.exceptions;
 
 
 
-namespace PlayerControls._sys.extensions
+namespace PlayerControls._sys.extensions.ring
 {
 	public static class RingExtensions
 	{

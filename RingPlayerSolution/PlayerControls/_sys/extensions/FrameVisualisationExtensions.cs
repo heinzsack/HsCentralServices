@@ -27,7 +27,7 @@ using PlayerControls.Themes.windows;
 
 namespace PlayerControls._sys.extensions
 {
-	public static class FrameExtensions
+	public static class FrameVisualisationExtensions
 	{
 		private static StaTaskScheduler _staTaskScheduler;
 
@@ -102,6 +102,8 @@ namespace PlayerControls._sys.extensions
 		{
 			new RingFramePresenterWindow(title.IsNullOrEmpty() ? "Page View" : title, scheduledFrames).ShowDialog();
 		}
+
+
 	}
 
 
