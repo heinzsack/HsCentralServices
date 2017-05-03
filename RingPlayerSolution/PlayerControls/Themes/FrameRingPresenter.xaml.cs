@@ -3,14 +3,16 @@
 // <email>christian@sack.at</email>
 // <website>christian.sack.at</website>
 // <created>2017-01-28</creation-date>
-// <modified>2017-04-27 19:08</modify-date>
+// <modified>2017-04-29 14:25</modify-date>
 
 using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using CsWpfBase.Ev.Public.Extensions;
+using CsWpfBase.Global;
 using PlayerControls.Interfaces.presentation;
 using PlayerControls.Interfaces.ringEngine;
 using PlayerControls._sys.engines;
@@ -39,18 +41,20 @@ namespace PlayerControls.Themes
 																																												});
 
 		/// <summary>The <see cref="DependencyProperty" /> for the <see cref="Ring" /> property.</summary>
-		public static readonly DependencyProperty RingProperty = DependencyProperty.Register("Ring", typeof(IRing<IFrameRingEntry>), typeof(FrameRingPresenter), new FrameworkPropertyMetadata
-																																								{
-																																									BindsTwoWayByDefault = true,
-																																									//PropertyChangedCallback = (o, args) => ((ScheduledFramePresenter)o).RingDpChanged((IRing<IScheduledFrame>)args.OldValue, (IRing<IScheduledFrame>)args.NewValue),
-																																									DefaultValue = default(IRing<IFrameRingEntry>),
-																																									DefaultUpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
-																																								});
+		public static readonly DependencyProperty RingProperty = DependencyProperty.Register("Ring", typeof(IFrameRing), typeof(FrameRingPresenter), new FrameworkPropertyMetadata
+																																					{
+																																						BindsTwoWayByDefault = true,
+																																						PropertyChangedCallback = (o, args) => ((FrameRingPresenter) o).RingDpChanged((IFrameRing) args.OldValue, (IFrameRing) args.NewValue),
+																																						DefaultValue = default(IFrameRing),
+																																						DefaultUpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
+																																					});
 		#endregion
 
 
-		/// <summary>The amount of time before the frame changes the videos of the next frame will be started.</summary>
+		/// <summary>The amount of time before the <see cref="IFrameRingEntry"/> changes the videos of the next <see cref="IFrameRingEntry"/> will be started.</summary>
 		private static readonly TimeSpan VideoStartOffset = TimeSpan.FromMilliseconds(1000);
+		/// <summary>The amount of time before the <see cref="IFrameRingEntry"/> changes the current <see cref="IFrameRingEntry"/> will be faded out.</summary>
+		private static readonly TimeSpan FadeOutOffset = TimeSpan.FromMilliseconds(350);
 
 		/// <summary>Returns a prefilled <see cref="IFrameRingEntry" /> array.</summary>
 		public static IRing<IFrameRingEntry> GetMock(DateTime startTime, TimeSpan duration)
@@ -74,7 +78,7 @@ namespace PlayerControls.Themes
 		///     Used whenever a <see cref="IFrameRingEntry" /> is added to the <see cref="RingEngine{TItem}.Buffer" /> and has a
 		///     <see cref="IFrameRingEntry.RingEntryInterrupt" /> applied.
 		/// </summary>
-		public event Delegate0 InterruptFrameAvailable;
+		public event RingEngine<IFrameRingEntry>.DelegateInterrupt InterruptFrameAvailable;
 		#endregion
 
 
@@ -85,8 +89,7 @@ namespace PlayerControls.Themes
 			IsVisibleChanged += VisibleDpChanged;
 			RingEngine = new RingEngine<IFrameRingEntry>();
 			RingEngine.CurrentEntryChanged += NextRingElement;
-			RingEngine.BufferedEntryAdded += BufferElementAdded;
-			SetBinding(RingProperty, new Binding($"{nameof(RingEngine)}.{nameof(RingEngine.Ring)}") {Source = this, Mode = BindingMode.TwoWay});
+			RingEngine.InterruptEntryAvailable += args => InterruptFrameAvailable?.Invoke(args);
 
 			InitializeComponent();
 
@@ -94,9 +97,9 @@ namespace PlayerControls.Themes
 		}
 
 		/// <summary>The <see cref="IRing" /> which is meant to be played.</summary>
-		public IRing<IFrameRingEntry> Ring
+		public IFrameRing Ring
 		{
-			get => (IRing<IFrameRingEntry>) GetValue(RingProperty);
+			get => (IFrameRing) GetValue(RingProperty);
 			set => SetValue(RingProperty, value);
 		}
 
@@ -109,6 +112,11 @@ namespace PlayerControls.Themes
 
 
 		#region DP Changed
+		private void RingDpChanged(IFrameRing argsOldValue, IFrameRing argsNewValue)
+		{
+			RingEngine.Ring = argsNewValue;
+		}
+
 		private void VisibleDpChanged(object sender, DependencyPropertyChangedEventArgs args)
 		{
 			var newVal = args.NewValue as bool?;
@@ -131,15 +139,6 @@ namespace PlayerControls.Themes
 			RingEngine.Start();
 		}
 
-		/// <summary>Occurs whenever a new <see cref="IFrameRingEntry" /> is added to the <see cref="RingEngine{TItem}.Buffer" />.</summary>
-		private void BufferElementAdded(RingEngine<IFrameRingEntry>.NewBufferedElementArgs args)
-		{
-			if (args.Entry.RingEntryInterrupt.IsNullOrEmpty())
-				return;
-
-			InterruptFrameAvailable?.Invoke(args.Entry.RingEntryInterrupt, args.Entry);
-		}
-
 		/// <summary>Occurs when a new <see cref="IFrameRingEntry" /> gets visible.</summary>
 		private void NextRingElement(RingEngine<IFrameRingEntry>.CurrentEntryChangedArgs args)
 		{
@@ -151,6 +150,16 @@ namespace PlayerControls.Themes
 
 			if (Ring.RingBufferSize > 0)
 			{
+
+				//var da = new DoubleAnimation(0, FadeOutOffset, FillBehavior.Stop);
+				//var sb = new Storyboard { Duration = FadeOutOffset, BeginTime = args.Duration - FadeOutOffset, AutoReverse = false, FillBehavior = FillBehavior.Stop };
+				//sb.Children.Add(da);
+				//Storyboard.SetTarget(da, (FrameworkElement)presenter.Parent);
+				//Storyboard.SetTargetProperty(da, new PropertyPath("Opacity"));
+				//sb.Begin();
+
+
+
 				var interval = args.Duration - VideoStartOffset;
 				VideoStartTimer.Interval = interval < TimeSpan.Zero ? TimeSpan.Zero : interval;
 				VideoStartTimer.Start();
@@ -181,10 +190,6 @@ namespace PlayerControls.Themes
 		{
 			return ((ContentPresenter) BufferedItemsControl.ItemContainerGenerator.ContainerFromIndex(RingEngine.Buffer.Count - 2)).VisualChild_By_Condition<FramePresenter>(a => true);
 		}
-
-
-
-		public delegate void Delegate0(string interruptName, IFrameRingEntry frame);
 	}
 
 }

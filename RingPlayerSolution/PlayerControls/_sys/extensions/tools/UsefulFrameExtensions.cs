@@ -3,7 +3,7 @@
 // <email>christian@sack.at</email>
 // <website>christian.sack.at</website>
 // <created>2017-04-29</creation-date>
-// <modified>2017-04-29 11:09</modify-date>
+// <modified>2017-05-03 14:09</modify-date>
 
 using System;
 using System.Collections.Generic;
@@ -21,10 +21,8 @@ namespace PlayerControls._sys.extensions.tools
 {
 	public static class UsefulFrameExtensions
 	{
-		/// <summary>
-		///     Applies a <see cref="IFrameRing" /> around the <paramref name="duratedFrames" />. This helps presenting the
-		///     <paramref name="duratedFrames" />.
-		/// </summary>
+		/// <summary>Applies a <see cref="IFrameRing" /> around the <paramref name="duratedFrames" />. This helps presenting the
+		///     <paramref name="duratedFrames" />.</summary>
 		public static IFrameRing ToRing(this IEnumerable<IDuratedFrame> duratedFrames, DateTime startTime)
 		{
 			var relativeStartTime = TimeSpan.Zero;
@@ -33,12 +31,11 @@ namespace PlayerControls._sys.extensions.tools
 			{
 				var entry = new RingSimulation.Entry
 							{
-								Frame = duratedFrame.Frame,
+								RingEntryFrame = duratedFrame.DuratedFrame,
 								RingEntryStartTime = relativeStartTime,
-								RingEntryInterrupt = null,
 							};
 				resultList.Add(entry);
-				relativeStartTime = relativeStartTime.Add(duratedFrame.FrameDuration.TimeSpan);
+				relativeStartTime = relativeStartTime.Add(duratedFrame.DuratedFrameDuration.TimeSpan);
 			}
 
 			return new RingSimulation
@@ -53,16 +50,29 @@ namespace PlayerControls._sys.extensions.tools
 		/// <summary>Analyses the <paramref name="ring" />.</summary>
 		public static FrameAnalysis Analyse(this IFrameRing ring)
 		{
-			FrameAnalysis analysis0 = null;
-			foreach (var frameAnalysis in ring.RingItems.Select(x => x.Frame).Distinct().Select(x => x.Analyse()))
-			{
-				if (analysis0 == null)
-				{
-					analysis0 = frameAnalysis;
-					continue;
-				}
+			return ring?.RingItems?.Analyse();
+		}
+
+		/// <summary>Analyses the <paramref name="ringentries" />.</summary>
+		public static FrameAnalysis Analyse(this IEnumerable<IFrameRingEntry> ringentries)
+		{
+			return ringentries?.Select(x => x.RingEntryFrame).Analyse();
+		}
+
+		/// <summary>Analyses the <paramref name="entries" />.</summary>
+		public static FrameAnalysis Analyse(this IEnumerable<IDuratedFrame> entries)
+		{
+			return entries?.Select(x => x.DuratedFrame).Analyse();
+		}
+
+		/// <summary>Analyses the <paramref name="frames" />.</summary>
+		public static FrameAnalysis Analyse(this IEnumerable<IFrame> frames)
+		{
+			if (frames == null)
+				return null;
+			var analysis0 = new FrameAnalysis();
+			foreach (var frameAnalysis in frames.Distinct().Select(x => x.Analyse()))
 				analysis0.Add(frameAnalysis);
-			}
 			return analysis0;
 		}
 
@@ -149,7 +159,7 @@ namespace PlayerControls._sys.extensions.tools
 					set => SetProperty(ref _ringEntryStartTime, value);
 				}
 				/// <inheritdoc />
-				public IFrame Frame
+				public IFrame RingEntryFrame
 				{
 					get => _frame;
 					set => SetProperty(ref _frame, value);

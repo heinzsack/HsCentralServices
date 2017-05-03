@@ -24,9 +24,7 @@ namespace PlayerControls.Interfaces.presentation
 
 		#region Abstract
 		/// <summary>The <see cref="IFrame" /> which should be played at the according <see cref="IRingEntry.RingEntryStartTime" />.</summary>
-		IFrame Frame { get; }
-		/// <summary>If not null this will produce a interrupt on the <see cref="FrameRingPresenter"/> which have to provide a <see cref="IFrame" />.</summary>
-		string RingEntryInterrupt { get; }
+		IFrame RingEntryFrame { get; }
 		#endregion
 
 

@@ -20,9 +20,9 @@ namespace PlayerControls.Interfaces.presentation
 	{
 		#region Abstract
 		/// <summary>The <see cref="IFrame"/> which is meant to be played.</summary>
-		IFrame Frame { get; }
-		/// <summary>The duration the <see cref="Frame" /> should be presented.</summary>
-		Duration FrameDuration { get; }
+		IFrame DuratedFrame { get; }
+		/// <summary>The duration the <see cref="DuratedFrame" /> should be presented.</summary>
+		Duration DuratedFrameDuration { get; }
 		#endregion
 	}
 }

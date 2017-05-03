@@ -6,6 +6,7 @@
 // <modified>2017-04-27 16:23</modify-date>
 
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
@@ -287,7 +288,11 @@ namespace PlayerControls.Themes.editors
 		{
 			var frame = (IFrame) ((FrameworkElement) sender).DataContext;
 			var element = frame.EditorRequestedNewImage();
-			element.FrameItemZIndex = frame.FrameChildren.OfType<IFrameItem>().Max(x => x.FrameItemZIndex) + 10;
+			if (element == null)
+				return;
+			var frameItems = frame.FrameChildren.OfType<IFrameItem>().ToArray();
+			if (frameItems.Any())
+				element.FrameItemZIndex = frameItems.Max(x => x.FrameItemZIndex) + 10;
 			SetSelectedItem(element);
 		}
 
@@ -295,7 +300,13 @@ namespace PlayerControls.Themes.editors
 		{
 			var frame = (IFrame) ((FrameworkElement) sender).DataContext;
 			var element = frame.EditorRequestedNewText();
-			element.FrameItemZIndex = frame.FrameChildren.OfType<IFrameItem>().Max(x => x.FrameItemZIndex) + 10;
+			if (element == null)
+				return;
+			var frameItems = frame.FrameChildren.OfType<IFrameItem>().ToArray();
+			if (frameItems.Any())
+				element.FrameItemZIndex = frameItems.Max(x => x.FrameItemZIndex) + 10;
+
+
 			SetSelectedItem(element);
 		}
 
@@ -303,7 +314,13 @@ namespace PlayerControls.Themes.editors
 		{
 			var frame = (IFrame) ((FrameworkElement) sender).DataContext;
 			var element = frame.EditorRequestedNewVideo();
-			element.FrameItemZIndex = frame.FrameChildren.OfType<IFrameItem>().Max(x => x.FrameItemZIndex) + 10;
+			if (element == null)
+				return;
+			var frameItems = frame.FrameChildren.OfType<IFrameItem>().ToArray();
+			if (frameItems.Any())
+				element.FrameItemZIndex = frameItems.Max(x => x.FrameItemZIndex) + 10;
+
+
 			SetSelectedItem(element);
 		}
 
@@ -311,7 +328,11 @@ namespace PlayerControls.Themes.editors
 		{
 			var frame = (IFrame) ((FrameworkElement) sender).DataContext;
 			var element = frame.EditorRequestedNewFrame();
-			element.FrameItemZIndex = frame.FrameChildren.OfType<IFrameItem>().Max(x => x.FrameItemZIndex) + 10;
+			if (element == null)
+				return;
+			var frameItems = frame.FrameChildren.OfType<IFrameItem>().ToArray();
+			if (frameItems.Any())
+				element.FrameItemZIndex = frameItems.Max(x => x.FrameItemZIndex) + 10;
 			SetSelectedItem(element);
 		}
 

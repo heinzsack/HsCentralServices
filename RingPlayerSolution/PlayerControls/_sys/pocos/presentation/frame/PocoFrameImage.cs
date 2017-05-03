@@ -2,8 +2,8 @@
 // <author>Christian Sack</author>
 // <email>christian@sack.at</email>
 // <website>christian.sack.at</website>
-// <created>2017-04-27</creation-date>
-// <modified>2017-04-28 16:12</modify-date>
+// <created>2017-04-29</creation-date>
+// <modified>2017-05-03 17:20</modify-date>
 
 using System;
 using System.Windows;
@@ -19,7 +19,7 @@ using PlayerControls.Interfaces.presentation.FrameItems;
 
 
 
-namespace PlayerControls._sys.pocos.presentation
+namespace PlayerControls._sys.pocos.presentation.frame
 {
 	[JsonObject(MemberSerialization.OptIn)]
 	[Serializable]
@@ -42,7 +42,10 @@ namespace PlayerControls._sys.pocos.presentation
 		}
 
 
-		///<summary>The identifier can be used for identifing the <see cref="FrameItemImage"/> inside the <see cref="ImageRequested"/> event.</summary>
+		/// <summary>
+		///     The identifier can be used for identifing the <see cref="FrameItemImage" /> inside the <see cref="ImageRequested" />
+		///     event.
+		/// </summary>
 		[JsonProperty("Id")]
 		public Guid? FrameItemImageId
 		{
@@ -107,6 +110,16 @@ namespace PlayerControls._sys.pocos.presentation
 				return Mocking.SetRightBottom(new PocoFrameImage {FrameItemImageId = Guid.Empty});
 			}
 
+			public static void HandleEvent()
+			{
+				SampleImage();
+				ImageRequested += args =>
+				{
+					if (args.PocoImage.FrameItemImageId == Guid.Empty)
+						args.Result = SampleImage();
+				};
+			}
+
 			private static BitmapSource SampleImage()
 			{
 				if (_sampleImage != null)
@@ -122,16 +135,6 @@ namespace PlayerControls._sys.pocos.presentation
 								}.ConvertTo_Image();
 				_sampleImage.Freeze();
 				return _sampleImage;
-			}
-
-			static Mocks()
-			{
-				SampleImage();
-				ImageRequested += args =>
-				{
-					if (args.PocoImage.FrameItemImageId == Guid.Empty)
-						args.Result = SampleImage();
-				};
 			}
 		}
 	}

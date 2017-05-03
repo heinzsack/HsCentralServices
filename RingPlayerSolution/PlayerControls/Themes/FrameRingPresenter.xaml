@@ -16,7 +16,7 @@
 		<ItemsControl.ItemTemplate>
 			<DataTemplate DataType="{x:Type presentation:IFrameRingEntry}">
                 <Border Background="{Binding ElementName=UserControl, Path=Background}">
-                    <themes:FramePresenter Item="{Binding Path=Frame}" />
+                    <themes:FramePresenter Item="{Binding Path=RingEntryFrame}" />
                 </Border>
             </DataTemplate>
 		</ItemsControl.ItemTemplate>

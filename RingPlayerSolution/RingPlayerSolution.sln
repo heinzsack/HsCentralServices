@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26403.7
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RingPlayer24", "RingPlayer24\RingPlayer24.csproj", "{8E049C75-2182-458F-9338-83C257D838CA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayerControlsTest", "PlayerControlsTest\PlayerControlsTest.csproj", "{8E049C75-2182-458F-9338-83C257D838CA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayerControls", "PlayerControls\PlayerControls.csproj", "{DF0322D9-BF49-4245-9001-00060FF7A8CA}"
 EndProject

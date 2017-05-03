@@ -18,7 +18,7 @@ using PlayerControls.Interfaces.presentation.FrameItems;
 
 
 
-namespace PlayerControls._sys.pocos.presentation
+namespace PlayerControls._sys.pocos.presentation.frame
 {
 	[JsonObject(MemberSerialization.OptIn)]
 	[Serializable]

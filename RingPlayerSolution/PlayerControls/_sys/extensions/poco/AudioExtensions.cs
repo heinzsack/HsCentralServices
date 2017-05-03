@@ -25,7 +25,7 @@ namespace PlayerControls._sys.extensions.poco
 		/// <param name="source">The <see cref="IAudioRing" /> to convert.</param>
 		public static PocoAudioRing ToPoco(this IAudioRing source)
 		{
-			return source.ToPoco(new Context());
+			return source.ToPoco(new ConversionContext());
 		}
 
 		/// <summary>
@@ -35,7 +35,7 @@ namespace PlayerControls._sys.extensions.poco
 		/// <param name="source">The <see cref="IAudioRingEntry" /> to convert.</param>
 		public static PocoAudioRingEntry ToPoco(this IAudioRingEntry source)
 		{
-			return source.ToPoco(new Context());
+			return source.ToPoco(new ConversionContext());
 		}
 
 		/// <summary>
@@ -52,34 +52,36 @@ namespace PlayerControls._sys.extensions.poco
 		/// <param name="duration">The total length of the <see cref="IAudioRing" />.</param>
 		public static PocoAudioRing ToPoco(this IEnumerable<IAudioRingEntry> source, DateTime startTime, TimeSpan duration)
 		{
-			return source.ToPoco(startTime, duration, new Context());
+			return source.ToPoco(startTime, duration, new ConversionContext());
 		}
 
-		private static PocoAudioRing ToPoco(this IAudioRing source, Context context)
+		private static PocoAudioRing ToPoco(this IAudioRing source, ConversionContext context)
 		{
-			if (source is PocoAudioRing)
-				return (PocoAudioRing) source;
+			var poco = source as PocoAudioRing;
+			if (poco != null || context.GetOrCreate(source, () => new PocoAudioRing(), out poco))
+				return poco;
 
-			var poco = context.GetOrCreate(source, () => new PocoAudioRing());
+
+
 			source.CopyTo(poco, nameof(IAudioRing.RingItems));
 			poco.PocoRingItems = source.RingItems.Select(entry => ToPoco(entry, context)).ToList();
 
 			return poco;
 		}
 
-		private static PocoAudioRingEntry ToPoco(this IAudioRingEntry source, Context context)
+		private static PocoAudioRingEntry ToPoco(this IAudioRingEntry source, ConversionContext context)
 		{
-			if (source is PocoAudioRingEntry)
-				return (PocoAudioRingEntry) source;
+			var poco = source as PocoAudioRingEntry;
+			if (poco != null || context.GetOrCreate(source, () => new PocoAudioRingEntry(), out poco))
+				return poco;
 
 
-			var poco = context.GetOrCreate(source, () => new PocoAudioRingEntry());
-			source.CopyTo(poco, nameof(IAudioRingEntry.AudioFiles));
-			poco.AudioFilesList = source.AudioFiles.ToList();
+			source.CopyTo(poco, nameof(IAudioRingEntry.AudioFiles), nameof(IAudioRingEntry.AudioIds));
+			poco.AudioGuidList = source.AudioIds.ToList();
 			return poco;
 		}
 
-		private static PocoAudioRing ToPoco(this IEnumerable<IAudioRingEntry> source, DateTime startTime, TimeSpan duration, Context context)
+		private static PocoAudioRing ToPoco(this IEnumerable<IAudioRingEntry> source, DateTime startTime, TimeSpan duration, ConversionContext context)
 		{
 			return new PocoAudioRing
 					{
@@ -92,20 +94,6 @@ namespace PlayerControls._sys.extensions.poco
 
 
 
-		private class Context
-		{
-			private Dictionary<object, object> ConvertedObjects { get; } = new Dictionary<object, object>();
-
-			public TType GetOrCreate<TType>(object o, Func<TType> createFunc)
-			{
-				object val;
-				if (ConvertedObjects.TryGetValue(o, out val))
-					return (TType) val;
-
-				var t = createFunc();
-				ConvertedObjects.Add(o, t);
-				return t;
-			}
-		}
 	}
+
 }

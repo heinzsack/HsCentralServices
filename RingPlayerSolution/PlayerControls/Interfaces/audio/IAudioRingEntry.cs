@@ -24,8 +24,8 @@ namespace PlayerControls.Interfaces.audio
 		#region Abstract
 		/// <summary>The audio files which are meant to be played.</summary>
 		IEnumerable<string> AudioFiles { get; }
-		/// <summary>If true the audio files will be randomized.</summary>
-		bool AudioRandomize { get; }
+		/// <summary>The audio ids which are meant to be played.</summary>
+		IEnumerable<Guid> AudioIds { get; }
 		#endregion
 
 

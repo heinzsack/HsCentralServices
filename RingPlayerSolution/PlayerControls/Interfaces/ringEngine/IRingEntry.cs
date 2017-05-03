@@ -6,6 +6,7 @@
 // <modified>2017-04-27 15:42</modify-date>
 
 using System;
+using PlayerControls._sys.engines;
 
 
 
@@ -22,6 +23,8 @@ namespace PlayerControls.Interfaces.ringEngine
 		#region Abstract
 		/// <summary>The start time of the <see cref="IRingEntry" /> inside a <see cref="IRing" />.</summary>
 		TimeSpan RingEntryStartTime { get; }
+		/// <summary>If not null this will produce a interrupt while buffering inside the <see cref="RingEngine{TItem}"/>.</summary>
+		string RingEntryInterrupt { get; }
 		#endregion
 
 

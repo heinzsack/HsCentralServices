@@ -11,7 +11,6 @@ using System.Windows.Media;
 using CsWpfBase.Ev.Objects;
 using CsWpfBase.Ev.Public.Extensions;
 using Newtonsoft.Json;
-using PlayerControls.Interfaces.presentation;
 using PlayerControls.Interfaces.presentation._base;
 
 
@@ -19,7 +18,7 @@ using PlayerControls.Interfaces.presentation._base;
 
 
 
-namespace PlayerControls._sys.pocos.presentation
+namespace PlayerControls._sys.pocos.presentation.frame
 {
 	[JsonObject(MemberSerialization.OptIn)]
 	[Serializable]
@@ -104,7 +103,7 @@ namespace PlayerControls._sys.pocos.presentation
 		}
 
 
-		public static class Mocking
+		protected static class Mocking
 		{
 			public static TItemType SetLeftTop<TItemType>(TItemType item) where TItemType:PocoFrameItem
 			{

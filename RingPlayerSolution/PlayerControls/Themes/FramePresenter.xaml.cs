@@ -13,6 +13,7 @@ using CsWpfBase.Ev.Public.Extensions;
 using PlayerControls.Interfaces.presentation.FrameItems;
 using PlayerControls.Themes._components;
 using PlayerControls._sys.pocos.presentation;
+using PlayerControls._sys.pocos.presentation.frame;
 
 
 

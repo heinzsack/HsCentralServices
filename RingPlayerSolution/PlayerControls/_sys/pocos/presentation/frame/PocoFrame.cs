@@ -13,7 +13,6 @@ using CsWpfBase.Ev.Public.Extensions;
 using Newtonsoft.Json;
 using PlayerControls.Interfaces.presentation.FrameItems;
 using PlayerControls.Interfaces.presentation._base;
-using PlayerControls._sys.extensions;
 using PlayerControls._sys.extensions.poco;
 
 
@@ -21,7 +20,7 @@ using PlayerControls._sys.extensions.poco;
 
 
 
-namespace PlayerControls._sys.pocos.presentation
+namespace PlayerControls._sys.pocos.presentation.frame
 {
 	[JsonObject(MemberSerialization.OptIn)]
 	[Serializable]
@@ -94,25 +93,33 @@ namespace PlayerControls._sys.pocos.presentation
 		/// <inheritdoc />
 		public IFrameText EditorRequestedNewText()
 		{
-			return new PocoFrameText();
+			var newText = new PocoFrameText();
+			Texts.Add(newText);
+			return newText;
 		}
 
 		/// <inheritdoc />
 		public IFrameImage EditorRequestedNewImage()
 		{
-			return new PocoFrameImage();
+			var image = new PocoFrameImage();
+			Images.Add(image);
+			return image;
 		}
 
 		/// <inheritdoc />
 		public IFrameVideo EditorRequestedNewVideo()
 		{
-			return new PocoFrameVideo();
+			var item = new PocoFrameVideo();
+			Videos.Add(item);
+			return item;
 		}
 
 		/// <inheritdoc />
 		public IFrame EditorRequestedNewFrame()
 		{
-			return new PocoFrame();
+			var item = new PocoFrame();
+			Frames.Add(item);
+			return item;
 		}
 
 		/// <inheritdoc />

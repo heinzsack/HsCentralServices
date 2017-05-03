@@ -13,8 +13,8 @@ using PlayerControls.Interfaces.presentation;
 using PlayerControls.Interfaces.presentation.FrameItems;
 using PlayerControls.Interfaces.presentation._base;
 using PlayerControls.Interfaces.ringEngine;
-using PlayerControls._sys.extensions.tools;
 using PlayerControls._sys.pocos.presentation;
+using PlayerControls._sys.pocos.presentation.frame;
 
 
 
@@ -26,29 +26,11 @@ namespace PlayerControls._sys.extensions.poco
 	// ReSharper disable once InconsistentNaming
 	public static class PresentationExtensions
 	{
-
-
-		/// <summary>
-		///     Converts the <see cref="IEnumerable{IDuratedFrame}" /> into a <see cref="PocoFrameRing" /> which is serializeable to
-		///     json or binary.
-		/// </summary>
-		/// <param name="source">The <see cref="IEnumerable{IDuratedFrame}" /> to convert.</param>
-		/// <param name="startTime">
-		///     The time where the <see cref="IFrameRingEntry.RingEntryStartTime" /> of value '
-		///     <see cref="TimeSpan.Zero" />' is located at. If you have a <paramref name="startTime" /> at one o clock, the
-		///     <see cref="IFrameRingEntry" /> with the <see cref="IFrameRingEntry.RingEntryStartTime" /> of <see cref="TimeSpan.Zero" />
-		///     will begin at one o clock.
-		/// </param>
-		public static PocoFrameRing ToPoco(this IEnumerable<IDuratedFrame> source, DateTime startTime)
-		{
-			return source.ToRing(startTime).ToPoco(new Context());
-		}
-
 		/// <summary>Converts the <see cref="IFrameRing" /> into a <see cref="PocoFrameRing" /> which is serializeable to json or binary.</summary>
 		/// <param name="source">The <see cref="IFrameRing" /> to convert.</param>
 		public static PocoFrameRing ToPoco(this IFrameRing source)
 		{
-			return source.ToPoco(new Context());
+			return source.ToPoco(new ConversionContext());
 		}
 
 		/// <summary>
@@ -65,7 +47,7 @@ namespace PlayerControls._sys.extensions.poco
 		/// <param name="duration">The total length of the <see cref="IFrameRing" />.</param>
 		public static PocoFrameRing ToPoco(this IEnumerable<IFrameRingEntry> source, DateTime startTime, TimeSpan duration)
 		{
-			return source.ToPoco(startTime, duration, new Context());
+			return source.ToPoco(startTime, duration, new ConversionContext());
 		}
 
 		/// <summary>
@@ -75,14 +57,14 @@ namespace PlayerControls._sys.extensions.poco
 		/// <param name="source">The <see cref="IFrameRingEntry" /> to convert.</param>
 		public static PocoFrameRingEntry ToPoco(this IFrameRingEntry source)
 		{
-			return source.ToPoco(new Context());
+			return source.ToPoco(new ConversionContext());
 		}
 
 		/// <summary>Converts the <see cref="IFrame" /> into a <see cref="PocoFrame" /> which is serializeable to json or binary.</summary>
 		/// <param name="source">The <see cref="IFrame" /> to convert.</param>
 		public static PocoFrame ToPoco(this IFrame source)
 		{
-			return source.ToPoco(new Context());
+			return source.ToPoco(new ConversionContext());
 		}
 
 		/// <summary>
@@ -91,7 +73,7 @@ namespace PlayerControls._sys.extensions.poco
 		/// </summary>
 		public static PocoFrameText ToPoco(this IFrameText source)
 		{
-			return source.ToPoco(new Context());
+			return source.ToPoco(new ConversionContext());
 		}
 
 		/// <summary>
@@ -100,7 +82,7 @@ namespace PlayerControls._sys.extensions.poco
 		/// </summary>
 		public static PocoFrameImage ToPoco(this IFrameImage source)
 		{
-			return source.ToPoco(new Context());
+			return source.ToPoco(new ConversionContext());
 		}
 
 		/// <summary>
@@ -109,25 +91,29 @@ namespace PlayerControls._sys.extensions.poco
 		/// </summary>
 		public static PocoFrameVideo ToPoco(this IFrameVideo source)
 		{
-			return source.ToPoco(new Context());
+			return source.ToPoco(new ConversionContext());
 		}
 
 
 
-		private static PocoFrameRing ToPoco(this IFrameRing source, Context context)
+		private static PocoFrameRing ToPoco(this IFrameRing source, ConversionContext context)
 		{
-			if (source is PocoFrameRing)
-				return (PocoFrameRing) source;
+			if (source == null) return null;
 
-			var poco = context.GetOrCreate(source, () => new PocoFrameRing());
+			var poco = source as PocoFrameRing;
+			if (poco != null || context.GetOrCreate(source, () => new PocoFrameRing(), out poco))
+				return poco;
+
 			source.CopyTo(poco, nameof(IFrameRing.RingItems));
 			poco.PocoRingItems = source.RingItems.Select(entry => ToPoco(entry, context)).ToList();
 
 			return poco;
 		}
 
-		private static PocoFrameRing ToPoco(this IEnumerable<IFrameRingEntry> source, DateTime startTime, TimeSpan duration, Context context)
+		private static PocoFrameRing ToPoco(this IEnumerable<IFrameRingEntry> source, DateTime startTime, TimeSpan duration, ConversionContext context)
 		{
+			if (source == null) return null;
+
 			return new PocoFrameRing
 					{
 						PocoRingItems = source.Select(x => x.ToPoco(context)).ToList(),
@@ -137,23 +123,27 @@ namespace PlayerControls._sys.extensions.poco
 					};
 		}
 
-		private static PocoFrameRingEntry ToPoco(this IFrameRingEntry source, Context context)
+		private static PocoFrameRingEntry ToPoco(this IFrameRingEntry source, ConversionContext context)
 		{
-			if (source is PocoFrameRingEntry)
-				return (PocoFrameRingEntry) source;
+			if (source == null) return null;
 
-			var poco = context.GetOrCreate(source, () => new PocoFrameRingEntry());
-			source.CopyTo(poco, nameof(IFrameRingEntry.Frame));
-			poco.Frame = source.Frame.ToPoco(context);
+			var poco = source as PocoFrameRingEntry;
+			if (poco != null || context.GetOrCreate(source, () => new PocoFrameRingEntry(), out poco))
+				return poco;
+
+			source.CopyTo(poco, nameof(IFrameRingEntry.RingEntryFrame));
+			poco.RingEntryFrame = source.RingEntryFrame.ToPoco(context);
 			return poco;
 		}
 
-		private static PocoFrame ToPoco(this IFrame source, Context context)
+		private static PocoFrame ToPoco(this IFrame source, ConversionContext context)
 		{
-			if (source is PocoFrame)
-				return (PocoFrame) source;
+			if (source == null) return null;
 
-			var poco = context.GetOrCreate(source, () => new PocoFrame());
+			var poco = source as PocoFrame;
+			if (poco != null || context.GetOrCreate(source, () => new PocoFrame(), out poco))
+				return poco;
+
 			source.CopyTo(poco, nameof(IFrame.FrameChildren), nameof(IFrame.FrameTransitions));
 			foreach (IFrameItem child in source.FrameChildren)
 				if (child is IFrameText)
@@ -167,53 +157,41 @@ namespace PlayerControls._sys.extensions.poco
 			return poco;
 		}
 
-		private static PocoFrameText ToPoco(this IFrameText source, Context context)
+		private static PocoFrameText ToPoco(this IFrameText source, ConversionContext context)
 		{
-			if (source is PocoFrameText)
-				return (PocoFrameText) source;
+			if (source == null) return null;
 
-			var poco = context.GetOrCreate(source, () => new PocoFrameText());
+			var poco = source as PocoFrameText;
+			if (poco != null || context.GetOrCreate(source, () => new PocoFrameText(), out poco))
+				return poco;
+
 			source.CopyTo(poco);
 			return poco;
 		}
 
-		private static PocoFrameImage ToPoco(this IFrameImage source, Context context)
+		private static PocoFrameImage ToPoco(this IFrameImage source, ConversionContext context)
 		{
-			if (source is PocoFrameImage)
-				return (PocoFrameImage) source;
+			if (source == null) return null;
 
-			var poco = context.GetOrCreate(source, () => new PocoFrameImage());
+			var poco = source as PocoFrameImage;
+			if (poco != null || context.GetOrCreate(source, () => new PocoFrameImage(), out poco))
+				return poco;
+
 			source.CopyTo(poco, nameof(IFrameImage.FrameItemImage));
 			return poco;
 		}
 
-		private static PocoFrameVideo ToPoco(this IFrameVideo source, Context context)
+		private static PocoFrameVideo ToPoco(this IFrameVideo source, ConversionContext context)
 		{
-			if (source is PocoFrameVideo)
-				return (PocoFrameVideo) source;
+			if (source == null) return null;
+
+			var poco = source as PocoFrameVideo;
+			if (poco != null || context.GetOrCreate(source, () => new PocoFrameVideo(), out poco))
+				return poco;
 
 
-			var poco = context.GetOrCreate(source, () => new PocoFrameVideo());
 			source.CopyTo(poco, nameof(IFrameVideo.FrameItemVideoFilePath));
 			return poco;
-		}
-
-
-
-		private class Context
-		{
-			private Dictionary<object, object> ConvertedObjects { get; } = new Dictionary<object, object>();
-
-			public TType GetOrCreate<TType>(object o, Func<TType> createFunc)
-			{
-				object val;
-				if (ConvertedObjects.TryGetValue(o, out val))
-					return (TType) val;
-
-				var t = createFunc();
-				ConvertedObjects.Add(o, t);
-				return t;
-			}
 		}
 	}
 }

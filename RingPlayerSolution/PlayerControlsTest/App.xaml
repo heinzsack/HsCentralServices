@@ -1,9 +1,5 @@
-﻿<Application x:Class="RingPlayer24.App"
+﻿<Application x:Class="PlayerControlsTest.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:RingPlayer24"
              Startup="App_OnStartup">
-    <Application.Resources>
-         
-    </Application.Resources>
 </Application>

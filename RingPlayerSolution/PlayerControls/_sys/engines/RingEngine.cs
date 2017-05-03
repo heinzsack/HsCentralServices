@@ -3,15 +3,15 @@
 // <email>christian@sack.at</email>
 // <website>christian.sack.at</website>
 // <created>2017-04-27</creation-date>
-// <modified>2017-04-28 15:03</modify-date>
+// <modified>2017-05-03 12:03</modify-date>
 
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Threading;
 using CsWpfBase.Ev.Objects;
+using CsWpfBase.Ev.Public.Extensions;
 using PlayerControls.Interfaces.ringEngine;
-using PlayerControls._sys.extensions;
 using PlayerControls._sys.extensions.ring;
 
 
@@ -52,12 +52,22 @@ namespace PlayerControls._sys.engines
 		public event Delegate0 CurrentEntryChanged;
 		/// <summary>Occurs whenever a <see cref="IRingEntry" /> is added to the <see cref="Buffer" />.</summary>
 		public event Delegate1 BufferedEntryAdded;
+		/// <summary>
+		///     Occurs whenever a <see cref="IRingEntry" /> is needed to be added to the <see cref="Buffer" /> and the
+		///     <see cref="IRingEntry.RingEntryInterrupt" /> is not null or empty.
+		/// </summary>
+		public event DelegateInterrupt InterruptEntryAvailable;
 		#endregion
 
 
-		public RingEngine()
+		public RingEngine(Dispatcher dispatcher = null)
 		{
-			SwitchTimer = new DispatcherTimer();
+			if (dispatcher != null)
+				SwitchTimer = new DispatcherTimer(DispatcherPriority.Normal, dispatcher);
+			else
+				SwitchTimer = new DispatcherTimer();
+
+
 			SwitchTimer.Tick += SwitchTimerTicked;
 		}
 
@@ -70,7 +80,7 @@ namespace PlayerControls._sys.engines
 				var before = _ring;
 				if (!SetProperty(ref _ring, value))
 					return;
-				RingItems = value?.RingItems.OrderBy(x=>x.RingEntryStartTime).ToArray();
+				RingItems = value?.RingItems.OrderBy(x => x.RingEntryStartTime).ToArray();
 				OnRingChanged(before, _ring);
 			}
 		}
@@ -184,6 +194,15 @@ namespace PlayerControls._sys.engines
 		private void BufferPush(int index)
 		{
 			var ringItem = RingItems[index];
+
+			if (!ringItem.RingEntryInterrupt.IsNullOrEmpty() && InterruptEntryAvailable != null)
+			{
+				var args = new InterruptArgs(ringItem.RingEntryInterrupt);
+				InterruptEntryAvailable.Invoke(args);
+				if (args.Result != null)
+					ringItem = args.Result;
+			}
+
 			Buffer.Insert(0, ringItem);
 			BufferedEntryAdded?.Invoke(new NewBufferedElementArgs(ringItem));
 		}
@@ -260,6 +279,21 @@ namespace PlayerControls._sys.engines
 		public delegate void Delegate1(NewBufferedElementArgs args);
 
 
+
+		public delegate void DelegateInterrupt(InterruptArgs args);
+
+
+
+		public class InterruptArgs
+		{
+			internal InterruptArgs(string interruptName)
+			{
+				InterruptName = interruptName;
+			}
+
+			public string InterruptName { get; }
+			public TItem Result { get; set; }
+		}
 
 		public sealed class NewBufferedElementArgs : Base
 		{

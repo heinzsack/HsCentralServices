@@ -11,6 +11,7 @@ using CsWpfBase.Ev.Objects;
 using Newtonsoft.Json;
 using PlayerControls.Interfaces.presentation;
 using PlayerControls.Interfaces.presentation.FrameItems;
+using PlayerControls._sys.pocos.presentation.frame;
 
 
 
@@ -37,7 +38,7 @@ namespace PlayerControls._sys.pocos.presentation
 		#region Overrides/Interfaces
 		/// <inheritdoc />
 		[JsonIgnore]
-		public IFrame Frame
+		public IFrame RingEntryFrame
 		{
 			get => _frame;
 			set => SetProperty(ref _frame, (PocoFrame) value);
@@ -64,7 +65,7 @@ namespace PlayerControls._sys.pocos.presentation
 		{
 			public static List<PocoFrameRingEntry> Get(TimeSpan duration)
 			{
-				var framesPerMinute = 60;
+				var framesPerMinute = 30;
 				var secondsPerFrame = 60 / framesPerMinute;
 
 				var entries = new List<PocoFrameRingEntry>();
@@ -72,7 +73,7 @@ namespace PlayerControls._sys.pocos.presentation
 					entries.Add(new PocoFrameRingEntry
 								{
 									RingEntryStartTime = TimeSpan.FromSeconds(i * secondsPerFrame),
-									Frame = PocoFrame.Mock.FullScreenPrefilled(i.ToString()),
+									RingEntryFrame = PocoFrame.Mock.FullScreenPrefilled((i * secondsPerFrame).ToString()),
 								});
 				return entries;
 			}

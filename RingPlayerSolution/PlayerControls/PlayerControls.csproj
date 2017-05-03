@@ -97,6 +97,7 @@
     <Compile Include="Interfaces\presentation\FrameItems\IFrameVideo.cs" />
     <Compile Include="Interfaces\presentation\Transistions\IDoubleTransition.cs" />
     <Compile Include="Interfaces\presentation\_base\ITransition.cs" />
+    <Compile Include="_sys\extensions\poco\ConversionContext.cs" />
     <Compile Include="_sys\extensions\poco\PresentationExtensions.cs" />
     <Compile Include="_sys\extensions\tools\UsefulFrameExtensions.cs" />
     <Compile Include="_sys\extensions\TransitionExtensions.cs" />
@@ -125,12 +126,11 @@
     <Compile Include="_sys\extensions\ring\RingExtensions.cs" />
     <Compile Include="_sys\pocos\audio\PocoAudioRing.cs" />
     <Compile Include="_sys\pocos\audio\PocoAudioRingEntry.cs" />
-    <Compile Include="_sys\pocos\presentation\PocoDuratedFrame.cs" />
-    <Compile Include="_sys\pocos\presentation\PocoFrame.cs" />
-    <Compile Include="_sys\pocos\presentation\PocoFrameImage.cs" />
-    <Compile Include="_sys\pocos\presentation\PocoFrameItem.cs" />
-    <Compile Include="_sys\pocos\presentation\PocoFrameText.cs" />
-    <Compile Include="_sys\pocos\presentation\PocoFrameVideo.cs" />
+    <Compile Include="_sys\pocos\presentation\frame\PocoFrame.cs" />
+    <Compile Include="_sys\pocos\presentation\frame\PocoFrameImage.cs" />
+    <Compile Include="_sys\pocos\presentation\frame\PocoFrameItem.cs" />
+    <Compile Include="_sys\pocos\presentation\frame\PocoFrameText.cs" />
+    <Compile Include="_sys\pocos\presentation\frame\PocoFrameVideo.cs" />
     <Compile Include="_sys\pocos\presentation\PocoFrameRing.cs" />
     <Compile Include="_sys\pocos\presentation\PocoFrameRingEntry.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
