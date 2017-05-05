@@ -191,7 +191,13 @@ namespace PlayerControls._sys.pocos.presentation.frame
 
 		public static class Mock
 		{
-			public static PocoFrame FullScreenPrefilled(string specialText = null)
+			public static PocoFrame FullScreen_Video()
+			{
+				var fullScreen = FullScreen();
+				fullScreen.AddChild(PocoFrameVideo.Mocks.FullScreen());
+				return fullScreen;
+			}
+			public static PocoFrame FullScreen_ImageAndText(string specialText = null)
 			{
 				var fullScreen = FullScreen();
 				fullScreen.AddChild(PocoFrameImage.Mocks.LeftTop());

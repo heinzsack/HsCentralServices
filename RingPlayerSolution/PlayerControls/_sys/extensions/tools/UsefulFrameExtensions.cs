@@ -8,9 +8,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Data;
 using CsWpfBase.Ev.Objects;
 using PlayerControls.Interfaces.presentation;
 using PlayerControls.Interfaces.presentation.FrameItems;
+using PlayerControls.Interfaces.presentation._base;
 
 
 
@@ -84,18 +86,35 @@ namespace PlayerControls._sys.extensions.tools
 
 			var frameAnalysis = new FrameAnalysis();
 
+
+
+			void Inner(IFrameItem ele)
+			{
+				if (ele is IFrameText)
+					frameAnalysis.Texts.Add((IFrameText)ele);
+				else if (ele is IFrameImage)
+					frameAnalysis.Images.Add((IFrameImage)ele);
+				else if (ele is IFrameVideo)
+					frameAnalysis.Videos.Add((IFrameVideo)ele);
+				else if (ele is IFrame)
+					unprocessedFrames.Enqueue((IFrame)ele);
+			}
+
+
 			while (unprocessedFrames.Count != 0)
 			{
 				var fr = unprocessedFrames.Dequeue();
 				foreach (var child in fr.FrameChildren)
-					if (child is IFrameText)
-						frameAnalysis.Texts.Add((IFrameText) child);
-					else if (child is IFrameImage)
-						frameAnalysis.Images.Add((IFrameImage) child);
-					else if (child is IFrameVideo)
-						frameAnalysis.Videos.Add((IFrameVideo) child);
-					else if (child is IFrame)
-						unprocessedFrames.Enqueue((IFrame) child);
+				{
+					var collectionContainer = child as CollectionContainer;
+					if (collectionContainer != null)
+						foreach (var o in collectionContainer.Collection)
+						{
+							Inner((IFrameItem) o);
+						}
+					else
+						Inner((IFrameItem)child);
+				}
 			}
 
 			return frameAnalysis;

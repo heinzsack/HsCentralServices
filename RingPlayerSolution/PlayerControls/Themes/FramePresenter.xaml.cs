@@ -3,16 +3,16 @@
 // <email>christian@sack.at</email>
 // <website>christian.sack.at</website>
 // <created>2017-01-28</creation-date>
-// <modified>2017-04-29 11:20</modify-date>
+// <modified>2017-05-05 14:49</modify-date>
 
 using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using CsWpfBase.Ev.Public.Extensions;
 using PlayerControls.Interfaces.presentation.FrameItems;
 using PlayerControls.Themes._components;
-using PlayerControls._sys.pocos.presentation;
 using PlayerControls._sys.pocos.presentation.frame;
 
 
@@ -46,10 +46,13 @@ namespace PlayerControls.Themes
 		#endregion
 
 
+		const string StartedTag = "Started";
+
+
 		/// <summary>Returns a prefilled IFrame.</summary>
 		public static IFrame GetMock()
 		{
-			return PocoFrame.Mock.FullScreenPrefilled();
+			return PocoFrame.Mock.FullScreen_ImageAndText();
 		}
 
 		private bool _animationsStarted;
@@ -101,14 +104,19 @@ namespace PlayerControls.Themes
 			if (_videosStarted)
 				return;
 			_videosStarted = true;
-
 			var start = DateTime.Now;
-			foreach (var mediaElement in GetMediaElemente_FromPage())
+
+			DoOnLoaded(() =>
 			{
-				if (position != null && position.Value > TimeSpan.FromMilliseconds(100))
-					mediaElement.MediaOpened += (sender, args) => { mediaElement.Position = position.Value.Add(DateTime.Now - start); };
-				mediaElement.Play();
-			}
+				foreach (var mediaElement in GetMediaElemente_FromPage())
+				{
+					mediaElement.Tag = StartedTag;
+					mediaElement.Play();
+
+					if (position != null && position.Value > TimeSpan.FromMilliseconds(100))
+						mediaElement.Position = position.Value.Add(DateTime.Now - start);
+				}
+			});
 		}
 
 		/// <summary>
@@ -126,6 +134,31 @@ namespace PlayerControls.Themes
 				animationCover.Start(position ?? TimeSpan.Zero);
 		}
 
+		/// <summary>ensures that the videos are buffered.</summary>
+		public void BufferVideos()
+		{
+			DoOnLoaded(() =>
+			{
+				foreach (var mediaElement in GetMediaElemente_FromPage())
+					mediaElement.Stop();
+			});
+		}
+
+
+
+		private void DoOnLoaded(Action action)
+		{
+			void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
+			{
+				Loaded -= OnLoaded;
+				action();
+			}
+
+			if (!IsLoaded)
+				Loaded += OnLoaded;
+			else
+				action();
+		}
 
 		private MediaElement[] GetMediaElemente_FromPage()
 		{
@@ -145,7 +178,7 @@ namespace PlayerControls.Themes
 
 		private void MediaElement_OnMediaFailed(object sender, ExceptionRoutedEventArgs e)
 		{
-			// throw new NotImplementedException();
+			Debug.WriteLine(e.ErrorException.ToString());
 		}
 	}
 }

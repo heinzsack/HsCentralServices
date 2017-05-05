@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 using CsWpfBase.Ev.Public.Extensions;
 using CsWpfBase.Utilitys;
@@ -51,23 +52,25 @@ namespace PlayerControls._sys.extensions
 		/// <param name="height">The height of the rendered image.</param>
 		public static Task<BitmapSource> ConvertTo_RenderedImage(this IFrame frame, double width = 1920D, double height = 1080D)
 		{
+
 			var t = new Task<BitmapSource>(() =>
 			{
-				var frameViewer = new FramePresenter {Item = frame, Width = width, Height = height};
+				var presenter = new FramePresenter {Item = frame, Width = width, Height = height};
 
-				frameViewer.Measure(frameViewer.DesiredSize);
-				frameViewer.Arrange(new Rect(frameViewer.DesiredSize));
-				frameViewer.UpdateLayout();
+				presenter.Measure(presenter.DesiredSize);
+				presenter.Arrange(new Rect(presenter.DesiredSize));
+				presenter.UpdateLayout();
 
-				var img = frameViewer.VisualChilds_By_Condition<Image>(i => true);
-				//TODO frameViewer.MakeVideoVisible(TimeSpan.FromSeconds(5));
+				var img = presenter.VisualChilds_By_Condition<Image>(i => true);
 				foreach (var image in img)
 				{
 					BindingOperations.ClearBinding(image, Image.SourceProperty);
 					image.Source = ((IFrameImage) image.DataContext).FrameItemImage;
 				}
+				presenter.StartVideos(TimeSpan.FromSeconds(5));
+				presenter.UpdateLayout();
 
-				var bitmapSource = frameViewer.ConvertTo_Image();
+				var bitmapSource = presenter.ConvertTo_Image();
 				bitmapSource.Freeze();
 				return bitmapSource;
 			}, TaskCreationOptions.LongRunning);

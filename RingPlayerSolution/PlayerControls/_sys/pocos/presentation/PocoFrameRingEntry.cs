@@ -3,7 +3,7 @@
 // <email>christian@sack.at</email>
 // <website>christian.sack.at</website>
 // <created>2017-04-27</creation-date>
-// <modified>2017-04-28 14:57</modify-date>
+// <modified>2017-05-05 11:35</modify-date>
 
 using System;
 using System.Collections.Generic;
@@ -65,7 +65,7 @@ namespace PlayerControls._sys.pocos.presentation
 		{
 			public static List<PocoFrameRingEntry> Get(TimeSpan duration)
 			{
-				var framesPerMinute = 30;
+				var framesPerMinute = 6;
 				var secondsPerFrame = 60 / framesPerMinute;
 
 				var entries = new List<PocoFrameRingEntry>();
@@ -73,7 +73,7 @@ namespace PlayerControls._sys.pocos.presentation
 					entries.Add(new PocoFrameRingEntry
 								{
 									RingEntryStartTime = TimeSpan.FromSeconds(i * secondsPerFrame),
-									RingEntryFrame = PocoFrame.Mock.FullScreenPrefilled((i * secondsPerFrame).ToString()),
+									RingEntryFrame = i % 2 == 0 ? PocoFrame.Mock.FullScreen_Video() : PocoFrame.Mock.FullScreen_ImageAndText((i * secondsPerFrame).ToString()),
 								});
 				return entries;
 			}

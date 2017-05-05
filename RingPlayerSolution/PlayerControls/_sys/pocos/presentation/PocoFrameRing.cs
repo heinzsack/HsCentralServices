@@ -77,7 +77,7 @@ namespace PlayerControls._sys.pocos.presentation
 								{
 									RingPeriod = duration,
 									RingStartTime = startTime,
-									RingBufferSize = 2,
+									RingBufferSize = 3,
 									PocoRingItems = PocoFrameRingEntry.Mock.Get(duration)
 								};
 				return pocoFrame;

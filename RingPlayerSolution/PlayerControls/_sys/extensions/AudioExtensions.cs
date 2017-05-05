@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using PlayerControls.Interfaces.audio;
 using PlayerControls.Interfaces.presentation;
@@ -33,7 +34,6 @@ namespace PlayerControls._sys.extensions
 		public static PocoAudioRing CreateGapFillingAudioRing(this IRing<IFrameRingEntry> ring, IEnumerable<Guid> ids)
 		{
 			var audioIds = ids as List<Guid> ?? ids.ToList();
-			var stopAudio = new PocoAudioRingEntry {AudioGuidList = null};
 			var frameAnalyses = new Dictionary<IFrameRingEntry, FrameAnalysis>();
 			var audioRing = new PocoAudioRing
 							{
@@ -42,10 +42,13 @@ namespace PlayerControls._sys.extensions
 								RingStartTime = ring.RingStartTime
 							};
 
-			var audioStarted = false;
+
+			var foo = ring.RingItems as IFrameRingEntry[] ?? ring.RingItems.ToArray();
+			var audioStarted = foo[foo.Length-1].RingEntryFrame.Analyse().Videos.Count == 0;
 			foreach (var entry in ring.RingItems)
 			{
 				FrameAnalysis analysis;
+
 				if (!frameAnalyses.TryGetValue(entry, out analysis))
 				{
 					analysis = entry.RingEntryFrame.Analyse();
@@ -53,14 +56,15 @@ namespace PlayerControls._sys.extensions
 				}
 				if (analysis.Videos.Count != 0)
 				{
+					// Video will start
 					if (!audioStarted)
 						continue;
-
-					audioRing.PocoRingItems.Add(stopAudio);
+					audioRing.PocoRingItems.Add(new PocoAudioRingEntry { AudioGuidList = null, RingEntryStartTime = entry.RingEntryStartTime });
 					audioStarted = false;
 				}
 				else
 				{
+					// Video will stop
 					if (audioStarted)
 						continue;
 

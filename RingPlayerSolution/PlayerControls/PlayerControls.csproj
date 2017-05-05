@@ -79,6 +79,7 @@
     <Compile Include="Themes\_components\FrameItemTemplateSelector.cs" />
     <Compile Include="Interfaces\ringEngine\IRing.cs" />
     <Compile Include="Interfaces\ringEngine\IRingEntry.cs" />
+    <Compile Include="Themes\_components\String_To_Uri.cs" />
     <Compile Include="_sys\engines\AudioRingPlayer.cs" />
     <Compile Include="_sys\engines\RingEngine.cs" />
     <Compile Include="_sys\exceptions\PlayerControlsException.cs" />

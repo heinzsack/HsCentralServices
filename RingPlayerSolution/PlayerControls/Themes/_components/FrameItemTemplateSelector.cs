@@ -3,12 +3,11 @@
 // <email>christian@sack.at</email>
 // <website>christian.sack.at</website>
 // <created>2017-02-06</creation-date>
-// <modified>2017-04-26 20:42</modify-date>
+// <modified>2017-05-05 14:40</modify-date>
 
 using System;
 using System.Windows;
 using System.Windows.Controls;
-using PlayerControls.Interfaces;
 using PlayerControls.Interfaces.presentation.FrameItems;
 
 

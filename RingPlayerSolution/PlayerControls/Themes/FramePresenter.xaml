@@ -14,12 +14,13 @@
             </ResourceDictionary.MergedDictionaries>
 
             <FontFamily x:Key="DefaultFont">Yu Gothic UI Light</FontFamily>
+            <components:String_To_Uri x:Key="StringToUri" />
 
             <components:FrameItemTemplateSelector x:Key="{x:Type components:FrameItemTemplateSelector}" />
 
             <DataTemplate DataType="{x:Type frameItems:IFrameVideo}" x:Key="{x:Type frameItems:IFrameVideo}">
                 <components:FrameItemContainer>
-                    <MediaElement Source="{Binding Path=FrameItemVideoFilePath}" LoadedBehavior="Manual" MediaFailed="MediaElement_OnMediaFailed" />
+                    <MediaElement LoadedBehavior="Manual" UnloadedBehavior="Manual" Source="{Binding Path=FrameItemVideoFilePath, Converter={StaticResource StringToUri}}" ScrubbingEnabled="True" MediaFailed="MediaElement_OnMediaFailed" />
                 </components:FrameItemContainer>
             </DataTemplate>
             <DataTemplate DataType="{x:Type frameItems:IFrameImage}" x:Key="{x:Type frameItems:IFrameImage}">

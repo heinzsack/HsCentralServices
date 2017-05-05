@@ -6,6 +6,9 @@
 // <modified>2017-04-28 16:15</modify-date>
 
 using System;
+using System.Diagnostics;
+using System.IO;
+using CsWpfBase.Ev.Public.Extensions;
 using Newtonsoft.Json;
 using PlayerControls.Interfaces.presentation.FrameItems;
 
@@ -38,7 +41,7 @@ namespace PlayerControls._sys.pocos.presentation.frame
 			{
 				var args = new VideoRequestedArgs(this);
 				VideoRequested?.Invoke(args);
-				return args.FilePath;
+				return args.Result;
 			}
 		}
 		/// <summary>
@@ -73,7 +76,27 @@ namespace PlayerControls._sys.pocos.presentation.frame
 			}
 
 			public PocoFrameVideo PocoVideo { get; }
-			public string FilePath { get; set; }
+			public string Result { get; set; }
 		}
+
+		public static class Mocks
+		{
+			public static PocoFrameVideo FullScreen()
+			{
+				return new PocoFrameVideo { FrameItemVideoId = Guid.Empty };
+			}
+
+			public static void HandleEvent()
+			{
+				VideoRequested += args =>
+				{
+					if (args.PocoVideo.FrameItemVideoId != Guid.Empty) return;
+					var argsResult = new DirectoryInfo(@"C:\Users\chris\Videos").GetFiles("*.mp4").PickRandom().FullName;
+					args.Result = argsResult;
+				};
+			}
+
+		}
+
 	}
 }

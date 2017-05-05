@@ -51,24 +51,25 @@ namespace PlayerControls._sys.engines
 		private MediaPlayer SoundPlayer2 { get; } = new MediaPlayer();
 		private FadeTimer FadeOutTimer { get; set; }
 		private FadeTimer FadeInTimer { get; set; }
-		private bool SoundPlayer1Active { get; set; }
+		private bool _bufferTargetPlayer { get; set; }
+		private bool _soundPlayer { get; set; }
 
 		/// <summary>Contains the current inactive <see cref="MediaPlayer" />.</summary>
-		private MediaPlayer FreeSoundPlayer
+		private MediaPlayer BufferTargetPlayer
 		{
 			get
 			{
-				if (SoundPlayer1Active)
-					return SoundPlayer2;
-				return SoundPlayer1;
+				if (_bufferTargetPlayer)
+					return SoundPlayer1;
+				return SoundPlayer2;
 			}
 		}
 		/// <summary>Contains the current active <see cref="MediaPlayer" />.</summary>
-		private MediaPlayer UsedSoundPlayer
+		private MediaPlayer SoundPlayer
 		{
 			get
 			{
-				if (SoundPlayer1Active)
+				if (_soundPlayer)
 					return SoundPlayer1;
 				return SoundPlayer2;
 			}
@@ -115,10 +116,16 @@ namespace PlayerControls._sys.engines
 		}
 		
 
-		/// <summary>Switches the <see cref="FreeSoundPlayer" /> with the <see cref="UsedSoundPlayer" />.</summary>
+		/// <summary>Switches the <see cref="BufferTargetPlayer" /> with the <see cref="SoundPlayer" />.</summary>
+		private void SwitchTargetBufferPlayer()
+		{
+			_bufferTargetPlayer = !_bufferTargetPlayer;
+		}
+
+		/// <summary>Switches the <see cref="BufferTargetPlayer" /> with the <see cref="SoundPlayer" />.</summary>
 		private void SwitchSoundPlayer()
 		{
-			SoundPlayer1Active = !SoundPlayer1Active;
+			_soundPlayer = !_soundPlayer;
 		}
 
 
@@ -134,56 +141,66 @@ namespace PlayerControls._sys.engines
 			}
 		}
 
-		/// <summary>Starts the <see cref="UsedSoundPlayer" /> and stops the <see cref="FreeSoundPlayer" />.</summary>
+		/// <summary>Starts the <see cref="SoundPlayer" /> and stops the <see cref="BufferTargetPlayer" />.</summary>
 		private void PlayAudio(RingEngine<IAudioRingEntry>.CurrentEntryChangedArgs args)
 		{
-			SwitchSoundPlayer();
-			FreeSoundPlayer.Stop();
-			FreeSoundPlayer.Close();
-
-			if (!args.Entry.AudioFiles.Any())
+			try
 			{
-				UsedSoundPlayer.Stop();
-				UsedSoundPlayer.Close();
-				return;
+				if (SoundPlayer.Source == null)
+					return;
+
+				SoundPlayer.Play();
+				if (args.Duration < TimeSpan.FromSeconds(3))
+				{
+					SoundPlayer.Volume = 1;
+					return;
+				}
+
+				SoundPlayer.Volume = 0;
+
+				var now = DateTime.Now;
+				var fadeInEnd = now.Add(FadeInTime);
+				var fadeOutStart = now.Add(args.Duration).Subtract(FadeOutTime);
+
+				var difference = fadeOutStart - fadeInEnd;
+
+				if (difference < TimeSpan.FromSeconds(1))
+				{
+					var halfDuration = new TimeSpan(args.Duration.Ticks / 2);
+					fadeInEnd = now.Add(halfDuration.Subtract(TimeSpan.FromSeconds(0.5)));
+					fadeOutStart = now.Add(halfDuration.Add(TimeSpan.FromSeconds(0.5)));
+				}
+
+				FadeInTimer = new FadeTimer(SoundPlayer, 1, now, fadeInEnd - now);
+				if (fadeOutStart > now)
+					FadeOutTimer = new FadeTimer(SoundPlayer, 0, fadeOutStart, now.Add(args.Duration) - fadeOutStart);
+
+			}
+			finally
+			{
+				SwitchSoundPlayer();
 			}
 
-			UsedSoundPlayer.Play();
-			if (args.Duration < TimeSpan.FromSeconds(3))
-			{
-				UsedSoundPlayer.Volume = 1;
-				return;
-			}
-
-			UsedSoundPlayer.Volume = 0;
-
-			var now = DateTime.Now;
-			var fadeInEnd = now.Add(FadeInTime);
-			var fadeOutStart = now.Add(args.Duration).Subtract(FadeOutTime);
-
-			var difference = fadeOutStart - fadeInEnd;
-
-			if (difference < TimeSpan.FromSeconds(1))
-			{
-				var halfDuration = new TimeSpan(args.Duration.Ticks / 2);
-				fadeInEnd = now.Add(halfDuration.Subtract(TimeSpan.FromSeconds(0.5)));
-				fadeOutStart = now.Add(halfDuration.Add(TimeSpan.FromSeconds(0.5)));
-			}
-
-			FadeInTimer = new FadeTimer(UsedSoundPlayer, 1, now, fadeInEnd-now);
-			if (fadeOutStart > now)
-				FadeOutTimer = new FadeTimer(UsedSoundPlayer, 0, fadeOutStart, now.Add(args.Duration)-fadeOutStart);
 
 		}
 
 		/// <summary>Starts buffering the audio.</summary>
 		private void BufferAudio(RingEngine<IAudioRingEntry>.NewBufferedElementArgs args)
 		{
-			var audioFiles = args.Entry.AudioFiles as string[] ?? args.Entry.AudioFiles.ToArray();
-			if (audioFiles.Length == 0)
-				return;
-
-			FreeSoundPlayer.Open(new Uri(audioFiles.PickRandom(), UriKind.Absolute));
+			try
+			{
+				var audioFiles = args.Entry.AudioFiles as string[] ?? args.Entry.AudioFiles.ToArray();
+				if (audioFiles.Length == 0)
+				{
+					BufferTargetPlayer.Close();
+					return;
+				}
+				BufferTargetPlayer.Open(new Uri(audioFiles.PickRandom(), UriKind.Absolute));
+			}
+			finally
+			{
+				SwitchTargetBufferPlayer();
+			}
 		}
 
 

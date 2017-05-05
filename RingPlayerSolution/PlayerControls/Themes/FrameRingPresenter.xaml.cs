@@ -9,6 +9,7 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using CsWpfBase.Ev.Public.Extensions;
@@ -89,12 +90,14 @@ namespace PlayerControls.Themes
 			IsVisibleChanged += VisibleDpChanged;
 			RingEngine = new RingEngine<IFrameRingEntry>();
 			RingEngine.CurrentEntryChanged += NextRingElement;
+			RingEngine.BufferedEntryAdded += BufferedEntryAdded;
 			RingEngine.InterruptEntryAvailable += args => InterruptFrameAvailable?.Invoke(args);
 
 			InitializeComponent();
 
 			Loaded += OnLoaded;
 		}
+
 
 		/// <summary>The <see cref="IRing" /> which is meant to be played.</summary>
 		public IFrameRing Ring
@@ -147,16 +150,14 @@ namespace PlayerControls.Themes
 			presenter.StartVideos(DateTime.Now - args.EntryStartTime.Subtract(VideoStartOffset));
 
 
-
 			if (Ring.RingBufferSize > 0)
 			{
-
-				//var da = new DoubleAnimation(0, FadeOutOffset, FillBehavior.Stop);
-				//var sb = new Storyboard { Duration = FadeOutOffset, BeginTime = args.Duration - FadeOutOffset, AutoReverse = false, FillBehavior = FillBehavior.Stop };
-				//sb.Children.Add(da);
-				//Storyboard.SetTarget(da, (FrameworkElement)presenter.Parent);
-				//Storyboard.SetTargetProperty(da, new PropertyPath("Opacity"));
-				//sb.Begin();
+				var da = new DoubleAnimation(0, FadeOutOffset, FillBehavior.HoldEnd);
+				var sb = new Storyboard { Duration = FadeOutOffset, BeginTime = args.Duration - FadeOutOffset, AutoReverse = false, FillBehavior = FillBehavior.HoldEnd };
+				sb.Children.Add(da);
+				Storyboard.SetTarget(da, (FrameworkElement)presenter.Parent);
+				Storyboard.SetTargetProperty(da, new PropertyPath("Opacity"));
+				sb.Begin();
 
 
 
@@ -164,6 +165,11 @@ namespace PlayerControls.Themes
 				VideoStartTimer.Interval = interval < TimeSpan.Zero ? TimeSpan.Zero : interval;
 				VideoStartTimer.Start();
 			}
+		}
+		private void BufferedEntryAdded(RingEngine<IFrameRingEntry>.NewBufferedElementArgs newBufferedElementArgs)
+		{
+			var presenter = ((ContentPresenter)BufferedItemsControl.ItemContainerGenerator.ContainerFromIndex(0)).VisualChild_By_Condition<FramePresenter>(a => true);
+			presenter?.BufferVideos();
 		}
 
 		/// <summary>Occurs whenever a video of the next <see cref="IFrameRingEntry" /> should be started.</summary>
