@@ -3,17 +3,15 @@
 // <email>christian@sack.at</email>
 // <website>christian.sack.at</website>
 // <created>2017-01-28</creation-date>
-// <modified>2017-04-29 14:25</modify-date>
+// <modified>2017-05-05 17:54</modify-date>
 
 using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using CsWpfBase.Ev.Public.Extensions;
-using CsWpfBase.Global;
 using PlayerControls.Interfaces.presentation;
 using PlayerControls.Interfaces.ringEngine;
 using PlayerControls._sys.engines;
@@ -52,9 +50,15 @@ namespace PlayerControls.Themes
 		#endregion
 
 
-		/// <summary>The amount of time before the <see cref="IFrameRingEntry"/> changes the videos of the next <see cref="IFrameRingEntry"/> will be started.</summary>
+		/// <summary>
+		///     The amount of time before the <see cref="IFrameRingEntry" /> changes the videos of the next
+		///     <see cref="IFrameRingEntry" /> will be started.
+		/// </summary>
 		private static readonly TimeSpan VideoStartOffset = TimeSpan.FromMilliseconds(1000);
-		/// <summary>The amount of time before the <see cref="IFrameRingEntry"/> changes the current <see cref="IFrameRingEntry"/> will be faded out.</summary>
+		/// <summary>
+		///     The amount of time before the <see cref="IFrameRingEntry" /> changes the current <see cref="IFrameRingEntry" /> will be
+		///     faded out.
+		/// </summary>
 		private static readonly TimeSpan FadeOutOffset = TimeSpan.FromMilliseconds(350);
 
 		/// <summary>Returns a prefilled <see cref="IFrameRingEntry" /> array.</summary>
@@ -145,17 +149,20 @@ namespace PlayerControls.Themes
 		/// <summary>Occurs when a new <see cref="IFrameRingEntry" /> gets visible.</summary>
 		private void NextRingElement(RingEngine<IFrameRingEntry>.CurrentEntryChangedArgs args)
 		{
-			var presenter = Get_CurrentFramePresenter();
-			presenter.StartTransitions(DateTime.Now - args.EntryStartTime);
-			presenter.StartVideos(DateTime.Now - args.EntryStartTime.Subtract(VideoStartOffset));
-
-
-			if (Ring.RingBufferSize > 0)
+			DoOnLoaded(() =>
 			{
+				var presenter = Get_CurrentFramePresenter();
+				presenter.StartTransitions(DateTime.Now - args.EntryStartTime);
+				presenter.StartVideos(DateTime.Now - args.EntryStartTime.Subtract(VideoStartOffset));
+
+
+				if (Ring.RingBufferSize <= 0) return;
+
+
 				var da = new DoubleAnimation(0, FadeOutOffset, FillBehavior.HoldEnd);
-				var sb = new Storyboard { Duration = FadeOutOffset, BeginTime = args.Duration - FadeOutOffset, AutoReverse = false, FillBehavior = FillBehavior.HoldEnd };
+				var sb = new Storyboard {Duration = FadeOutOffset, BeginTime = args.Duration - FadeOutOffset, AutoReverse = false, FillBehavior = FillBehavior.HoldEnd};
 				sb.Children.Add(da);
-				Storyboard.SetTarget(da, (FrameworkElement)presenter.Parent);
+				Storyboard.SetTarget(da, (FrameworkElement) presenter.Parent);
 				Storyboard.SetTargetProperty(da, new PropertyPath("Opacity"));
 				sb.Begin();
 
@@ -164,11 +171,13 @@ namespace PlayerControls.Themes
 				var interval = args.Duration - VideoStartOffset;
 				VideoStartTimer.Interval = interval < TimeSpan.Zero ? TimeSpan.Zero : interval;
 				VideoStartTimer.Start();
-			}
+			});
+
 		}
+
 		private void BufferedEntryAdded(RingEngine<IFrameRingEntry>.NewBufferedElementArgs newBufferedElementArgs)
 		{
-			var presenter = ((ContentPresenter)BufferedItemsControl.ItemContainerGenerator.ContainerFromIndex(0)).VisualChild_By_Condition<FramePresenter>(a => true);
+			var presenter = ((ContentPresenter) BufferedItemsControl.ItemContainerGenerator.ContainerFromIndex(0)).VisualChild_By_Condition<FramePresenter>(a => true);
 			presenter?.BufferVideos();
 		}
 
@@ -179,6 +188,22 @@ namespace PlayerControls.Themes
 
 			var nextFramePresenter = Get_NextFramePresenter();
 			nextFramePresenter.StartVideos();
+		}
+
+
+
+		private void DoOnLoaded(Action action)
+		{
+			void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
+			{
+				Loaded -= OnLoaded;
+				action();
+			}
+
+			if (!IsLoaded)
+				Loaded += OnLoaded;
+			else
+				action();
 		}
 
 

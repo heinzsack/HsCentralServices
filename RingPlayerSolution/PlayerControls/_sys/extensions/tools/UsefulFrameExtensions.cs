@@ -70,10 +70,8 @@ namespace PlayerControls._sys.extensions.tools
 		/// <summary>Analyses the <paramref name="frames" />.</summary>
 		public static FrameAnalysis Analyse(this IEnumerable<IFrame> frames)
 		{
-			if (frames == null)
-				return null;
 			var analysis0 = new FrameAnalysis();
-			foreach (var frameAnalysis in frames.Distinct().Select(x => x.Analyse()))
+			foreach (var frameAnalysis in frames.Where(x=>x!=null).Distinct().Select(x => x.Analyse()))
 				analysis0.Add(frameAnalysis);
 			return analysis0;
 		}
