@@ -23,7 +23,7 @@ namespace PlayerControls.Interfaces.presentation.FrameItems
 		string FrameItemVideoFilePath { get; }
 
 		/// <summary>Contains a unique video id which helps to gather the <see cref="FrameItemVideoFilePath" />.</summary>
-		Guid? FrameItemVideoId { get; }
+		Guid FrameItemVideoId { get; }
 
 		/// <summary>
 		///     Should open or change the video file path stored in <see cref="FrameItemVideoFilePath" />. This method will be used by the

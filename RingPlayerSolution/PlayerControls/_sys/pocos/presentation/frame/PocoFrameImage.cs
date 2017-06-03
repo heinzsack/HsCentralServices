@@ -25,7 +25,7 @@ namespace PlayerControls._sys.pocos.presentation.frame
 	[Serializable]
 	public class PocoFrameImage : PocoFrameItem, IFrameImage
 	{
-		private Guid? _frameItemImageId;
+		private Guid _frameItemImageId;
 
 
 		#region EVENTS
@@ -47,7 +47,7 @@ namespace PlayerControls._sys.pocos.presentation.frame
 		///     event.
 		/// </summary>
 		[JsonProperty("Id")]
-		public Guid? FrameItemImageId
+		public Guid FrameItemImageId
 		{
 			get => _frameItemImageId;
 			set => SetProperty(ref _frameItemImageId, value);

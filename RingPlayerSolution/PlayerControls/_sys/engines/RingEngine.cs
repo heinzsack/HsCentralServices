@@ -197,10 +197,8 @@ namespace PlayerControls._sys.engines
 
 			if (!ringItem.RingEntryInterrupt.IsNullOrEmpty() && InterruptEntryAvailable != null)
 			{
-				var args = new InterruptArgs(ringItem.RingEntryInterrupt);
+				var args = new InterruptArgs(ringItem.RingEntryInterrupt){Result = ringItem};
 				InterruptEntryAvailable.Invoke(args);
-				if (args.Result != null)
-					ringItem = args.Result;
 			}
 
 			Buffer.Insert(0, ringItem);

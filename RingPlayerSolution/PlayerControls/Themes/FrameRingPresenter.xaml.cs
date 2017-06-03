@@ -13,6 +13,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using CsWpfBase.Ev.Public.Extensions;
 using PlayerControls.Interfaces.presentation;
+using PlayerControls.Interfaces.presentation.FrameItems;
 using PlayerControls.Interfaces.ringEngine;
 using PlayerControls._sys.engines;
 using PlayerControls._sys.pocos.presentation;
@@ -83,7 +84,7 @@ namespace PlayerControls.Themes
 		///     Used whenever a <see cref="IFrameRingEntry" /> is added to the <see cref="RingEngine{TItem}.Buffer" /> and has a
 		///     <see cref="IFrameRingEntry.RingEntryInterrupt" /> applied.
 		/// </summary>
-		public event RingEngine<IFrameRingEntry>.DelegateInterrupt InterruptFrameAvailable;
+		public event Delegate0 InterruptFrameAvailable;
 		#endregion
 
 
@@ -95,7 +96,12 @@ namespace PlayerControls.Themes
 			RingEngine = new RingEngine<IFrameRingEntry>();
 			RingEngine.CurrentEntryChanged += NextRingElement;
 			RingEngine.BufferedEntryAdded += BufferedEntryAdded;
-			RingEngine.InterruptEntryAvailable += args => InterruptFrameAvailable?.Invoke(args);
+			RingEngine.InterruptEntryAvailable += args =>
+			{
+				var resultArgs = new InterruptArgs(args.InterruptName);
+				InterruptFrameAvailable?.Invoke(resultArgs);
+				args.Result.RingEntryFrame = resultArgs.Result;
+			};
 
 			InitializeComponent();
 
@@ -152,6 +158,9 @@ namespace PlayerControls.Themes
 			DoOnLoaded(() =>
 			{
 				var presenter = Get_CurrentFramePresenter();
+				if (presenter == null)
+					return;
+
 				presenter.StartTransitions(DateTime.Now - args.EntryStartTime);
 				presenter.StartVideos(DateTime.Now - args.EntryStartTime.Subtract(VideoStartOffset));
 
@@ -221,6 +230,21 @@ namespace PlayerControls.Themes
 		{
 			return ((ContentPresenter) BufferedItemsControl.ItemContainerGenerator.ContainerFromIndex(RingEngine.Buffer.Count - 2)).VisualChild_By_Condition<FramePresenter>(a => true);
 		}
+
+
+
+		public delegate void Delegate0(InterruptArgs args);
+
+		public class InterruptArgs
+		{
+			internal InterruptArgs(string interruptName)
+			{
+				InterruptName = interruptName;
+			}
+			public string InterruptName { get;}
+			public IFrame Result { get; set; }
+		}
+
 	}
 
 }

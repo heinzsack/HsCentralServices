@@ -23,7 +23,7 @@ namespace PlayerControls._sys.pocos.presentation.frame
 	[Serializable]
 	public class PocoFrameVideo : PocoFrameItem, IFrameVideo
 	{
-		private Guid? _frameItemVideoId;
+		private Guid _frameItemVideoId;
 
 
 		#region EVENTS
@@ -49,7 +49,7 @@ namespace PlayerControls._sys.pocos.presentation.frame
 		///     <see cref="VideoRequested" /> event.
 		/// </summary>
 		[JsonProperty("Id")]
-		public Guid? FrameItemVideoId
+		public Guid FrameItemVideoId
 		{
 			get => _frameItemVideoId;
 			set => SetProperty(ref _frameItemVideoId, value);

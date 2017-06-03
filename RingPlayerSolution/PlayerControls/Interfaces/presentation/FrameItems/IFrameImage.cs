@@ -27,7 +27,7 @@ namespace PlayerControls.Interfaces.presentation.FrameItems
 		BitmapSource FrameItemImage { get; }
 
 		/// <summary>Contains a unique image id which helps to gather the <see cref="FrameItemImage" />.</summary>
-		Guid? FrameItemImageId { get; }
+		Guid FrameItemImageId { get; }
 
 		/// <summary>Should open or change the image stored in <see cref="FrameItemImage" />. This method will be used by the
 		///     <see cref="FrameEditor" />.</summary>

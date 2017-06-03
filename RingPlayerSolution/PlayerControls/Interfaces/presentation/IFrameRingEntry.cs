@@ -24,7 +24,7 @@ namespace PlayerControls.Interfaces.presentation
 
 		#region Abstract
 		/// <summary>The <see cref="IFrame" /> which should be played at the according <see cref="IRingEntry.RingEntryStartTime" />.</summary>
-		IFrame RingEntryFrame { get; }
+		IFrame RingEntryFrame { get; set; }
 		#endregion
 
 
