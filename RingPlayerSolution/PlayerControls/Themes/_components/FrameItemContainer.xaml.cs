@@ -11,8 +11,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media.Animation;
-using CsWpfBase.Ev.Public.Extensions;
-using PlayerControls.Interfaces.presentation.Transistions;
+using CsWpfBase.env.extensions;
 using PlayerControls.Interfaces.presentation._base;
 using PlayerControls._sys.extensions;
 

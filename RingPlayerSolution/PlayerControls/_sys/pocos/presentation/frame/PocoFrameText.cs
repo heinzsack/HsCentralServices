@@ -9,7 +9,7 @@ using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
-using CsWpfBase.Ev.Public.Extensions;
+using CsWpfBase.env.extensions;
 using Newtonsoft.Json;
 using PlayerControls.Interfaces.presentation.FrameItems;
 

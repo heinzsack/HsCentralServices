@@ -2,8 +2,8 @@
 // <author>Christian Sack</author>
 // <email>christian@sack.at</email>
 // <website>christian.sack.at</website>
-// <created>2017-04-27</creation-date>
-// <modified>2017-04-28 16:07</modify-date>
+// <created>2017-07-27</creation-date>
+// <modified>2017-07-27 11:44</modify-date>
 
 using System;
 using System.Collections.Generic;
@@ -11,13 +11,11 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Interop;
 using System.Windows.Media.Imaging;
-using CsWpfBase.Ev.Public.Extensions;
-using CsWpfBase.Utilitys;
+using CsWpfBase.env.extensions;
+using CsWpfBase.env.tools.multiThreading;
 using PlayerControls.Interfaces.presentation;
 using PlayerControls.Interfaces.presentation.FrameItems;
-using PlayerControls.Interfaces.ringEngine;
 using PlayerControls.Themes;
 using PlayerControls.Themes.editors;
 using PlayerControls.Themes.windows;
@@ -101,14 +99,12 @@ namespace PlayerControls._sys.extensions
 		}
 
 		/// <summary>Shows the <paramref name="ring" /> in a new <see cref="Window" /> (ShowDialog blocks further program code).</summary>
-		/// <param name="ring">The <see cref="IFrameRing"/>.</param>
+		/// <param name="ring">The <see cref="IFrameRing" />.</param>
 		/// <param name="title">The title of the <see cref="Window" />.</param>
 		public static void ShowDialog(this IFrameRing ring, string title = null)
 		{
 			new FrameRingPresenterWindow(title.IsNullOrEmpty() ? "Page View" : title, ring).ShowDialog();
 		}
-
-
 	}
 
 

@@ -10,7 +10,7 @@ using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using CsWpfBase.Ev.Public.Extensions;
+using CsWpfBase.env.extensions;
 using PlayerControls.Interfaces.presentation.FrameItems;
 using PlayerControls.Themes._components;
 using PlayerControls._sys.pocos.presentation.frame;

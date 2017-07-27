@@ -2,19 +2,16 @@
 // <author>Christian Sack</author>
 // <email>christian@sack.at</email>
 // <website>christian.sack.at</website>
-// <created>2017-04-27</creation-date>
-// <modified>2017-04-27 20:33</modify-date>
+// <created>2017-07-27</creation-date>
+// <modified>2017-07-27 11:44</modify-date>
 
 using System;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Windows.Threading;
-using CsWpfBase.Ev.Objects;
-using CsWpfBase.Ev.Public.Extensions;
-using CsWpfBase.Utilitys;
+using CsWpfBase.env.extensions;
+using CsWpfBase.env._base;
 using PlayerControls.Interfaces.audio;
 using PlayerControls.Interfaces.ringEngine;
 
@@ -45,33 +42,6 @@ namespace PlayerControls._sys.engines
 				{
 					return _instance ?? (_instance = new AudioRingPlayer());
 				}
-			}
-		}
-		private MediaPlayer SoundPlayer1 { get; } = new MediaPlayer();
-		private MediaPlayer SoundPlayer2 { get; } = new MediaPlayer();
-		private FadeTimer FadeOutTimer { get; set; }
-		private FadeTimer FadeInTimer { get; set; }
-		private bool _bufferTargetPlayer { get; set; }
-		private bool _soundPlayer { get; set; }
-
-		/// <summary>Contains the current inactive <see cref="MediaPlayer" />.</summary>
-		private MediaPlayer BufferTargetPlayer
-		{
-			get
-			{
-				if (_bufferTargetPlayer)
-					return SoundPlayer1;
-				return SoundPlayer2;
-			}
-		}
-		/// <summary>Contains the current active <see cref="MediaPlayer" />.</summary>
-		private MediaPlayer SoundPlayer
-		{
-			get
-			{
-				if (_soundPlayer)
-					return SoundPlayer1;
-				return SoundPlayer2;
 			}
 		}
 
@@ -109,12 +79,39 @@ namespace PlayerControls._sys.engines
 				AudioRingChanged(old, value);
 			}
 		}
+		private MediaPlayer SoundPlayer1 { get; } = new MediaPlayer();
+		private MediaPlayer SoundPlayer2 { get; } = new MediaPlayer();
+		private FadeTimer FadeOutTimer { get; set; }
+		private FadeTimer FadeInTimer { get; set; }
+		private bool _bufferTargetPlayer { get; set; }
+		private bool _soundPlayer { get; set; }
+
+		/// <summary>Contains the current inactive <see cref="MediaPlayer" />.</summary>
+		private MediaPlayer BufferTargetPlayer
+		{
+			get
+			{
+				if (_bufferTargetPlayer)
+					return SoundPlayer1;
+				return SoundPlayer2;
+			}
+		}
+		/// <summary>Contains the current active <see cref="MediaPlayer" />.</summary>
+		private MediaPlayer SoundPlayer
+		{
+			get
+			{
+				if (_soundPlayer)
+					return SoundPlayer1;
+				return SoundPlayer2;
+			}
+		}
 
 		private void SoundPlayer1OnMediaFailed(object sender, ExceptionEventArgs exceptionEventArgs)
 		{
 			Debug.WriteLine(exceptionEventArgs.ErrorException.Message);
 		}
-		
+
 
 		/// <summary>Switches the <see cref="BufferTargetPlayer" /> with the <see cref="SoundPlayer" />.</summary>
 		private void SwitchTargetBufferPlayer()
@@ -208,16 +205,9 @@ namespace PlayerControls._sys.engines
 		private class FadeTimer : IDisposable
 		{
 			private static TimeSpan MinTimeBetweenSteps { get; } = TimeSpan.FromMilliseconds(60);
-
-			private MediaPlayer Player { get; set; }
-			private readonly double _targetValue;
-			private readonly DateTime _startTime;
 			private readonly TimeSpan _duration;
-			private DispatcherTimer Timer { get; set; }
-
-
-			private int RemainingSteps { get; set; }
-			private double StepIncrement { get; set; }
+			private readonly DateTime _startTime;
+			private readonly double _targetValue;
 
 			public FadeTimer(MediaPlayer player, double targetValue, DateTime startTime, TimeSpan duration)
 			{
@@ -246,7 +236,9 @@ namespace PlayerControls._sys.engines
 
 
 				if (startTime - now < TimeSpan.Zero)
+				{
 					TimerOnTick(null, null);
+				}
 				else
 				{
 					Timer.Interval = startTime - now;
@@ -254,6 +246,24 @@ namespace PlayerControls._sys.engines
 				}
 
 			}
+
+
+			#region Overrides/Interfaces
+			/// <inheritdoc />
+			public void Dispose()
+			{
+				Timer = null;
+				Player = null;
+			}
+			#endregion
+
+
+			private MediaPlayer Player { get; set; }
+			private DispatcherTimer Timer { get; set; }
+
+
+			private int RemainingSteps { get; set; }
+			private double StepIncrement { get; set; }
 
 			private void TimerOnTick(object sender, EventArgs eventArgs)
 			{
@@ -281,16 +291,9 @@ namespace PlayerControls._sys.engines
 				if (RemainingSteps < 0)
 					RemainingSteps = 0;
 
-				StepIncrement = remainingVolume / (RemainingSteps == 0?1:RemainingSteps);
+				StepIncrement = remainingVolume / (RemainingSteps == 0 ? 1 : RemainingSteps);
 				if (StepIncrement == 0)
 					RemainingSteps = 0;
-			}
-
-			/// <inheritdoc />
-			public void Dispose()
-			{
-				Timer = null;
-				Player = null;
 			}
 		}
 	}

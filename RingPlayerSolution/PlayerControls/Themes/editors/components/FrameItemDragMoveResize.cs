@@ -8,9 +8,7 @@ using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-using CsWpfBase.Ev.Public.Extensions;
-using PlayerControls.Interfaces;
-using PlayerControls.Interfaces.presentation;
+using CsWpfBase.env.extensions;
 using PlayerControls.Interfaces.presentation._base;
 using PlayerControls.Themes._components;
 

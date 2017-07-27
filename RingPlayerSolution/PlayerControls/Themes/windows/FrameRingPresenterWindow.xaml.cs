@@ -8,7 +8,7 @@
 using System;
 using System.Linq;
 using System.Windows;
-using CsWpfBase.Global;
+using CsWpfBase.csglobal;
 using PlayerControls.Interfaces.presentation;
 
 
@@ -34,7 +34,7 @@ namespace PlayerControls.Themes.windows
 			Title = title;
 			Presenter.Ring = ring;
 
-			CsGlobal.Wpf.Storage.Window.Handle(this, $"{nameof(FrameRingPresenterWindow)}");
+			CsGlobal.Local.Persistence.Ui.Store(this, $"{nameof(FrameRingPresenterWindow)}");
 		}
 	}
 }

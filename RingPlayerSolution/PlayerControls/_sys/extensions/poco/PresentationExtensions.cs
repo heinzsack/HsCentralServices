@@ -2,13 +2,13 @@
 // <author>Christian Sack</author>
 // <email>christian@sack.at</email>
 // <website>christian.sack.at</website>
-// <created>2017-04-29</creation-date>
-// <modified>2017-04-29 11:10</modify-date>
+// <created>2017-07-27</creation-date>
+// <modified>2017-07-27 11:45</modify-date>
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using CsWpfBase.Ev.Public.Extensions;
+using CsWpfBase.env.extensions;
 using PlayerControls.Interfaces.presentation;
 using PlayerControls.Interfaces.presentation.FrameItems;
 using PlayerControls.Interfaces.presentation._base;
@@ -101,7 +101,7 @@ namespace PlayerControls._sys.extensions.poco
 			if (source == null) return null;
 
 			var poco = source as PocoFrameRing;
-			if (poco != null || context.GetOrCreate(source, () => new PocoFrameRing(), out poco))
+			if ((poco != null) || context.GetOrCreate(source, () => new PocoFrameRing(), out poco))
 				return poco;
 
 			source.CopyTo(poco, nameof(IFrameRing.RingItems));
@@ -115,12 +115,12 @@ namespace PlayerControls._sys.extensions.poco
 			if (source == null) return null;
 
 			return new PocoFrameRing
-					{
-						PocoRingItems = source.Select(x => x.ToPoco(context)).ToList(),
-						RingBufferSize = 3,
-						RingStartTime = startTime,
-						RingPeriod = duration,
-					};
+			{
+				PocoRingItems = source.Select(x => x.ToPoco(context)).ToList(),
+				RingBufferSize = 3,
+				RingStartTime = startTime,
+				RingPeriod = duration,
+			};
 		}
 
 		private static PocoFrameRingEntry ToPoco(this IFrameRingEntry source, ConversionContext context)
@@ -128,7 +128,7 @@ namespace PlayerControls._sys.extensions.poco
 			if (source == null) return null;
 
 			var poco = source as PocoFrameRingEntry;
-			if (poco != null || context.GetOrCreate(source, () => new PocoFrameRingEntry(), out poco))
+			if ((poco != null) || context.GetOrCreate(source, () => new PocoFrameRingEntry(), out poco))
 				return poco;
 
 			source.CopyTo(poco, nameof(IFrameRingEntry.RingEntryFrame));
@@ -141,7 +141,7 @@ namespace PlayerControls._sys.extensions.poco
 			if (source == null) return null;
 
 			var poco = source as PocoFrame;
-			if (poco != null || context.GetOrCreate(source, () => new PocoFrame(), out poco))
+			if ((poco != null) || context.GetOrCreate(source, () => new PocoFrame(), out poco))
 				return poco;
 
 			source.CopyTo(poco, nameof(IFrame.FrameChildren), nameof(IFrame.FrameTransitions));
@@ -162,7 +162,7 @@ namespace PlayerControls._sys.extensions.poco
 			if (source == null) return null;
 
 			var poco = source as PocoFrameText;
-			if (poco != null || context.GetOrCreate(source, () => new PocoFrameText(), out poco))
+			if ((poco != null) || context.GetOrCreate(source, () => new PocoFrameText(), out poco))
 				return poco;
 
 			source.CopyTo(poco);
@@ -174,7 +174,7 @@ namespace PlayerControls._sys.extensions.poco
 			if (source == null) return null;
 
 			var poco = source as PocoFrameImage;
-			if (poco != null || context.GetOrCreate(source, () => new PocoFrameImage(), out poco))
+			if ((poco != null) || context.GetOrCreate(source, () => new PocoFrameImage(), out poco))
 				return poco;
 
 			source.CopyTo(poco, nameof(IFrameImage.FrameItemImage));
@@ -186,7 +186,7 @@ namespace PlayerControls._sys.extensions.poco
 			if (source == null) return null;
 
 			var poco = source as PocoFrameVideo;
-			if (poco != null || context.GetOrCreate(source, () => new PocoFrameVideo(), out poco))
+			if ((poco != null) || context.GetOrCreate(source, () => new PocoFrameVideo(), out poco))
 				return poco;
 
 

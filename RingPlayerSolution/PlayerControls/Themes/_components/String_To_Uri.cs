@@ -25,9 +25,9 @@ namespace PlayerControls.Themes._components
 		/// <inheritdoc />
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			if (value == null)
+			if (!(value is string s))
 				return  null;
-			return new Uri((string)value, UriKind.Absolute);
+			return new Uri(s, UriKind.Absolute);
 		}
 
 		/// <inheritdoc />

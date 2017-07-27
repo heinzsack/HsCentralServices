@@ -9,8 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using CsWpfBase.Ev.Objects;
-using CsWpfBase.Ev.Public.Extensions;
+using CsWpfBase.env.extensions;
+using CsWpfBase.env._base;
 using Newtonsoft.Json;
 using PlayerControls.Interfaces.audio;
 

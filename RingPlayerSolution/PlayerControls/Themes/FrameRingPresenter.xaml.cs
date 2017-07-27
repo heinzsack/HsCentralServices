@@ -11,7 +11,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
-using CsWpfBase.Ev.Public.Extensions;
+using CsWpfBase.env.extensions;
 using PlayerControls.Interfaces.presentation;
 using PlayerControls.Interfaces.presentation.FrameItems;
 using PlayerControls.Interfaces.ringEngine;
@@ -62,7 +62,7 @@ namespace PlayerControls.Themes
 		/// </summary>
 		private static readonly TimeSpan FadeOutOffset = TimeSpan.FromMilliseconds(350);
 
-		/// <summary>Returns a prefilled <see cref="IFrameRingEntry" /> array.</summary>
+		/// <summary>Returns a pre filled <see cref="IFrameRingEntry" /> array.</summary>
 		public static IRing<IFrameRingEntry> GetMock(DateTime startTime, TimeSpan duration)
 		{
 			return PocoFrameRing.Mock.Get(startTime, duration);

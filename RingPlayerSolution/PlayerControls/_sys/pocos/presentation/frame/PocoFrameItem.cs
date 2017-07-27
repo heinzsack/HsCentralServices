@@ -8,8 +8,8 @@
 using System;
 using System.Windows;
 using System.Windows.Media;
-using CsWpfBase.Ev.Objects;
-using CsWpfBase.Ev.Public.Extensions;
+using CsWpfBase.env.extensions;
+using CsWpfBase.env._base;
 using Newtonsoft.Json;
 using PlayerControls.Interfaces.presentation._base;
 

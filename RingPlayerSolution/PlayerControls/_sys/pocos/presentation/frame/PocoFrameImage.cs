@@ -10,7 +10,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using CsWpfBase.Ev.Public.Extensions;
+using CsWpfBase.env.extensions;
 using Newtonsoft.Json;
 using PlayerControls.Interfaces.presentation.FrameItems;
 

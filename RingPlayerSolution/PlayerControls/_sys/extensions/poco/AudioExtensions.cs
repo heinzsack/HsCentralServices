@@ -2,13 +2,13 @@
 // <author>Christian Sack</author>
 // <email>christian@sack.at</email>
 // <website>christian.sack.at</website>
-// <created>2017-04-29</creation-date>
-// <modified>2017-04-29 10:56</modify-date>
+// <created>2017-07-27</creation-date>
+// <modified>2017-07-27 11:45</modify-date>
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using CsWpfBase.Ev.Public.Extensions;
+using CsWpfBase.env.extensions;
 using PlayerControls.Interfaces.audio;
 using PlayerControls._sys.pocos.audio;
 
@@ -58,7 +58,7 @@ namespace PlayerControls._sys.extensions.poco
 		private static PocoAudioRing ToPoco(this IAudioRing source, ConversionContext context)
 		{
 			var poco = source as PocoAudioRing;
-			if (poco != null || context.GetOrCreate(source, () => new PocoAudioRing(), out poco))
+			if ((poco != null) || context.GetOrCreate(source, () => new PocoAudioRing(), out poco))
 				return poco;
 
 
@@ -72,7 +72,7 @@ namespace PlayerControls._sys.extensions.poco
 		private static PocoAudioRingEntry ToPoco(this IAudioRingEntry source, ConversionContext context)
 		{
 			var poco = source as PocoAudioRingEntry;
-			if (poco != null || context.GetOrCreate(source, () => new PocoAudioRingEntry(), out poco))
+			if ((poco != null) || context.GetOrCreate(source, () => new PocoAudioRingEntry(), out poco))
 				return poco;
 
 
@@ -84,16 +84,13 @@ namespace PlayerControls._sys.extensions.poco
 		private static PocoAudioRing ToPoco(this IEnumerable<IAudioRingEntry> source, DateTime startTime, TimeSpan duration, ConversionContext context)
 		{
 			return new PocoAudioRing
-					{
-						RingStartTime = startTime,
-						RingPeriod = duration,
-						RingBufferSize = 1,
-						PocoRingItems = source.Select(x => x.ToPoco(context)).ToList()
-					};
+			{
+				RingStartTime = startTime,
+				RingPeriod = duration,
+				RingBufferSize = 1,
+				PocoRingItems = source.Select(x => x.ToPoco(context)).ToList()
+			};
 		}
-
-
-
 	}
 
 }

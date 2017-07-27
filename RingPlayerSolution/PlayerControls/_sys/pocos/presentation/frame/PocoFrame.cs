@@ -9,7 +9,7 @@ using System;
 using System.Collections;
 using System.Collections.ObjectModel;
 using System.Windows.Data;
-using CsWpfBase.Ev.Public.Extensions;
+using CsWpfBase.env.extensions;
 using Newtonsoft.Json;
 using PlayerControls.Interfaces.presentation.FrameItems;
 using PlayerControls.Interfaces.presentation._base;

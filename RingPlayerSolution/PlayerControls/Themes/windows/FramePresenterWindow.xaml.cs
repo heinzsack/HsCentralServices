@@ -8,7 +8,7 @@
 using System;
 using System.Linq;
 using System.Windows;
-using CsWpfBase.Global;
+using CsWpfBase.csglobal;
 using PlayerControls.Interfaces.presentation.FrameItems;
 
 
@@ -35,7 +35,7 @@ namespace PlayerControls.Themes.windows
 			Presenter.Item = frame;
 			Presenter.IsDiagnostic = isDiagnostic;
 
-			CsGlobal.Wpf.Storage.Window.Handle(this, $"{nameof(FramePresenterWindow)}");
+			CsGlobal.Local.Persistence.Ui.Store(this, $"{nameof(FramePresenterWindow)}");
 
 		}
 	}

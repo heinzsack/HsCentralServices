@@ -2,14 +2,14 @@
 // <author>Christian Sack</author>
 // <email>christian@sack.at</email>
 // <website>christian.sack.at</website>
-// <created>2017-04-29</creation-date>
-// <modified>2017-05-03 14:09</modify-date>
+// <created>2017-07-27</creation-date>
+// <modified>2017-07-27 11:45</modify-date>
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Data;
-using CsWpfBase.Ev.Objects;
+using CsWpfBase.env._base;
 using PlayerControls.Interfaces.presentation;
 using PlayerControls.Interfaces.presentation.FrameItems;
 using PlayerControls.Interfaces.presentation._base;
@@ -32,21 +32,21 @@ namespace PlayerControls._sys.extensions.tools
 			foreach (var duratedFrame in duratedFrames)
 			{
 				var entry = new RingSimulation.Entry
-							{
-								RingEntryFrame = duratedFrame.DuratedFrame,
-								RingEntryStartTime = relativeStartTime,
-							};
+				{
+					RingEntryFrame = duratedFrame.DuratedFrame,
+					RingEntryStartTime = relativeStartTime,
+				};
 				resultList.Add(entry);
 				relativeStartTime = relativeStartTime.Add(duratedFrame.DuratedFrameDuration.TimeSpan);
 			}
 
 			return new RingSimulation
-					{
-						RingItemsList = resultList,
-						RingBufferSize = 3,
-						RingPeriod = relativeStartTime,
-						RingStartTime = startTime,
-					};
+			{
+				RingItemsList = resultList,
+				RingBufferSize = 3,
+				RingPeriod = relativeStartTime,
+				RingStartTime = startTime,
+			};
 		}
 
 		/// <summary>Analyses the <paramref name="ring" />.</summary>
@@ -71,7 +71,7 @@ namespace PlayerControls._sys.extensions.tools
 		public static FrameAnalysis Analyse(this IEnumerable<IFrame> frames)
 		{
 			var analysis0 = new FrameAnalysis();
-			foreach (var frameAnalysis in frames.Where(x=>x!=null).Distinct().Select(x => x.Analyse()))
+			foreach (var frameAnalysis in frames.Where(x => x != null).Distinct().Select(x => x.Analyse()))
 				analysis0.Add(frameAnalysis);
 			return analysis0;
 		}
@@ -89,13 +89,13 @@ namespace PlayerControls._sys.extensions.tools
 			void Inner(IFrameItem ele)
 			{
 				if (ele is IFrameText)
-					frameAnalysis.Texts.Add((IFrameText)ele);
+					frameAnalysis.Texts.Add((IFrameText) ele);
 				else if (ele is IFrameImage)
-					frameAnalysis.Images.Add((IFrameImage)ele);
+					frameAnalysis.Images.Add((IFrameImage) ele);
 				else if (ele is IFrameVideo)
-					frameAnalysis.Videos.Add((IFrameVideo)ele);
+					frameAnalysis.Videos.Add((IFrameVideo) ele);
 				else if (ele is IFrame)
-					unprocessedFrames.Enqueue((IFrame)ele);
+					unprocessedFrames.Enqueue((IFrame) ele);
 			}
 
 
@@ -107,11 +107,9 @@ namespace PlayerControls._sys.extensions.tools
 					var collectionContainer = child as CollectionContainer;
 					if (collectionContainer != null)
 						foreach (var o in collectionContainer.Collection)
-						{
 							Inner((IFrameItem) o);
-						}
 					else
-						Inner((IFrameItem)child);
+						Inner((IFrameItem) child);
 				}
 			}
 

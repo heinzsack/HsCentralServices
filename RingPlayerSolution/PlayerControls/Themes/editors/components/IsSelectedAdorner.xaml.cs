@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Documents;
-using CsWpfBase.Global;
+using CsWpfBase.csglobal;
 using JetBrains.Annotations;
 
 
