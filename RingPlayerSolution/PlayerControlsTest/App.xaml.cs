@@ -34,6 +34,7 @@ namespace PlayerControlsTest
 			PocoFrameImage.Mocks.HandleEvent();
 			PocoAudioRingEntry.Mock.HandleEvent();
 			PocoFrameVideo.Mocks.HandleEvent();
+			//return;
 
 			var presentationRing = FrameRingPresenter.GetMock(new DateTime(2017, 1, 1, 0, 0, 0, 0), TimeSpan.FromMinutes(1)).ConvertTo_Json().ConvertFrom_Json<PocoFrameRing>();
 			var audioRing = presentationRing.CreateGapFillingAudioRing(new List<Guid> {Guid.Empty}).ConvertTo_Json().SaveAs_Utf8String_OnDesktop_AndOpen("sample.json").ConvertFrom_Json<PocoAudioRing>();

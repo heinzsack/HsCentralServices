@@ -3,10 +3,11 @@
 // <email>christian@sack.at</email>
 // <website>christian.sack.at</website>
 // <created>2017-07-27</creation-date>
-// <modified>2017-07-27 11:44</modify-date>
+// <modified>2017-08-07 19:21</modify-date>
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,6 +17,7 @@ using CsWpfBase.env.extensions;
 using CsWpfBase.env.tools.multiThreading;
 using PlayerControls.Interfaces.presentation;
 using PlayerControls.Interfaces.presentation.FrameItems;
+using PlayerControls.Interfaces.presentation._base;
 using PlayerControls.Themes;
 using PlayerControls.Themes.editors;
 using PlayerControls.Themes.windows;
@@ -30,17 +32,22 @@ namespace PlayerControls._sys.extensions
 {
 	public static class FrameVisualisationExtensions
 	{
-		private static StaTaskScheduler _staTaskScheduler;
-
-		private static StaTaskScheduler StaTaskScheduler
+		/// <summary>Returns true if the <paramref name="frame" /> or it recursive children contains any <see cref="IFrameText" />.</summary>
+		public static bool AnyText(this IFrame frame)
 		{
-			get
-			{
-				if (_staTaskScheduler != null)
-					return _staTaskScheduler;
-				_staTaskScheduler = new StaTaskScheduler(1);
-				return _staTaskScheduler;
-			}
+			return frame.FrameChildren.OfType<IFrameItem>().Any(x => x is IFrameText || (x is IFrame ifr && ifr.AnyVideo()));
+		}
+
+		/// <summary>Returns true if the <paramref name="frame" /> or it recursive children contains any <see cref="IFrameImage" />.</summary>
+		public static bool AnyImage(this IFrame frame)
+		{
+			return frame.FrameChildren.OfType<IFrameItem>().Any(x => x is IFrameImage || (x is IFrame ifr && ifr.AnyVideo()));
+		}
+
+		/// <summary>Returns true if the <paramref name="frame" /> or it recursive children contains any <see cref="IFrameVideo" />.</summary>
+		public static bool AnyVideo(this IFrame frame)
+		{
+			return frame.FrameChildren.OfType<IFrameItem>().Any(x => x is IFrameVideo || (x is IFrame ifr && ifr.AnyVideo()));
 		}
 
 		/// <summary>Renders the associated <see cref="frame" /> into an image. You can specify <paramref name="width" /> and
@@ -50,7 +57,6 @@ namespace PlayerControls._sys.extensions
 		/// <param name="height">The height of the rendered image.</param>
 		public static Task<BitmapSource> ConvertTo_RenderedImage(this IFrame frame, double width = 1920D, double height = 1080D)
 		{
-
 			var t = new Task<BitmapSource>(() =>
 			{
 				var presenter = new FramePresenter {Item = frame, Width = width, Height = height};
@@ -72,7 +78,7 @@ namespace PlayerControls._sys.extensions
 				bitmapSource.Freeze();
 				return bitmapSource;
 			}, TaskCreationOptions.LongRunning);
-			t.Start(StaTaskScheduler);
+			t.Start(StaTaskScheduler.Default);
 			return t;
 		}
 
