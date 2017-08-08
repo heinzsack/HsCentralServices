@@ -218,7 +218,7 @@ namespace PlayerControls.Themes.editors
 
 		private void SendToBack(FrameItemContainer cont)
 		{
-			var containingFrame = cont.VisualParent_By_Condition<FrameItemContainer>(t => t.DataContext is IFrame)?.DataContext as IFrame;
+			var containingFrame = cont.VisualParent_By_Condition<FrameItemContainer>(t => t.DataContext is IFrame, true)?.DataContext as IFrame;
 			if (containingFrame == null)
 				return;
 			var orderedElements = containingFrame.FrameChildren.OfType<IFrameItem>().OrderBy(x => x.FrameItemZIndex).ToArray();

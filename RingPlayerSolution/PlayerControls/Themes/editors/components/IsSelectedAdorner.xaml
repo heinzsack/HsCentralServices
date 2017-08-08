@@ -11,21 +11,22 @@
 			<EventTrigger.Actions>
 				<BeginStoryboard>
 					<Storyboard RepeatBehavior="Forever">
-						<ColorAnimation Storyboard.TargetName="R0" Storyboard.TargetProperty="Background.(SolidColorBrush.Color)" From="#13000000" To="Transparent" Duration="0:0:0.8" AutoReverse="True" RepeatBehavior="Forever">
+						<DoubleAnimation Storyboard.TargetName="R0" Storyboard.TargetProperty="Opacity" From="1" To="0.2" Duration="0:0:0.8" AutoReverse="True" RepeatBehavior="Forever" />
+						<!--<ColorAnimation Storyboard.TargetName="R0" Storyboard.TargetProperty="Background.(SolidColorBrush.Color)" From="#13000000" To="Transparent" Duration="0:0:0.8" AutoReverse="True" RepeatBehavior="Forever">
 							<ColorAnimation.EasingFunction>
 								<ExponentialEase EasingMode="EaseInOut"/>
 							</ColorAnimation.EasingFunction>
 						</ColorAnimation>
-						<ColorAnimation Storyboard.TargetName="R1" Storyboard.TargetProperty="(Shape.Stroke).(SolidColorBrush.Color)" From="#0275D8" To="#100275D8" Duration="0:0:0.8" AutoReverse="True" RepeatBehavior="Forever">
+						<ColorAnimation Storyboard.TargetName="R1" Storyboard.TargetProperty="(Shape.Stroke).(SolidColorBrush.Color)" From="#0275D8" To="#600275D8" Duration="0:0:0.8" AutoReverse="True" RepeatBehavior="Forever">
 							<ColorAnimation.EasingFunction>
 								<ExponentialEase EasingMode="EaseInOut"/>
 							</ColorAnimation.EasingFunction>
 						</ColorAnimation>
-						<ColorAnimation Storyboard.TargetName="R2" Storyboard.TargetProperty="Color" From="#0275D8" To="#100275D8" Duration="0:0:0.8" AutoReverse="True" RepeatBehavior="Forever">
+						<ColorAnimation Storyboard.TargetName="R2" Storyboard.TargetProperty="Color" From="#0275D8" To="#600275D8" Duration="0:0:0.8" AutoReverse="True" RepeatBehavior="Forever">
 							<ColorAnimation.EasingFunction>
 								<ExponentialEase EasingMode="EaseInOut"/>
 							</ColorAnimation.EasingFunction>
-						</ColorAnimation>
+						</ColorAnimation>-->
 					</Storyboard>
 				</BeginStoryboard>
 			</EventTrigger.Actions>
@@ -38,23 +39,28 @@
 			</ResourceDictionary.MergedDictionaries>
 		</ResourceDictionary>
 	</local:ControlAdorner.Resources>
-	<Border Background="#12E5F3FF" BorderThickness="2" x:Name="R0">
-		<Border.BorderBrush>
-			<VisualBrush>
-				<VisualBrush.Visual>
-					<Rectangle x:Name="R1" StrokeDashArray="5 5"
-								StrokeThickness="2"
-								RadiusX="{Binding RelativeSource={RelativeSource AncestorType={x:Type Border}}, Path=CornerRadius.TopRight}"
-								RadiusY="{Binding RelativeSource={RelativeSource AncestorType={x:Type Border}}, Path=CornerRadius.BottomLeft}"
-								Width="{Binding RelativeSource={RelativeSource AncestorType={x:Type Border}}, Path=ActualWidth}"
-								Height="{Binding RelativeSource={RelativeSource AncestorType={x:Type Border}}, Path=ActualHeight}">
-						<Rectangle.Stroke>
-							<SolidColorBrush Color="#0275D8"/>
-						</Rectangle.Stroke>
-					</Rectangle>
-				</VisualBrush.Visual>
-			</VisualBrush>
-		</Border.BorderBrush>
-		<GlyphIcon x:Name="R2" Icon="G_Tick" Color="{StaticResource GColor-Blue}" Size="15" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5" />
-	</Border>
+	<Grid>
+		<Border BorderBrush="Transparent" BorderThickness="2" Background="Transparent" >
+			<Border.Effect>
+				<DropShadowEffect BlurRadius="5" Color="Black" Opacity="0.3" RenderingBias="Quality" ShadowDepth="0"></DropShadowEffect>
+			</Border.Effect>
+		</Border>
+		<Border Background="#12E5F3FF" BorderThickness="2" x:Name="R0">
+			<Border.BorderBrush>
+				<VisualBrush>
+					<VisualBrush.Visual>
+						<Rectangle x:Name="R1" StrokeDashArray="5 5" StrokeThickness="2" RadiusX="{Binding RelativeSource={RelativeSource AncestorType={x:Type Border}}, Path=CornerRadius.TopRight}" RadiusY="{Binding RelativeSource={RelativeSource AncestorType={x:Type Border}}, Path=CornerRadius.BottomLeft}" Width="{Binding RelativeSource={RelativeSource AncestorType={x:Type Border}}, Path=ActualWidth}" Height="{Binding RelativeSource={RelativeSource AncestorType={x:Type Border}}, Path=ActualHeight}">
+							<Rectangle.Stroke>
+								<SolidColorBrush Color="#0275D8" />
+							</Rectangle.Stroke>
+						</Rectangle>
+					</VisualBrush.Visual>
+				</VisualBrush>
+			</Border.BorderBrush>
+			<Grid>
+				<GlyphIcon x:Name="R2" Icon="G_Tick" Color="{StaticResource GColor-Blue}" Size="20" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5" />
+			</Grid>
+		</Border>
+
+	</Grid>
 </local:ControlAdorner>

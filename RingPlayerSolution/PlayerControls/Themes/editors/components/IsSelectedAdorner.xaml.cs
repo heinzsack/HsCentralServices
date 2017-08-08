@@ -9,7 +9,9 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Documents;
 using CsWpfBase.csglobal;
+using CsWpfBase.Themes.Controls.glyphicon;
 using JetBrains.Annotations;
+using PlayerControls.Interfaces.presentation.FrameItems;
 
 
 
@@ -53,11 +55,13 @@ namespace PlayerControls.Themes.editors.components
 			CsGlobal.Wpf.Animation.Opacity(control, 0, new Duration(TimeSpan.FromMilliseconds(150)), null, () => control.OwningLayer.Remove(control));
 			CurrentAdorners.Remove(layer);
 		}
-		public IsSelectedAdorner(AdornerLayer layer, [NotNull] UIElement adornedElement) : base(adornedElement)
+		public IsSelectedAdorner(AdornerLayer layer, [NotNull] FrameworkElement adornedElement) : base(adornedElement)
 		{
 			InitializeComponent();
 			OwningLayer = layer;
 			OwningLayer.Add(this);
+
+
 			CsGlobal.Wpf.Animation.Opacity(this, 1, new Duration(TimeSpan.FromMilliseconds(150)));
 		}
 	}

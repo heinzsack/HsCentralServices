@@ -68,13 +68,13 @@ namespace PlayerControls.Themes.editors.components
 			OwningLayer.Add(this);
 
 			if (adornedElement.DataContext is IFrame)
-				GlyphIcon.Icon = ((IFrame) adornedElement.DataContext).FrameHasFixedRatio ? GlyphIcons.G_Vector_Path_All : GlyphIcons.G_Vector_Path_Square;
+				TypeIcon.Icon = ((IFrame) adornedElement.DataContext).FrameHasFixedRatio ? GlyphIcons.G_Vector_Path_All : GlyphIcons.G_Vector_Path_Square;
 			else if (adornedElement.DataContext is IFrameText)
-				GlyphIcon.Icon = GlyphIcons.H_Font;
+				TypeIcon.Icon = GlyphIcons.H_Font;
 			else if (adornedElement.DataContext is IFrameImage)
-				GlyphIcon.Icon = GlyphIcons.E_Image;
+				TypeIcon.Icon = GlyphIcons.E_Image;
 			else if (adornedElement.DataContext is IFrameVideo)
-				GlyphIcon.Icon = GlyphIcons.E_Youtube;
+				TypeIcon.Icon = GlyphIcons.E_Youtube;
 
 			CsGlobal.Wpf.Animation.Opacity(this, 1, new Duration(TimeSpan.FromMilliseconds(150)));
 		}

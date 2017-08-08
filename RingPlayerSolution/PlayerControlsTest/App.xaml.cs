@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Windows;
 using CsWpfBase.csglobal;
 using CsWpfBase.env.extensions;
+using PlayerControls.Interfaces.presentation._base;
 using PlayerControls.Themes;
 using PlayerControls._sys.extensions;
 using PlayerControls._sys.pocos.audio;
@@ -36,6 +37,8 @@ namespace PlayerControlsTest
 			PocoFrameVideo.Mocks.HandleEvent();
 			//return;
 
+			PocoFrame.Mock.FullScreen_ImageAndText().ShowEditorDialog();
+			Current.Shutdown();
 			var presentationRing = FrameRingPresenter.GetMock(new DateTime(2017, 1, 1, 0, 0, 0, 0), TimeSpan.FromMinutes(1)).ConvertTo_Json().ConvertFrom_Json<PocoFrameRing>();
 			var audioRing = presentationRing.CreateGapFillingAudioRing(new List<Guid> {Guid.Empty}).ConvertTo_Json().SaveAs_Utf8String_OnDesktop_AndOpen("sample.json").ConvertFrom_Json<PocoAudioRing>();
 			audioRing.Play();
