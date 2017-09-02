@@ -26,48 +26,12 @@ namespace PlayerControlsTest
 	public partial class SampleWindow : Window
 	{
 
-
-		#region DP Keys
-		/// <summary>The <see cref="DependencyProperty" /> for the <see cref="Images" /> property.</summary>
-		public static readonly DependencyProperty ImagesProperty = DependencyProperty.Register(nameof(Images), typeof(ObservableCollection<Imager>), typeof(SampleWindow), new FrameworkPropertyMetadata
-		{
-			BindsTwoWayByDefault = true,
-			//PropertyChangedCallback = (o, args) => ((SampleWindow)o).ImagesDpChanged((ObservableCollection<Imager>)args.OldValue, (ObservableCollection<Imager>)args.NewValue),
-			DefaultValue = default(ObservableCollection<Imager>),
-			DefaultUpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
-		});
-		#endregion
-
-
 		public SampleWindow()
 		{
 			InitializeComponent();
-			this.Loaded += OnLoaded;
-			new Imager().Image.SaveAs_PngFile(new FileInfo("test.png").In_Desktop_Directory());
 		}
 
-		private void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
-		{
-			Images = new ObservableCollection<Imager> {new Imager(), new Imager(), new Imager(), new Imager()};
-		}
-
-		/// <summary>Description</summary>
-		public ObservableCollection<Imager> Images
-		{
-			get => (ObservableCollection<Imager>) GetValue(ImagesProperty);
-			set => SetValue(ImagesProperty, value);
-		}
 	}
 
 
-
-	public class Imager
-	{
-		public Imager()
-		{
-
-		}
-
-		public BitmapSource Image => PocoFrame.Mock.FullScreen_ImageAndText().ConvertTo_RenderedImage().Result;
-	}
 }

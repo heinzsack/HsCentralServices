@@ -10,6 +10,7 @@ using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using CsWpfBase.csglobal;
 using CsWpfBase.env.extensions;
 using PlayerControls.Interfaces.presentation.FrameItems;
 using PlayerControls.Themes._components;
@@ -178,7 +179,17 @@ namespace PlayerControls.Themes
 
 		private void MediaElement_OnMediaFailed(object sender, ExceptionRoutedEventArgs e)
 		{
-			Debug.WriteLine(e.ErrorException.ToString());
+			CsGlobal.Log.Error("Video file corrupted", e.ErrorException, $"The video file '{((MediaElement) sender).Source.AbsolutePath}' is corrupted.");
+		}
+
+		private void Image_OnImageFailed(object sender, ExceptionRoutedEventArgs e)
+		{
+			CsGlobal.Log.Error("Image file corrupted", e.ErrorException);
+		}
+
+		private void MediaElement_Unloaded(object sender, RoutedEventArgs e)
+		{
+			((MediaElement)sender).Close();
 		}
 	}
 }

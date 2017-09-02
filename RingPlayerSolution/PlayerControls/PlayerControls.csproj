@@ -82,6 +82,7 @@
     <Compile Include="Themes\_components\String_To_Uri.cs" />
     <Compile Include="_sys\engines\AudioRingPlayer.cs" />
     <Compile Include="_sys\engines\RingEngine.cs" />
+    <Compile Include="_sys\engines\SmoothAudioPlayer.cs" />
     <Compile Include="_sys\exceptions\PlayerControlsException.cs" />
     <Compile Include="_sys\exceptions\RingEngineException.cs" />
     <Compile Include="_sys\exceptions\RingEngineException_InvalidArgument.cs" />

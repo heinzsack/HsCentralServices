@@ -3,16 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:playerControlsTest="clr-namespace:PlayerControlsTest"
         mc:Ignorable="d"
         Title="SampleWindow" Height="300" Width="300" x:Name="Self">
     <Grid>
-        <ItemsControl ItemsSource="{Binding ElementName=Self, Path=Images}">
-            <ItemsControl.Resources>
-				<DataTemplate DataType="{x:Type playerControlsTest:Imager}">
-					<Image Source="{Binding Path=Image}" />
-                </DataTemplate>
-            </ItemsControl.Resources>
-        </ItemsControl>
     </Grid>
 </Window>
