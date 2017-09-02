@@ -44,17 +44,17 @@ namespace PlayerControls._sys.extensions
 
 
 			var foo = ring.RingItems as IFrameRingEntry[] ?? ring.RingItems.ToArray();
-			var audioStarted = foo[foo.Length-1].RingEntryFrame.Analyse().Videos.Count == 0;
+			var audioStarted = (foo[foo.Length-1].RingEntryFrame?.Analyse().Videos.Count??0) == 0;
 			foreach (var entry in ring.RingItems)
 			{
 				FrameAnalysis analysis;
 
 				if (!frameAnalyses.TryGetValue(entry, out analysis))
 				{
-					analysis = entry.RingEntryFrame.Analyse();
+					analysis = entry.RingEntryFrame?.Analyse();
 					frameAnalyses.Add(entry, analysis);
 				}
-				if (analysis.Videos.Count != 0)
+				if ((analysis?.Videos.Count??0) != 0)
 				{
 					// Video will start
 					if (!audioStarted)
